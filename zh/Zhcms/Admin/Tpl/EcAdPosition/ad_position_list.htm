@@ -1,0 +1,96 @@
+<if value="$full_page">
+    <include file='__PUBLIC__/pageheader.htm'/>
+    <script language="JavaScript">
+    <!--
+    // 这里把JS用到的所有语言都赋值到这里
+    var process_request = "正在处理您的请求...";
+    var todolist_caption = "记事本";
+    var todolist_autosave = "自动保存";
+    var todolist_save = "保存";
+    var todolist_clear = "清除";
+    var todolist_confirm_save = "是否将更改保存到记事本？";
+    var todolist_confirm_clear = "是否清空内容？";
+    var posit_name_empty = "广告位名称不能为空!";
+    var ad_width_empty = "请输入广告位的宽度!";
+    var ad_height_empty = "请输入广告位的高度!";
+    var ad_width_number = "广告位的宽度必须是一个数字!";
+    var ad_height_number = "广告位的高度必须是一个数字!";
+    var no_outside_address = "建议您指定该广告所要投放的站点的名称，方便于该广告的来源统计!";
+    var width_value = "广告位的宽度值必须在1到1024之间!";
+    var height_value = "广告位的高度值必须在1到1024之间!";
+    var ad_name_empty = "请输入广告名称!";
+    var ad_link_empty = "请输入广告的链接URL!";
+    var ad_text_empty = "广告的内容不能为空!";
+    var ad_photo_empty = "广告的图片不能为空!";
+    var ad_flash_empty = "广告的flash不能为空!";
+    var ad_code_empty = "广告的代码不能为空!";
+    var empty_position_style = "广告位的模版不能为空!";
+    //-->
+    </script>
+    <script type="text/javascript" src="__PUBLIC__/ec/js/utils.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/ec/js/listtable.js"></script>
+    
+    <form method="post" action="" name="listForm">
+        <div class="list-div" id="listDiv">
+</if>
+            <table cellpadding="3" cellspacing="1">
+                <tr>
+                    <th>广告位名称</th>
+                    <th>位置宽度</th>
+                    <th>位置高度</th>
+                    <th>广告位描述</th>
+                    <th>操作</th>
+                </tr>
+                <if value="!empty($position_list)">
+                    <foreach from="$position_list" value="$list">
+                    <tr>
+                        <td class="first-cell">
+                            <span onclick="javascript:listTable.edit(this, 'edit_position_name', {$list.position_id})">{$list.position_name}</span>
+                        </td>
+                        <td align="right">
+                            <span onclick="javascript:listTable.edit(this, 'edit_ad_width', {$list.position_id})">{$list.ad_width}</span>
+                        </td>
+                        <td align="right">
+                            <span onclick="javascript:listTable.edit(this, 'edit_ad_height', {$list.position_id})">{$list.ad_height}</span>
+                        </td>
+                        <td align="left"><span>{$list.position_desc}</span></td>
+                        <td align="center">
+                            <a href="ads.php?act=list&pid={$list.position_id}" title="查看广告内容">
+                                <img src="__PUBLIC__/ec/images/icon_view.gif" border="0" height="16" width="16" />
+                            </a>
+                            <a href="{|U:'index',array('act'=>'edit','id'=>$list['position_id'])}" title="编辑">
+                                <img src="__PUBLIC__/ec/images/icon_edit.gif" border="0" height="16" width="16" />
+                            </a>
+                            <a href="javascript:;" onclick="listTable.remove({$list.position_id}, '您确认要删除这条记录吗?')" title="移除">
+                                <img src="__PUBLIC__/ec/images/icon_drop.gif" border="0" height="16" width="16" />
+                            </a>
+                        </td>
+                    </tr>
+                    </foreach>
+                <else/>
+                    <tr><td class="no-records" colspan="5">没有找到任何记录</td></tr>
+                </if>
+                <tr>
+                    <td align="right" nowrap="true" colspan="5"><include file='__PUBLIC__/page.htm'/></td>
+                </tr>
+            </table>
+            
+            
+<if value="$full_page">
+        </div>
+    </form>
+<!-- end 添加货品 -->
+
+<script type="text/javascript">
+listTable.recordCount = {$record_count};
+listTable.pageCount = {$page_count};
+
+  
+<foreach from="$filter" value="$item" key="$key">
+listTable.filter.{$key} = '{$item}';
+</foreach>
+
+
+</script>
+<include file='__PUBLIC__/pagefooter.htm'/>
+</if>

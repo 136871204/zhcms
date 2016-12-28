@@ -1,0 +1,83 @@
+<include file='__PUBLIC__/pageheader.htm'/>
+<script language="JavaScript">
+<!--
+    // 这里把JS用到的所有语言都赋值到这里
+    var process_request = "{$zh.language.admin_eccommon_js_process_request}";
+    var todolist_caption = "{$zh.language.admin_eccommon_js_todolist_caption}";
+    var todolist_autosave = "{$zh.language.admin_eccommon_js_todolist_autosave}";
+    var todolist_save = "{$zh.language.admin_eccommon_js_todolist_save}";
+    var todolist_clear = "{$zh.language.admin_eccommon_js_todolist_clear}";
+    var todolist_confirm_save = "{$zh.language.admin_eccommon_js_todolist_confirm_save}";
+    var todolist_confirm_clear = "{$zh.language.admin_eccommon_js_todolist_confirm_clear}";
+    var vote_name_empty = "{$zh.language.admin_ecvote_js_vote_name_empty}";
+    var option_name_empty = "{$zh.language.admin_ecvote_js_option_name_empty}";
+    var drop_confirm = "{$zh.language.admin_ecvote_js_drop_confirm}";
+    var drop = "{$zh.language.admin_ecvote_js_drop}";
+//-->
+</script>
+<script type="text/javascript" src="__PUBLIC__/ec/js/calendar.php?lang={$zh.session.language}"></script>
+<link href="__PUBLIC__/ec/js/calendar/calendar.css" rel="stylesheet" type="text/css" />
+<div class="main-div">
+    <form action="{|U:'index'}" method="post" name="theForm" enctype="multipart/form-data" onsubmit="return validate()">
+        <table width="100%" id="general-table">
+            <tr>
+                <td class="label">{$zh.language.admin_ecvote_page_table_th1}</td>
+                <td>
+                    <input type='text' name='vote_name' value='{$vote_arr.vote_name}' size='40' />
+                </td>
+            </tr>
+            <tr>
+                <td class="label">{$zh.language.admin_ecvote_page_table_th2}</td>
+                <td>
+                    <input name="start_time" type="text" id="start_time" size="22" value='{$vote_arr.start_time}' readonly="readonly" />
+                    <input name="selbtn1" type="button" id="selbtn1" onclick="return showCalendar('start_time', '%Y-%m-%d', false, false, 'selbtn1');" value="选择" class="button"/>
+                </td>
+            </tr>
+            <tr>
+                <td class="label">{$zh.language.admin_ecvote_page_table_th3}</td>
+                <td>
+                    <input name="end_time" type="text" id="end_time" size="22" value='{$vote_arr.end_time}' readonly="readonly" />
+                    <input name="selbtn2" type="button" id="selbtn2" onclick="return showCalendar('end_time', '%Y-%m-%d', false, false, 'selbtn2');" value="选择" class="button"/>
+                </td>
+            </tr>
+            <tr>
+                <td class="label">{$zh.language.admin_ecvote_page_table_th11}</td>
+                <td>
+                    <input type="radio" name="can_multi" value="0" <if value="$vote_arr['can_multi'] eq 0"> checked="true" </if>/>{$zh.language.admin_ecvote_page_table_th12}
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                    <input type="radio" name="can_multi" value="1"<if value="$vote_arr['can_multi'] eq 1"> checked="true" </if>/>{$zh.language.admin_ecvote_page_table_th13}
+                </td>
+            </tr>
+            <tr>
+                <td class="label">&nbsp;</td>
+                <td>
+                    <input type="submit" value="{$zh.language.admin_ecvote_page_table_btn1}" class="button" />
+                    <input type="reset" value="{$zh.language.admin_ecvote_page_table_btn2}" class="button" />
+                </td>
+            </tr>
+        </table>
+        <input type="hidden" name="act" value="{$form_act}" />
+        <input type="hidden" name="id" value="{$vote_arr.vote_id}" />
+    </form>
+</div>
+<script type="text/javascript" src="__PUBLIC__/ec/js/utils.js"></script>
+<script type="text/javascript" src="__PUBLIC__/ec/js/validator.js"></script>
+<script>
+document.forms['theForm'].elements['vote_name'].focus();
+/**
+ * 检查表单输入的数据
+ */
+function validate()
+{
+    validator = new Validator("theForm");
+    validator.required("vote_name",      vote_name_empty);
+    if(document.getElementById('start_time').value > document.getElementById('end_time').value)
+    {
+        alert(date_error);
+        return false;
+    }
+    return validator.passed();
+}
+</script>
+<include file='__PUBLIC__/pagefooter.htm'/>
+

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>flati</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="description" content=""/>
+<meta name="author" content=""/>
+<link href='http://fonts.useso.com/css?family=Lato:400,700,300' rel='stylesheet' type='text/css'/>
+<!--[if IE]>
+	<link href="http://fonts.useso.com/css?family=Lato" rel="stylesheet" type="text/css">
+	<link href="http://fonts.useso.com/css?family=Lato:400" rel="stylesheet" type="text/css">
+	<link href="http://fonts.useso.com/css?family=Lato:700" rel="stylesheet" type="text/css">
+	<link href="http://fonts.useso.com/css?family=Lato:300" rel="stylesheet" type="text/css">
+<![endif]-->
+
+<link href="__TEMPLATE__/common/css/bootstrap.css" rel="stylesheet"/>
+<link href="__TEMPLATE__/common/css/font-awesome.min.css" rel="stylesheet"/>
+<link href="__TEMPLATE__/common/css/theme.css" rel="stylesheet"/>
+<link href="__TEMPLATE__/common/css/prettyPhoto.css" rel="stylesheet" type="text/css"/>
+<link href="__TEMPLATE__/common/css/zocial.css" rel="stylesheet" type="text/css"/>
+
+<!--[if lt IE 9]>
+<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+</head>
+
+<body>
+    <include file='__TEMPLATE__/common/inc/header.lbi'/>
+
+	<!--page-->
+	<!--banner-->
+	<div id="banner">
+	<div class="container intro_wrapper">
+	<div class="inner_content">
+	<h1>全部案例</h1>
+	
+	</div>
+		</div>
+			</div>
+			
+			<div class="container wrapper">
+			<div class="inner_content">
+		
+			<div id="options">                                           
+                    <ul id="filters" class="option-set" data-option-key="filter">
+                        <li><a href="#filter" data-option-value="*" class=" selected">All</a></li>
+                        <foreach from="$yearList" value="$year" >
+                        <li><a href="#filter" data-option-value=".{$year}">{$year}年</a></li>   
+                        </foreach>
+                    </ul>                                           
+                    <div class="clear"></div>
+                </div>
+                <div class="row">
+                    <!-- portfolio_block -->
+                    <div class="projects">    
+                        <foreach from="$result" value="$site" >
+                        <div class="span4 element {$site.year}" data-category="{$site.year}">
+                            <div class="hover_img">
+								<a href="{$site.url}">	
+                                <img src="{$site.main_image}" alt="" /></a>
+                            </div>  
+                            <div class="item_description">
+                               <a href="{$site.url}"><span class="text-info">[{$site.catname}]</span><span>{$site.title}</span></a><br/>
+								{$site.list_desc}
+                            </div>                                    
+                        </div>
+                        </foreach>
+                                                      
+                        
+						
+
+				
+                        
+                        <div class="clear"></div>
+                    </div>   
+                    <!-- //portfolio-->   
+                </div>
+            </div>
+        </div>
+	<!--//page-->
+    <include file='__TEMPLATE__/common/inc/footer.lbi'/>
+
+				
+<script src="__TEMPLATE__/common/js/jquery.js"></script>			
+<script src="__TEMPLATE__/common/js/bootstrap.min.js"></script>	
+<script type="text/javascript" src="__TEMPLATE__/common/js/jquery.prettyPhoto.js"></script>
+<script type="text/javascript" src="__TEMPLATE__/common/js/scripts.js"></script>
+<script src="__TEMPLATE__/common/js/jquery.isotope.min.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+//<![CDATA[
+	$(window).load(function(){	
+	$('.projects').isotope({
+  });
+});
+//]]>
+</script>		
+<script type="text/javascript">
+//<![CDATA[
+		$(function () {
+			$('div.element').hide();
+            
+            $('.all').addClass('active');
+		});
+		var i = 0;//initialize
+		var int=0;
+		$(window).bind("load", function() {
+			var int = setInterval("doThis(i)",100);//fade in speed in milliseconds
+		}); 
+	function doThis() {
+			var imgs = $('div.element').length;
+			if (i >= imgs) {
+				clearInterval(int);
+			}
+			$('div.element:hidden').eq(0).fadeIn(100);
+			i++;//add 1 to the count
+		}
+		//]]>
+        
+        
+</script>
+</body>
+</html>	

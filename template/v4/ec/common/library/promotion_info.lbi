@@ -1,0 +1,27 @@
+<if value="$promotion_info" >
+<!-- 促销信息 -->
+<div class="box">
+    <div class="box_1">
+        <h3><span>促销信息</span></h3>
+        <div class="boxCenterList RelaArticle">
+            <foreach from="$promotion_info" value="$item" key="$promotion_info_key"  >
+                <if value="$item['type'] eq 'snatch'" >
+                    <a href="{|u:'ec/EcSnatch/index'}" title="[夺宝]">[夺宝]</a>
+                <elseif value="$item['type'] eq 'group_buy'"/>
+                    <a href="{|u:'ec/EcGroupBuy/index'}" title="[团购]">[团购]</a>
+                <elseif value="$item['type'] eq 'auction'"/>
+                    <a href="{|u:'ec/EcAuction/index'}" title="[拍卖]">[拍卖]</a>
+                <elseif value="$item['type'] eq 'favourable'"/>
+                    <a href="{|u:'ec/EcActivity/index'}" title="[优惠]">[优惠]</a>
+                <elseif value="$item['type'] eq 'package'"/>
+                    <a href="{|u:'ec/EcPackage/index'}" title="[礼包]">[礼包]</a>
+                </if>
+                <a href="{$item.url}" title="{$item.act_name}{$item.time}" style="background:none; padding-left:0px;">
+                    {$item.act_name}
+                </a><br />
+            </foreach>
+        </div>
+    </div>
+</div>
+<div class="blank5"></div>
+</if>

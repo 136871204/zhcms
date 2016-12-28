@@ -1,0 +1,111 @@
+<include file='__PUBLIC__/pageheader.htm'/>
+<script language="JavaScript">
+<!--
+// 这里把JS用到的所有语言都赋值到这里
+var process_request = "正在处理您的请求...";
+var todolist_caption = "记事本";
+var todolist_autosave = "自动保存";
+var todolist_save = "保存";
+var todolist_clear = "清除";
+var todolist_confirm_save = "是否将更改保存到记事本？";
+var todolist_confirm_clear = "是否清空内容？";
+var no_packname = "没有输入包装名";
+var packfee_un_num = "包装费用为空或不是数字";
+var packmoney_un_num = "包装免费额度为空或不是数字";
+//-->
+</script>
+<div class="main-div">
+    <form method="post" action="{|U:'index'}" name="theForm" enctype="multipart/form-data" onsubmit="return validate()">
+        <table cellspacing="1" cellpadding="3" width="100%">
+            <tr>
+                <td class="label">商品包装名称</td>
+                <td><input type="text" name="pack_name" maxlength="60" size = "30" value="{$pack.pack_name}" /><span class="require-field">*</span></td>
+            </tr>
+            <tr>
+                <td class="label">
+                    <a href="javascript:showNotice('notice_packfee');" title="点击此处查看提示信息">
+                        <img src="__PUBLIC__/ec/images/notice.gif" width="16" height="16" border="0" alt="点击此处查看提示信息"/>
+                    </a>费用
+                </td>
+                <td>
+                    <input type="text" name="pack_fee" maxlength="60" size="30" value="{$pack.pack_fee}" /><span class="require-field">*</span>
+                    <br />
+                    <span class="notice-span" <if value="$help_open">style="display:block" <else/> style="display:none" </if> id="notice_packfee">
+                        使用这个包装所需要支付的费用，免费时设置为0
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="label">
+                    <a href="javascript:showNotice('notice_freemoney');" title="点击此处查看提示信息">
+                        <img src="__PUBLIC__/ec/images/notice.gif" width="16" height="16" border="0" alt="点击此处查看提示信息"/>
+                    </a>免费额度
+                </td>
+                <td>
+                    <input type="text" name="free_money" maxlength="60" size="30" value="{$pack.free_money}" /><span class="require-field">*</span>
+                    <br />
+                    <span class="notice-span" <if value="$help_open">style="display:block" <else/> style="display:none" </if> id="notice_freemoney">
+                        当用户消费金额超过这个值时，将免费使用这个包装。
+                        设置为0时表明必须支付包装费用
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="label">
+                    <if value="$pack['pack_img'] neq '' " >
+                    <a href="javascript:showNotice('warn_packimg');" title="点击此处查看提示信息">
+                        <img src="__PUBLIC__/ec/images/warning_small.gif" width="16" height="16" border="0" alt="点击此处查看提示信息"/>
+                    </a>
+                    </if>
+                    包装图纸
+                </td>
+                <td>
+                    <input type="file" name="pack_img"  size="45"/>
+                    <if value="$pack['pack_img'] neq '' " >
+                        <input type="button" value="删除包装图纸" onclick="if (confirm('你确认要删除贺卡图纸吗？'))location.href='{|U:'index'}&act=drop_pack_img&id={$pack.pack_id}'"/>
+                    </if>
+                    <br />
+                    <span class="notice-span" <if value="$help_open">style="display:block" <else/> style="display:none" </if> id="warn_packimg">
+                        你已经上传过图片。再次上传时将覆盖原图片
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="label">包装描述</td>
+                <td><textarea  name="pack_desc" cols="60" rows="4">{$pack.pack_desc|escape}</textarea></td>
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+                <td>
+                <input type="submit" class="button" value="确定" />
+                <input type="reset" class="button" value="重置" />
+                <input type="hidden" name="act" value="{$form_action}" />
+                <input type="hidden" name="id" value="{$pack.pack_id}" />
+                <input type="hidden" name="old_packname" value="{$pack.pack_name}" />
+                <input type="hidden" name="old_packimg" value="{$pack.pack_img}"/>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+<script type="text/javascript" src="__PUBLIC__/ec/js/utils.js"></script>
+<script type="text/javascript" src="__PUBLIC__/ec/js/validator.js"></script>
+<script language="JavaScript">
+    document.forms['theForm'].elements['pack_name'].focus();
+
+    /**
+     * 检查表单输入的数据
+     */
+    function validate()
+    {
+        validator = new Validator("theForm");
+        validator.required("pack_name",  no_packname);
+        validator.isNumber("pack_fee",   packfee_un_num, 1);
+        validator.isNumber("free_money", packmoney_un_num, 1);
+        return validator.passed();
+    }
+//-->  
+</script>
+<include file='__PUBLIC__/pagefooter.htm'/>
+
+

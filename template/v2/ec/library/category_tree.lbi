@@ -1,0 +1,17 @@
+<div class="box">
+    <div class="box_1">
+        <div id="category_tree">
+        <foreach from="$categories" value="$cat" >
+        <dl>
+            <dt><a href="{$cat.url}">{$cat.name|htmlspecialchars:@@}</a></dt>
+            <foreach from="$cat.cat_id" value="$child" >
+            <dd><a href="{$child.url}">{$child.name|htmlspecialchars:@@}</a></dd>
+                <foreach from="$child.cat_id" value="$childer" >
+                <dd>&nbsp;&nbsp;<a href="{$childer.url}">{$childer.name|htmlspecialchars:@@}</a></dd>
+                </foreach>
+            </foreach>
+        </dl>
+        </foreach>
+        </div>
+    </div>
+</div>

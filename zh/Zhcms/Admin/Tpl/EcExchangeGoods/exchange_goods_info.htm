@@ -1,0 +1,157 @@
+<include file='__PUBLIC__/pageheader.htm'/>
+<script language="JavaScript">
+<!--
+    // 这里把JS用到的所有语言都赋值到这里
+    var process_request = "{$zh.language.admin_eccommon_js_process_request}";
+    var todolist_caption = "{$zh.language.admin_eccommon_js_todolist_caption}";
+    var todolist_autosave = "{$zh.language.admin_eccommon_js_todolist_autosave}";
+    var todolist_save = "{$zh.language.admin_eccommon_js_todolist_save}";
+    var todolist_clear = "{$zh.language.admin_eccommon_js_todolist_clear}";
+    var todolist_confirm_save = "{$zh.language.admin_eccommon_js_todolist_confirm_save}";
+    var todolist_confirm_clear = "{$zh.language.admin_eccommon_js_todolist_confirm_clear}";
+    var no_goods_id = "{$zh.language.admin_ecexchangegoods_js_no_goods_id}";
+    var invalid_exchange_integral = "{$zh.language.admin_ecexchangegoods_js_invalid_exchange_integral}";
+//-->
+</script>
+<script type="text/javascript" src="__PUBLIC__/ec/js/utils.js"></script>
+<script type="text/javascript" src="__PUBLIC__/ec/js/validator.js"></script>
+<script type="text/javascript" src="__PUBLIC__/ec/js/selectzone.js"></script>
+
+
+<div class="main-div">
+    <form  action="{|U:'index'}" method="post" name="theForm" onsubmit="return validate();">
+        <table width="90%" id="general-table">
+            <tr>
+                <td align="right">{$zh.language.admin_ecexchangegoods_page_table_th1}</td>
+                <td>
+                    <input type="text" name="keywords" size="30" />
+                    <input type="button" value="{$zh.language.admin_ecexchangegoods_page_table_btn1}" class="button" onclick="searchGoods()" <if value="$form_action eq 'update'"> disabled="true" </if>>
+                </td>
+            </tr>
+            <tr>
+                <td class="label">
+                    <a href="javascript:showNotice('noticegoodsid');" title="{$zh.language.admin_ecexchangegoods_page_table_th14}">
+                        <img src="__PUBLIC__/ec/images/notice.gif" width="16" height="16" border="0" alt="{$zh.language.admin_ecexchangegoods_page_table_th14}"/>
+                    </a>{$zh.language.admin_ecexchangegoods_page_table_th3}
+                </td>
+                <td>
+                    <select name="goods_id">
+                        {$goods.option}
+                    </select>
+                    <span class="require-field">*</span>
+                    <br />
+                    <span class="notice-span" <if value="$help_open">style="display:block" <else/> style="display:none" </if> id="noticegoodsid">
+                        {$zh.language.admin_ecexchangegoods_page_table_th15}
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="label">
+                    <a href="javascript:showNotice('noticepackagePrice');" title="{$zh.language.admin_ecexchangegoods_page_table_th14}">
+                        <img src="__PUBLIC__/ec/images/notice.gif" width="16" height="16" border="0" alt="{$zh.language.admin_ecexchangegoods_page_table_th14}"/>
+                    </a>{$zh.language.admin_ecexchangegoods_page_table_th16}
+                </td>
+                <td>
+                    <input type="text" name="exchange_integral" maxlength="60" size="20" value="{$goods.exchange_integral}" />
+                    <span class="require-field">*</span>
+                    <br />
+                    <span class="notice-span" <if value="$help_open">style="display:block" <else/> style="display:none" </if> id="noticepackagePrice">
+                        {$zh.language.admin_ecexchangegoods_page_table_th17}
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="narrow-label">{$zh.language.admin_ecexchangegoods_page_table_th5}</td>
+                <td>
+                    <input type="radio" name="is_exchange" value="1" <if value="$goods['is_exchange'] eq 1">checked</if>> {$zh.language.admin_ecexchangegoods_page_table_th18} 
+                    <input type="radio" name="is_exchange" value="0" <if value="$goods['is_exchange'] eq 0">checked</if>> {$zh.language.admin_ecexchangegoods_page_table_th19}
+                    <span class="require-field">*</span>
+                </td>
+            </tr>
+            <tr>
+                <td class="narrow-label">{$zh.language.admin_ecexchangegoods_page_table_th6}</td>
+                <td>
+                    <input type="radio" name="is_hot" value="1" <if value="$goods['is_hot'] eq 1">checked</if>> {$zh.language.admin_ecexchangegoods_page_table_th20}
+                    <input type="radio" name="is_hot" value="0" <if value="$goods['is_hot'] eq 0">checked</if>> {$zh.language.admin_ecexchangegoods_page_table_th21}
+                    <span class="require-field">*</span>
+                </td>
+            </tr>
+        </table>
+        <div class="button-div">
+            <input type="hidden" name="act" value="{$form_action}" />
+            <input type="submit" value="{$zh.language.admin_ecexchangegoods_page_table_btn2}" class="button"  />
+            <input type="reset" value="{$zh.language.admin_ecexchangegoods_page_table_btn3}" class="button" />
+        </div>
+    </form>
+</div>
+
+<script language="JavaScript">
+onload = function()
+{
+    // 开始检查订单
+    startCheckOrder();
+}
+
+function validate()
+{
+    var validator = new Validator('theForm');
+    validator.isNullOption("goods_id", no_goods_id);
+    validator.isNumber("exchange_integral", invalid_exchange_integral, true);
+    
+    
+    return validator.passed();
+}
+
+
+function searchGoods()
+{
+    var filter = new Object;
+    filter.keyword = document.forms['theForm'].elements['keywords'].value;
+    var ajaxurl=CONTROL +"&is_ajax=1&act=search_goods";
+    Ajax.call(ajaxurl, filter, searchGoodsResponse, 'GET', 'JSON')
+}
+
+
+function searchGoodsResponse(result)
+{
+    var frm = document.forms['theForm'];
+    var sel = frm.elements['goods_id'];
+    
+    if (result.error == 0)
+    {
+        /* 清除 options */
+        sel.length = 0;
+        
+        /* 创建 options */
+        var goods = result.content;
+        if (goods)
+        {
+            for (i = 0; i < goods.length; i++)
+            {
+                var opt = document.createElement("OPTION");
+                opt.value = goods[i].goods_id;
+                opt.text  = goods[i].goods_name;
+                sel.options.add(opt);
+            }
+        }
+        else
+        {
+            var opt = document.createElement("OPTION");
+            opt.value = 0;
+            opt.text  = search_is_null;
+            sel.options.add(opt);
+        }
+    }
+    
+    if (result.message.length > 0)
+    {
+        alert(result.message);
+    }
+}
+
+
+
+</script>
+<include file='__PUBLIC__/pagefooter.htm'/>
+
+

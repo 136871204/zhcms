@@ -1,0 +1,90 @@
+<script type="text/javascript" src="__TEMPLATE__/ec/common/js/transport.js"></script>
+<script type="text/javascript" src="__TEMPLATE__/ec/common/js/utils.js"></script>
+<div id="ECS_ORDERTOTAL">
+    <table width="99%" align="center" border="0" cellpadding="5" cellspacing="1" bgcolor="#dddddd">
+        <if value="{$zh.session.ec_user_id} gt 0 and ({$zh.config.ec_use_integral} or {$zh.config.ec_use_bonus} )" >
+            <tr>
+                <td align="right" bgcolor="#ffffff">
+                    该订单完成后，您将获得
+                    <!-- 是否使用积分-->
+                    <if value="{$zh.config.ec_use_integral}">
+                        <font class="f4_b">{$total.will_get_integral}</font> {$points_name}
+                    </if> 
+                    <!--  是否同时使用积分红包-->
+                    <if value="{$zh.config.ec_use_integral} and {$zh.config.ec_use_bonus}">，以及价值  </if>
+                    <!-- 是否使用红包-->
+                    <if value="{$zh.config.ec_use_bonus}">
+                        <font class="f4_b">{$total.will_get_bonus}</font>的红包。
+                    </if>
+                </td>
+            </tr>
+        </if>
+        <tr>
+            <td align="right" bgcolor="#ffffff">
+                商品总价: <font class="f4_b">{$total.goods_price_formated}</font>
+                <!-- 折扣 -->
+                <if value="$total['discount'] gt 0"> 
+                    - 折扣: <font class="f4_b">{$total.discount_formated}</font>
+                </if>
+                <!--  税 -->
+                <if value="$total['tax'] gt 0"> 
+                    + 发票税额: <font class="f4_b">{$total.tax_formated}</font>
+                </if>
+                <!-- 配送费用 -->
+                <if value="$total['shipping_fee'] gt 0"> 
+                    + 配送费用: <font class="f4_b">{$total.shipping_fee_formated}</font>
+                </if>
+                <!-- 保价费用 -->
+                <if value="$total['shipping_insure'] gt 0"> 
+                    + 保价费用: <font class="f4_b">{$total.shipping_insure_formated}</font>
+                </if>
+                <!--  支付费用 -->
+                <if value="$total['pay_fee'] gt 0"> 
+                    + 支付手续费: <font class="f4_b">{$total.pay_fee_formated}</font>
+                </if>
+                <!-- 包装费用-->
+                <if value="$total['pack_fee'] gt 0"> 
+                    + 包装费用: <font class="f4_b">{$total.pack_fee_formated}</font>
+                </if>
+                <!-- 贺卡费用-->
+                <if value="$total['card_fee'] gt 0"> 
+                    + 贺卡费用: <font class="f4_b">{$total.card_fee_formated}</font>
+                </if>
+            </td>
+        </tr>
+        <!--  使用余额或积分或红包 -->
+        <if value="$total['surplus'] gt 0 or $total['integral'] gt 0 or $total['bonus'] gt 0 " >
+            <tr>
+                <td align="right" bgcolor="#ffffff">
+                    <!-- 使用余额 -->
+                    <if value="$total['surplus'] gt 0"> 
+                        - 使用余额: <font class="f4_b">{$total.surplus_formated}</font>
+                    </if>
+                    <!-- 使用积分 -->
+                    <if value="$total['integral'] gt 0">
+                        - 使用积分: <font class="f4_b">{$total.integral_formated}</font>
+                    </if>
+                    <!-- 使用红包 -->
+                    <if value="$total['bonus'] gt 0">
+                        - 使用红包: <font class="f4_b">{$total.bonus_formated}</font>
+                    </if>  
+                </td>
+            </tr>
+        </if>
+        <tr>
+            <td align="right" bgcolor="#ffffff"> 
+                应付款金额: <font class="f4_b">{$total.amount_formated}</font>
+                <if value="$is_group_buy">
+                    <br />
+                   （备注：团购如果有保证金，第一次只需支付保证金和相应的支付费用）
+                </if>
+                <!--消耗积分-->
+                <if value="$total['exchange_integral']">
+                    <br />
+                    积分商城商品需要消耗积分：<font class="f4_b">{$total.exchange_integral}</font>
+                </if>
+            </td>
+        </tr>
+        
+    </table>
+</div>

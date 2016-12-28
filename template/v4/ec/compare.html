@@ -1,0 +1,178 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="Keywords" content="{$keywords}" />
+    <meta name="Description" content="{$description}" />
+    <title>{$page_title}</title>
+    <link rel="shortcut icon" href="favicon.ico" />
+    <link rel="icon" href="animated_favicon.gif" type="image/gif" />
+    <link href="{$ecs_css_path}" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="__TEMPLATE__/ec/common/js/transport.js"></script>
+    <script type="text/javascript" src="__TEMPLATE__/ec/common/js/common.js"></script>
+    <script type="text/javascript" src="__TEMPLATE__/ec/common/js/utils.js"></script>
+    <script language="javascript">
+        function remove(id,url)
+        {
+            if (document.getCookie("compareItems") != null)
+            {
+                var obj = document.getCookie("compareItems").parseJSON();
+                delete obj[id];
+                var date = new Date();
+                date.setTime(date.getTime() + 99999999);
+                document.setCookie("compareItems", obj.toJSONString());
+            }
+            window.location.href=url;  
+        }
+        
+        var compare_no_goods = "您没有选定任何需要比较的商品或者比较的商品数少于 2 个。";
+        var btn_buy = "购买";
+        var is_cancel = "取消";
+        var select_spe = "请选择商品属性";
+    </script>
+</head> 
+<body>
+    <include file='__TEMPLATE__/ec/common/library/page_header.lbi'/>
+    <!--当前位置 start-->
+    <div class="block box">
+        <div id="ur_here">
+            <include file='__TEMPLATE__/ec/common/library/ur_here.lbi'/>
+        </div>
+    </div>
+    <!--当前位置 end-->
+    <div class="blank"></div>
+    <div class="block">
+        <h5><span>商品比较</span></h5>
+        <div class="blank"></div>
+        <table width="100%" border="0" cellpadding="5" cellspacing="1" bgcolor="#dddddd">
+            <tr>
+                <th width="120" align="center" bgcolor="#ffffff">商品名称</th>
+                <foreach from="$goods_list" value="$goods" key="$goods_list_foreach"  >
+                    <td align="center" bgcolor="#ffffff" <if value="count($goods_list) gt 3">width="200"<else/></if>> {$goods.goods_name}</td>
+                </foreach>
+            </tr>
+            <tr>
+                <th align="left" bgcolor="#ffffff"></th>
+                <foreach from="$goods_list" value="$goods" key="$goods_list_foreach"  >
+                    <td  align="center" bgcolor="#ffffff" style="padding:5px;">
+                        <a href="{$goods.url}"><img src="{$goods.goods_thumb}" alt="{$goods.goods_name}" class="ent_img" /></a>
+                    </td>
+                </foreach>
+            </tr>
+            <if value="count($goods_list) gt 2" >
+                <tr>
+                    <td bgcolor="#ffffff">&nbsp;</td>
+                    <foreach from="$goods_list" value="$goods" key="$goods_list_foreach"  >
+                        <th bgcolor="#ffffff">
+                            <a href="javascript:remove({$goods.goods_id},'{|U:'index'}&{$goods.ids}');" >移除</a>
+                        </th>
+                    </foreach>
+                </tr>
+            </if>
+            <tr>
+                <th align="left" bgcolor="#ffffff">&nbsp;&nbsp;品牌</th>
+                <foreach from="$goods_list" value="$goods" key="$goods_list_foreach"  >
+                    <td bgcolor="#ffffff">&nbsp;&nbsp;{$goods.brand_name}</td>
+                </foreach>
+            </tr>
+            <tr>
+                <th align="left" bgcolor="#ffffff">&nbsp;&nbsp;本店售价：</th>
+                <foreach from="$goods_list" value="$goods" key="$goods_list_foreach"  >
+                    <td bgcolor="#ffffff">&nbsp;&nbsp;{$goods.rank_price}</td>
+                </foreach>
+            </tr>
+            <tr>
+                <th align="left" bgcolor="#ffffff">&nbsp;&nbsp;商品重量：</th>
+                <foreach from="$goods_list" value="$goods" key="$goods_list_foreach"  >
+                    <td bgcolor="#ffffff">&nbsp;&nbsp;{$goods.goods_weight}</td>
+                </foreach>
+            </tr>
+            <foreach from="$attribute" value="$val" key="$key"  >
+                <tr>
+                    <th align="left" bgcolor="#ffffff">&nbsp;&nbsp;{$val}</th>
+                    <foreach from="$goods_list" value="$goods" key="$goods_list_foreach"  >
+                        <td bgcolor="#ffffff">
+                            &nbsp;&nbsp;
+                            <foreach from="$goods.properties" value="$property" key="$k"  >
+                                <if value="$k eq $key" >
+                                    {$property.value}
+                                </if>
+                            </foreach>
+                        </td>
+                    </foreach>
+                </tr>
+            </foreach>
+            <tr>
+                <td align="left" bgcolor="#ffffff">&nbsp;&nbsp;<strong>用户评价：</strong></td>
+                <foreach from="$goods_list" value="$goods" key="$goods_list_foreach"  >
+                    <td bgcolor="#ffffff">
+                        &nbsp;&nbsp;
+                        <span class="goods-price">
+                            <img src="__TEMPLATE__/ec/common/style/images/stars{$goods.comment_rank}.gif" width="64" height="12" alt="comment rank {$goods.comment_rank}" />
+                        </span><br />
+                    </td>
+                </foreach>
+            </tr>
+            <tr>
+                <td align="left" bgcolor="#ffffff">&nbsp;&nbsp;<strong>简要介绍：</strong></td>
+                <foreach from="$goods_list" value="$goods" key="$goods_list_foreach"  >
+                    <td bgcolor="#ffffff">&nbsp;&nbsp;<a href="{$goods.url}" target="_blank"> {$goods.goods_brief}</a></td>
+                </foreach>
+            </tr>
+            <tr>
+                <td bgcolor="#ffffff">&nbsp;</td>
+                <foreach from="$goods_list" value="$goods" key="$goods_list_foreach"  >
+                    <td align='center' bgcolor="#ffffff">
+                        <a href="javascript:collect({$goods.goods_id});">
+                            <img src="__TEMPLATE__/ec/common/style/images/bnt_colles.gif" alt="加入收藏夹"  style="margin:2px auto;"/>
+                        </a>
+                        <a href="javascript:addToCart({$goods.goods_id})">
+                            <img src="__TEMPLATE__/ec/common/style/images/bnt_cat.gif" alt="加入购物车"  style="margin:2px auto;"/>
+                        </a>
+                    </td>
+                </foreach>
+            </tr>
+        </table>
+    </div>
+    <div class="blank"></div>
+    
+    <!--帮助-->
+    <div class="block">
+        <div class="box">
+            <div class="helpTitBg clearfix">
+                <include file='__TEMPLATE__/ec/common/library/help.lbi'/>
+            </div>
+        </div>
+    </div>
+    <div class="blank"></div>
+    <!--帮助-->
+    
+    <!--友情链接 start-->
+    <if value="$img_links  or $txt_links" >
+    <div id="bottomNav" class="box">
+        <div class="box_1">
+            <div class="links clearfix">
+                <!--开始图片类型的友情链接-->
+                <foreach from="$img_links" value="$link"  >
+                <a href="{$link.url}" target="_blank" title="{$link.name}">
+                    <img src="{$link.logo}" alt="{$link.name}" border="0" />
+                </a>
+                </foreach>
+                <!--结束图片类型的友情链接-->
+                <if value="$txt_links" >
+                    <!--开始文字类型的友情链接-->
+                    <foreach from="$txt_links" value="$link"  >
+                        [<a href="{$link.url}" target="_blank" title="{$link.name}">{$link.name}</a>]
+                    </foreach>
+                    <!--结束文字类型的友情链接-->
+                </if>
+            </div>
+        </div>
+    </div>
+    </if>
+    <!--友情链接 end-->
+    <div class="blank"></div>
+    <include file='__TEMPLATE__/ec/common/library/page_footer.lbi'/>
+</body>
+
+</html>

@@ -1,0 +1,27 @@
+<!-- 开始循环属性关联的商品-->
+<foreach from="$attribute_linked" value="$linked"  >
+    <if value="$linked.goods">
+        <div class="box">
+            <div class="box_1">
+                <h3><span title="{$linked.title}">{$linked.title}</span></h3>
+                <div class="boxCenterList clearfix">
+                    <foreach from="$linked.goods" value="$linked_goods_data"  >
+                    <ul class="clearfix">
+                        <li class="goodsimg">
+                            <a href="{$linked_goods_data.url}" target="_blank">
+                                <img src="{$linked_goods_data.goods_thumb}" alt="{$linked_goods_data.name}" class="B_blue" />
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{$linked_goods_data.url}" target="_blank" title="{$goods.linked_goods_data_name}">
+                                {$linked_goods_data.short_name}
+                            </a><br />
+                            宝贝价格<font class="f1">{$linked_goods_data.shop_price}</font><br />
+                        </li>
+                    </ul>
+                    </foreach>
+                </div>
+            </div>
+        </div>
+    </if>
+</foreach>

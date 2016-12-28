@@ -1,0 +1,119 @@
+/* common */
+.wrapper{margin: 0 auto;width: 1200px;}
+.btn_01{padding: 0 14px;display: block;height: 30px;line-height: 30px;background: #ebeef1;color: #737880;-webkit-border-radius: 10px;border-radius: 10px;behavior: url(/common/scripts/PIE.htc);font-size: 14px;text-align: center;}
+.btn_02{display: block;height: 30px;line-height: 30px;background: #3580e8;-webkit-border-radius: 4px;border-radius: 4px;behavior: url(/common/scripts/PIE.htc);text-align: center;font-size: 14px;color: #fff;}
+.btn_03{display: block;width: 150px;height: 40px;line-height: 40px;background: #ff7e57;border-bottom: 2px solid #ffc1af;-webkit-border-radius: 4px;border-radius: 4px;behavior: url(/common/scripts/PIE.htc);color: #fff;text-align: center;font-size: 16px;font-weight: bold;}
+.arrow_01{margin-left: 5px;vertical-align: middle;font-size: 0;}
+ul.t_tag_list li{float: left;margin: 0 0 0 10px!important;display: inline;width: auto!important;border-bottom: none!important;}
+ul.t_tag_list li span{display: block;padding: 0 5px;height: 18px;line-height: 18px;border: 1px solid #3580e8;-webkit-border-radius: 4px;border-radius: 4px;behavior: url(/common/scripts/PIE.htc);color: #3580e8;font-weight: normal!important;}
+.path{margin-bottom: 14px;color: #737880;}
+.path a{color: #a1a8b3;}
+.green{color: #75b347;}
+
+.page a{float: left;display: block;width: 88px;height: 28px;line-height: 24px;background: #fff;border: 1px solid #a1a8b3;border-bottom: 3px solid #3580e8;-webkit-border-radius: 4px;border-radius: 4px;behavior: url(/common/scripts/PIE.htc);text-align: center;color: #3580e8;font-size: 14px;}
+.page a.end{border: 1px solid #a1a8b3;border-bottom: 3px solid #a1a8b3;color: #a1a8b3;}
+.page span{display: block;float: left;margin: 0 20px;font-size: 14px;line-height: 31px;}
+.main_content{padding-top: 20px;padding-bottom: 40px;background: #f0f2f4;}
+.left_content{float: left;width: 800px;}
+.right_content{float: right;width: 240px;}
+
+/* header */
+#header{padding:12px 0 0 0;}
+#header .header_header{position: relative;padding: 0 0 12px 0;}
+#header .header_header .header_right{float: right;}
+h1{float: left;margin-right: 20px;}
+.select_shop{float: left;position: relative;margin-right: 60px;margin-top: 6px;}
+.select_shop:hover .select_shop_detail{display: block;}
+.select_shop .select_shop_detail{position: absolute;display: none;top: 30px;right: 50%;margin-right: -60px;width: 120px;z-index: 2;}
+.select_shop_arrow{position: relative;margin-bottom: -1px;width: 100%;height: 12px;background: url("../images/ico/ico_arrow_03.png") no-repeat scroll center center;z-index: 2;}
+.select_shop .select_shop_detail .select_shop_list{padding: 4px 0;background: #f1f3f6;border: 1px solid #cdd6e3;-webkit-border-radius: 4px;border-radius: 4px;behavior: url(/common/scripts/PIE.htc);}
+.select_shop .select_shop_detail .select_shop_list li a{display: block;height: 28px;line-height: 28px;font-size: 14px;color: #737880;text-align: center;}
+.select_shop .select_shop_detail .select_shop_list li a:hover{background: #e4e8ed;}
+.select_shop .select_shop_detail .select_shop_list li.on a{color: #3580e8;}
+.select_shop .btn_01{padding: 0 20px 0 14px;background: #ebeef1;}
+.select_shop .arrow{position: absolute;top: 14px;right: 8px;display: block;width: 8px;height: 4px;background: url("../images/ico/ico_arrow_01_01.png") no-repeat scroll center center;}
+.search_area{float: left;position: absolute;top: 4px;left: 300px;}
+.search_area .search_border input{float: left;padding-left: 10px;width: 377px;height: 34px;line-height: 30px;border: 2px solid #598acc;border-right: none;}
+.search_area .search_border a{float: left;display: block;width: 60px;height: 34px;background: #004bb0 url("../images/ico/ico_search.png") no-repeat scroll center center;}
+.search_area .search_spread{position: absolute;display: none;top: 34px;width: 378px;background: #fff;border: 1px solid #cdd6e3;border-top: none;z-index: 2;}
+.search_area .search_spread .search_histroy{padding: 10px 14px;background: #f1f3f6;color: #a1a8b3;}
+.search_area .search_spread .search_histroy .title{display: block;margin-bottom: 10px;font-weight: bold;}
+.search_area .search_spread .search_histroy .search_histroy_content{position: relative;}
+.search_area .search_spread .search_histroy .search_histroy_content ul{width: 286px;}
+.search_area .search_spread .search_histroy .search_histroy_content ul li{margin-right: 10px;margin-bottom: 10px;display: inline;}
+.search_area .search_spread .search_histroy .search_histroy_content ul li a{color: #a1a8b3;}
+.search_area .search_spread .search_histroy .search_histroy_content .clear_recorder{position: absolute;top: 0;right: 0;color: #75b347;}
+.share_area{float: left;margin-top: 10px;}
+.share_area .weixin{position: relative;display: block;float: left;margin-right: 20px;}
+.share_area .weixin a{display: block;width: 24px;height: 22px;background: url("../images/ico/ico_weixin_01.png") no-repeat scroll 0 0;}
+.share_area .weixin:hover a{background-position: right 0;}
+.share_area .weixin .weixin_code{position: absolute;left: -26px;display: none;width: 290px;height: 151px;background: url("../images/weixin_code.png") no-repeat scroll 0 0;z-index: 5;}
+.share_area .weixin .weixin_code span.txt{position: absolute;top: 30px;right: 22px;font-size: 14px;color: #a1a8b3;}
+.share_area .weixin .weixin_code span.img{position: absolute;top: 20px;left: 10px;font-size: 0;}
+.share_area .weixin:hover .weixin_code{display: block;}
+.share_area .weibo{display: block;float: left;margin-right: 20px;}
+.share_area .weibo a{display: block;width: 24px;height: 20px;background: url("../images/ico/ico_weibo_01.png") no-repeat scroll 0 0;}
+.share_area .weibo:hover a{background-position: right 0;}
+.his_phone{position: relative;float: left;margin-top: 10px;padding-left: 16px;border-left: 1px solid #e6e6e6;cursor: pointer;}
+.his_phone .his_main_phone .phone_ico{display: block;float: left;width: 20px;height: 20px;background: url("../images/ico/ico_phone.png") no-repeat scroll 0 0;}
+.his_phone .his_main_phone:hover .phone_ico{background-position: right center;}
+.his_phone .his_main_phone span{display: block;float: left;margin-left: 8px;padding-right: 15px;background: url("../images/ico/ico_arrow_02.png") no-repeat scroll right center;line-height: 20px;font-size: 16px;color: #2569c8;}
+.his_phone .his_spread_phone{position: absolute;width: 200px;display: none;z-index: 5;text-align: center;}
+.his_phone:hover .his_spread_phone{display: block;}
+.his_phone .his_spread_phone .his_phone_list{padding: 0 12px 0 12px;background: #f1f3f6;border:1px solid #cdd6e3;-webkit-border-radius: 4px;border-radius: 4px;behavior: url(/common/scripts/PIE.htc);}
+.his_phone .his_spread_phone .his_phone_list li{padding: 5px 0;font-size: 14px;color: #535962;}
+.his_phone .his_spread_phone .his_phone_list li span{color: #2569c8;}
+.his_phone .his_spread_phone .his_phone_list li.on{color: #fc4169;}
+.his_phone .his_spread_phone .his_phone_list li.on span{color: #fc4169;}
+
+#nav{background: #004bb0;}
+#nav .wrapper{position: relative;}
+#nav .wrapper ul li{float: left;display: inline;}
+#nav .wrapper ul.banner li a{display: block;padding:0 26px;height: 40px;line-height: 40px;font-size: 16px;color: #fff;text-align: center;}
+#nav .wrapper ul.banner li a:hover,
+#nav .wrapper ul.banner li.on a{height: 40px;line-height: 40px;background: #0b59c3;border-bottom: 3px solid #cedef3;}
+#nav .wrapper ul.banner li.blank a{padding:0 40px 0 26px;background-image: url("../images/ico/ico_blank_01.png");background-repeat: no-repeat;background-position: 97px 13px;}
+#nav .wrapper ul.login_area{position: absolute;right: 0;top: 0;}
+#nav .wrapper ul.login_area li a{display: block;height: 40px;line-height: 40px;border-bottom: 3px solid #96c573;background: #75b347;color: #fff;font-size: 16px;}
+#nav .wrapper ul.login_area li.login a{padding: 0 11px 0 46px;background: #75b347 url("../images/ico/ico_member.png") no-repeat scroll 18px center;}
+#nav .wrapper ul.login_area li.reg a{padding: 0 19px 0 12px;background: #75b347 url("../images/ico/ico_log_line.png") no-repeat scroll left center;}
+
+/* footer */
+#footer{background: #393c40;}
+#footer .wrapper{padding: 26px 0;}
+#footer .wrapper dl{float: left;padding: 0 36px;height: 154px;border-right: 1px solid #44484c;}
+#footer .wrapper dl.footer_sitemap{padding: 0 39px 0 20px;}
+#footer .wrapper dl.footer_abouthis{padding: 0 39px;}
+#footer .wrapper dl.footer_hb{padding: 0 39px;width: 272px;}
+#footer .wrapper dl.footer_link{padding: 0 52px;width: 230px;}
+#footer .wrapper dl dt{margin-bottom: 14px;}
+#footer .wrapper dl dt a{color: #fff;font-size: 16px;}
+#footer .wrapper dl dd ul li{margin-bottom: 5px;}
+#footer .wrapper dl dd ul li.fline{margin-right: 10px;}
+#footer .wrapper dl dd ul li.blank{padding-right: 17px;background: url("../images/ico/ico_blank_02.png") no-repeat scroll 64px center;}
+#footer .wrapper dl dd ul li a{color: #808080;font-size: 14px;}
+#footer .wrapper dl.footer_hb dd ul li{float: left;}
+#footer .wrapper dl.footer_link dd ul li{float: left;}
+#footer .wrapper .footer_logo{float: right;margin-top: 18px;}
+.copyright{padding: 18px 0;background: #2c2f33;text-align: center;color: #505255;font-size: 14px;}
+
+
+/* scrollTop */
+.scrollTop{position: relative;/*position: fixed;right: 20px;top: 20px;*/width: 40px;z-index: 4;}
+.scrollTop div{position: relative;}
+.scrollTop div .content{position: absolute;right: 40px;top: 0;display: none;background: #303b4c;border-left: 3px solid #3580e8;color: #fff;font-size: 14px;}
+.scrollTop div .content a{color: #fff;font-size: 14px;}
+.scrollTop div .content .arrow{position: absolute;right: -4px;top: 16px;display: block;width: 4px;height: 8px;background: url("../images/ico/ico_arrow_04.png") no-repeat scroll center center;}
+.scrollTop div:hover .content{display: block;}
+.scrollTop div.top_qq .content{width: 146px;height: 40px;line-height: 40px;text-align: center;}
+.scrollTop div.top_phone .content{width: 207px;height: 40px;line-height: 40px;text-align: center;}
+.scrollTop div.top_weixin .content{padding: 6px 0;width: 130px;text-align: center;font-size: 0;}
+.scrollTop div .btn{display: block;width: 40px;height: 40px;font-size: 0;cursor: pointer;}
+.scrollTop div.top_qq .btn{background: url("../images/top_qq.gif") no-repeat scroll center center;}
+.scrollTop div.top_qq:hover .btn{background: url("../images/top_qq_h.gif") no-repeat scroll center center;}
+.scrollTop div.top_phone .btn{background: url("../images/top_phone.gif") no-repeat scroll center center;}
+.scrollTop div.top_phone:hover .btn{background: url("../images/top_phone_h.gif") no-repeat scroll center center;}
+.scrollTop div.top_weixin .btn{background: url("../images/top_weixin.gif") no-repeat scroll center center;}
+.scrollTop div.top_weixin:hover .btn{background: url("../images/top_weixin_h.gif") no-repeat scroll center center;}
+.scrollTop div.top_btn .btn{background: url("../images/top_btn.gif") no-repeat scroll center center;}
+.scrollTop div.top_btn:hover .btn{background: url("../images/top_btn_h.gif") no-repeat scroll center center;}

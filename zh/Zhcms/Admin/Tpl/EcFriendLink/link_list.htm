@@ -1,0 +1,79 @@
+<if value="$full_page">
+    <include file='__PUBLIC__/pageheader.htm'/>
+    <script language="JavaScript">
+    <!--
+    // 这里把JS用到的所有语言都赋值到这里
+    
+    var process_request = "正在处理您的请求...";
+    var todolist_caption = "记事本";
+    var todolist_autosave = "自动保存";
+    var todolist_save = "保存";
+    var todolist_clear = "清除";
+    var todolist_confirm_save = "是否将更改保存到记事本？";
+    var todolist_confirm_clear = "是否清空内容？";
+    var link_name_empty = "リンク名を入力!";
+    var link_url_empty = "リンク遷移先を入力!";
+    var show_order_type = "表示ソートは数値です!";
+    //-->
+    </script>
+    <script type="text/javascript" src="__PUBLIC__/ec/js/utils.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/ec/js/listtable.js"></script>
+    
+    
+    <form method="post" action="" name="listForm">
+        <div class="list-div" id="listDiv">
+</if>
+            <table cellpadding="3" cellspacing="1">
+                <tr>
+                    <th><a href="javascript:listTable.sort('link_name'); ">リンク名</a>{$sort_link_name}</th>
+                    <th><a href="javascript:listTable.sort('link_url'); ">リンク遷移先</a>{$sort_link_url}</th>
+                    <th><a href="javascript:listTable.sort('link_logo'); ">リンクLOGO</a>{$sort_link_logo}</th>
+                    <th><a href="javascript:listTable.sort('show_order'); ">表示ソート</a>{$sort_show_order}</th>
+                    <th>{$zh.language.admin_ecfriendlink_page_table_th5}</th>
+                </tr>
+                <if value="!empty($links_list)">
+                    <foreach from="$links_list" value="$link">
+                    <tr>
+                        <td class="first-cell"><span onclick="listTable.edit(this, 'edit_link_name', {$link.link_id})">{$link.link_name}</span></td>
+                        <td align="left"><span><a href="{$link.link_url}" target="_blank">{$link.link_url}</a></span></td>
+                        <td align="center"><span>{$link.link_logo}</span></td>
+                        <td align="right"><span onclick="listTable.edit(this, 'edit_show_order', {$link.link_id})">{$link.show_order}</span></td>
+                        <td align="center">
+                            <span>
+                                <a href="{|U:'index'}&act=edit&id={$link.link_id}" title="変更">
+                                    <img src="__PUBLIC__/ec/images/icon_edit.gif" border="0" height="16" width="16" />
+                                </a>&nbsp;
+                                <a href="javascript:;" onclick="listTable.remove({$link.link_id}, 'このデータを削除するか?')" title="削除">
+                                    <img src="__PUBLIC__/ec/images/icon_drop.gif" border="0" height="16" width="16" />
+                                </a>
+                            </span>
+                        </td>
+                    </tr>
+                    </foreach>
+                <else/>
+                    <tr><td class="no-records" colspan="10">データなし</td></tr>
+                </if>
+                <tr>
+                    <td align="right" nowrap="true" colspan="10"><include file='__PUBLIC__/page.htm'/></td>
+                </tr>
+            </table>
+                
+            
+<if value="$full_page">
+        </div>
+    </form>
+<!-- end 添加货品 -->
+
+<script type="text/javascript">
+    listTable.recordCount = {$record_count};
+    listTable.pageCount = {$page_count};
+    
+      
+    <foreach from="$filter" value="$item" key="$key">
+    listTable.filter.{$key} = '{$item}';
+    </foreach>
+
+
+</script>
+<include file='__PUBLIC__/pagefooter.htm'/>
+</if>

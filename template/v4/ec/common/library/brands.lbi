@@ -1,0 +1,20 @@
+<if value="$brand_list" >
+    <foreach from="$brand_list" value="$brand" key="$brand_foreach_key"  >
+        <if value="$brand_foreach_key lt 11" >
+            <if value="$brand.brand_logo" >
+                <a href="{$brand.url}">
+                    <img src="{$brand.brand_logo}" alt="{$brand.brand_name} ({$brand.goods_num})" />
+                </a>
+            <else/>
+                <a href="{$brand.url}">
+                    {$brand.brand_name} <if value="$brand.goods_num">({$brand.goods_num})</if>
+                </a>
+            </if>
+        </if>
+    </foreach>
+    <div class="brandsMore">
+        <a href="{|U:'ec/EcBrand/index'}">
+            <img src="__TEMPLATE__/ec/common/style/images/moreBrands.gif" />
+        </a>
+    </div>
+</if>

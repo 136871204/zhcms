@@ -1,0 +1,62 @@
+<!-- 底部 -->
+<footer id="footer">
+	<div class="wrapper fix">
+		<dl class="footer_sitemap">
+			<dt><a href="">网站地图</a></dt>
+			<dd>
+				<ul>
+					<li><a href="">日本旅游</a></li>
+					<li><a href="">其他国际旅游</a></li>
+					<li><a href="">JR RAIL Pass</a></li>
+					<li class="blank"><a href="">国际酒店</a></li>
+					<li class="blank"><a href="">国际机票</a></li>
+				</ul>
+			</dd>
+		</dl>
+		<dl class="footer_abouthis">
+			<dt><a href="">关于HIS</a></dt>
+			<dd>
+				<ul>
+					<li><a href="">关于我们</a></li>
+					<li><a href="">联系我们</a></li>
+					<li><a href="">法律声明</a></li>
+				</ul>
+			</dd>
+		</dl>
+		<dl class="footer_hb">
+			<dt><a href="">合作伙伴</a></dt>
+			<dd>
+				<ul>
+					<li class="fline"><a href="">businessname</a></li>
+					<li><a href="">businessname</a></li>
+					<li class="fline"><a href="">businessname</a></li>
+					<li><a href="">businessname</a></li>
+					<li class="fline"><a href="">businessname</a></li>
+					<li><a href="">businessname</a></li>
+					<li class="fline"><a href="">businessname</a></li>
+					<li><a href="">businessname</a></li>
+				</ul>
+			</dd>
+		</dl>
+		<dl class="footer_link">
+			<dt><a href="">友情链接</a></dt>
+			<dd>
+				<ul>
+					<li class="fline"><a href="">linkname</a></li>
+					<li><a href="">linkname</a></li>
+					<li class="fline"><a href="">linkname</a></li>
+					<li><a href="">linkname</a></li>
+					<li class="fline"><a href="">linkname</a></li>
+					<li><a href="">linkname</a></li>
+					<li class="fline"><a href="">linkname</a></li>
+					<li><a href="">linkname</a></li>
+				</ul>
+			</dd>
+		</dl>
+		<a class="footer_logo" href=""><img src="__TEMPLATE__/common/images/logo_02.gif" width="215" height="120" alt=""></a>
+	</div>
+	<div class="copyright">
+		Copyright © 2010 - 2015 H.I.S. Co,.Ltd. & H.I.S. China. All Rights Reserved.
+	</div>
+</footer>
+<!-- //底部 -->

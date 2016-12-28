@@ -1,0 +1,103 @@
+<include file='__PUBLIC__/pageheader.htm'/>
+<script language="JavaScript">
+<!--
+// 这里把JS用到的所有语言都赋值到这里
+var process_request = "{$zh.language.admin_eccommon_js_process_request}";
+var todolist_caption = "{$zh.language.admin_eccommon_js_todolist_caption}";
+var todolist_autosave = "{$zh.language.admin_eccommon_js_todolist_autosave}";
+var todolist_save = "{$zh.language.admin_eccommon_js_todolist_save}";
+var todolist_clear = "{$zh.language.admin_eccommon_js_todolist_clear}";
+var todolist_confirm_save = "{$zh.language.admin_eccommon_js_todolist_confirm_save}";
+var todolist_confirm_clear = "{$zh.language.admin_eccommon_js_todolist_confirm_clear}";
+var tag_name_not_empty = "{$zh.language.admin_ectagmanage_js_tag_name_not_empty}";
+//-->
+</script>
+<script type="text/javascript" src="__PUBLIC__/ec/js/validator.js"></script>
+<script type="text/javascript" src="__PUBLIC__/ec/js/transport.js"></script>
+<div class="main-div">
+    <form method="post" action="{|U:'index'}" name="theForm" onSubmit="return validate()">
+        <table cellspacing="1" cellpadding="3" width="100%">
+            <tr>
+                <td class="label">{$zh.language.admin_ectagmanage_info_page_table_th2}</td>
+                <td>
+                    <input name="tag_name" type="text" id="tag_name" value="{$tag.tag_words}" maxlength="60" />
+                </td>
+            </tr>
+            <tr>
+                <td align="right">{$zh.language.admin_ectagmanage_info_page_table_th11}</td>
+                <td>
+                    <input name="keyword" type="text" id="keyword"/>
+                    <input name="search" type="button" id="search" value="{$zh.language.admin_ectagmanage_info_page_table_btn1}" class="button" onclick="searchGoods()" />
+                </td>
+            </tr>
+            <tr>
+                <td class="label">{$zh.language.admin_ectagmanage_info_page_table_th4}</td>
+                <td>
+                    <select name="goods_id" id="goods_id">
+                        <option value="{$tag.goods_id}" selected="selected">{$tag.goods_name}</option>
+                    </select>    
+                </td>
+            </tr>
+            
+            <tr>
+                <td colspan="2" align="center">
+                    <input type="submit" class="button" value="{$zh.language.admin_ectagmanage_info_page_table_btn2}" />
+                    <input type="reset" class="button" value="{$zh.language.admin_ectagmanage_info_page_table_btn3}" />
+                    <input type="hidden" name="id" value="{$tag.tag_id}" />
+                </td>
+                <input type="hidden" name="act" value="{$insert_or_update}" />
+            </tr>
+        </table>
+    </form>
+</div>
+
+<script language="JavaScript">
+    /**
+     * 检查表单输入的数据
+     */
+    function validate()
+    {
+        validator = new Validator("theForm");
+        validator.required('tag_name', tag_name_not_empty);
+        return validator.passed();
+    }
+    
+    function searchGoods()
+    {
+        var filter = new Object;
+        filter.keyword  = document.forms['theForm'].elements['keyword'].value;
+        
+        var ajaxurl=CONTROL +"&m=index&is_ajax=1&act=search_goods";
+        Ajax.call(ajaxurl, filter, searchGoodsResponse, 'GET', 'JSON');
+    }
+
+    function searchGoodsResponse(result)
+    {
+        if (result.error == '1' && result.message != '')
+        {
+            alert(result.message);
+            return;
+        }
+        
+        var sel = document.forms['theForm'].elements['goods_id'];
+        
+        sel.length = 0;
+        
+        /* 创建 options */
+        var goods = result.content;
+        if (goods)
+        {
+            for (i = 0; i < goods.length; i++)
+            {
+                var opt = document.createElement("OPTION");
+                opt.value = goods[i].goods_id;
+                opt.text  = goods[i].goods_name;
+                sel.options.add(opt);
+            }
+        }
+        
+        return;
+    }
+</script>
+
+<include file='__PUBLIC__/pagefooter.htm'/>

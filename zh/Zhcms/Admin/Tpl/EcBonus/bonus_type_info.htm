@@ -1,0 +1,211 @@
+<include file='__PUBLIC__/pageheader.htm'/>
+<script language="JavaScript">
+<!--
+// 这里把JS用到的所有语言都赋值到这里
+var process_request = "正在处理您的请求...";
+var todolist_caption = "记事本";
+var todolist_autosave = "自动保存";
+var todolist_save = "保存";
+var todolist_clear = "清除";
+var todolist_confirm_save = "是否将更改保存到记事本？";
+var todolist_confirm_clear = "是否清空内容？";
+var type_name_empty = "请输入红包类型名称!";
+var type_money_empty = "请输入红包类型价格!";
+var order_money_empty = "请输入订单金额!";
+var type_money_isnumber = "类型金额必须为数字格式!";
+var order_money_isnumber = "订单金额必须为数字格式!";
+var bonus_sn_empty = "请输入红包的序列号!";
+var bonus_sn_number = "红包的序列号必须是数字!";
+var bonus_sum_empty = "请输入您要发放的红包数量!";
+var bonus_sum_number = "红包的发放数量必须是一个整数!";
+var bonus_type_empty = "请选择红包的类型金额!";
+var user_rank_empty = "您没有指定会员等级!";
+var user_name_empty = "您至少需要选择一个会员!";
+var invalid_min_amount = "请输入订单下限（大于0的数字）";
+var send_start_lt_end = "红包发放开始日期不能大于结束日期";
+var use_start_lt_end = "红包使用开始日期不能大于结束日期";
+//-->
+</script>
+<script type="text/javascript" src="__PUBLIC__/ec/js/calendar.php?lang={$zh.session.language}"></script>
+<link href="__PUBLIC__/ec/js/calendar/calendar.css" rel="stylesheet" type="text/css" />
+
+<div class="main-div">
+    <form action="{|U:'index'}" method="post" name="theForm" enctype="multipart/form-data" onsubmit="return validate()">
+        <table width="100%">
+            <tr>
+                <td class="label">类型名称</td>
+                <td>
+                    <input type='text' name='type_name' maxlength="30" value="{$bonus_arr.type_name}" size='20' />    
+                </td>
+            </tr>
+            <tr>
+                <td class="label">
+                    <a href="javascript:showNotice('Type_money_a');" title="点击此处查看提示信息">
+                        <img src="__PUBLIC__/ec/images/notice.gif" width="16" height="16" border="0" alt="点击此处查看提示信息"/>
+                    </a>红包金额
+                </td>
+                <td>
+                    <input type="text" name="type_money" value="{$bonus_arr.type_money}" size="20" />
+                    <br />
+                    <span class="notice-span" <if value="$help_open">style="display:block" <else/> style="display:none" </if> id="Type_money_a">   	
+                        此类型的红包可以抵销的金额
+                    </span>    
+                </td>
+            </tr>
+            <tr>
+                <td class="label">
+                    <a href="javascript:showNotice('NoticeMinGoodsAmount');" title="点击此处查看提示信息"> 
+                        <img src="__PUBLIC__/ec/images/notice.gif" width="16" height="16" border="0" alt="点击此处查看提示信息" />
+                    </a>最小订单金额
+                </td>
+                <td>
+                    <input name="min_goods_amount" type="text" id="min_goods_amount" value="{$bonus_arr.min_goods_amount}" size="20" />
+                    <br />
+                    <span class="notice-span" <if value="$help_open">style="display:block" <else/> style="display:none" </if> id="NoticeMinGoodsAmount">
+                        只有商品总金额达到这个数的订单才能使用这种红包
+                    </span> 
+                </td>
+            </tr>
+            <tr>
+                <td class="label">如何发放此类型红包</td>
+                <td>
+                    <input type="radio" name="send_type" value="0" <if value='$bonus_arr.send_type eq 0'> checked="true" </if> onClick="showunit(0)"  />按用户发放
+                    <input type="radio" name="send_type" value="1" <if value='$bonus_arr.send_type eq 1'> checked="true" </if> onClick="showunit(1)"  />按商品发放
+                    <input type="radio" name="send_type" value="2" <if value='$bonus_arr.send_type eq 2'> checked="true" </if> onClick="showunit(2)"  />按订单金额发放
+                    <input type="radio" name="send_type" value="3" <if value='$bonus_arr.send_type eq 3'> checked="true" </if> onClick="showunit(3)"  />线下发放的红包  
+                </td>
+            </tr>
+            <tr id="1" style="display:none">
+                <td class="label">
+                    <a href="javascript:showNotice('Order_money_a');" title="点击此处查看提示信息">
+                        <img src="__PUBLIC__/ec/images/notice.gif" width="16" height="16" border="0" alt="点击此处查看提示信息"/>
+                    </a>订单下限
+                </td>
+                <td>
+                    <input name="min_amount" type="text" id="min_amount" value="{$bonus_arr.min_amount}" size="20" />
+                    <br />
+                    <span class="notice-span" <if value="$help_open">style="display:block" <else/> style="display:none" </if> id="Order_money_a">
+                        只要订单金额达到该数值，就会发放红包给用户
+                    </span>    
+                </td>
+            </tr>
+            <tr>
+                <td class="label">
+                    <a href="javascript:showNotice('Send_start_a');" title="点击此处查看提示信息">
+                        <img src="__PUBLIC__/ec/images/notice.gif" width="16" height="16" border="0" alt="点击此处查看提示信息"/>
+                    </a>发放起始日期
+                </td>
+                <td>
+                    <input name="send_start_date" type="text" id="send_start_date" size="22" value='{$bonus_arr.send_start_date}' readonly="readonly" />
+                    <input name="selbtn1" type="button" id="selbtn1" onclick="return showCalendar('send_start_date', '%Y-%m-%d', false, false, 'selbtn1');" value="选择" class="button"/>
+                    <br />
+                    <span class="notice-span" <if value="$help_open">style="display:block" <else/> style="display:none" </if> id="Send_start_a">
+                        只有当前时间介于起始日期和截止日期之间时，此类型的红包才可以发放
+                    </span>    
+                </td>
+            </tr>
+            <tr>
+                <td class="label">发放结束日期</td>
+                <td>
+                    <input name="send_end_date" type="text" id="send_end_date" size="22" value='{$bonus_arr.send_end_date}' readonly="readonly" />
+                    <input name="selbtn2" type="button" id="selbtn2" onclick="return showCalendar('send_end_date', '%Y-%m-%d', false, false, 'selbtn2');" value="选择" class="button"/>    
+                </td>
+            </tr>
+            <tr>
+                <td class="label">
+                    <a href="javascript:showNotice('Use_start_a');" title="点击此处查看提示信息">
+                        <img src="__PUBLIC__/ec/images/notice.gif" width="16" height="16" border="0" alt="点击此处查看提示信息"/>
+                    </a>
+                    使用起始日期
+                </td>
+                <td>
+                    <input name="use_start_date" type="text" id="use_start_date" size="22" value='{$bonus_arr.use_start_date}' readonly="readonly" />
+                    <input name="selbtn3" type="button" id="selbtn3" onclick="return showCalendar('use_start_date', '%Y-%m-%d', false, false, 'selbtn3');" value="选择" class="button"/>
+                    <br />
+                    <span class="notice-span" <if value="$help_open">style="display:block" <else/> style="display:none" </if> id="Use_start_a">
+                        只有当前时间介于起始日期和截止日期之间时，此类型的红包才可以使用
+                    </span>    
+                </td>
+            </tr>
+            <tr>
+                <td class="label">使用结束日期</td>
+                <td>
+                    <input name="use_end_date" type="text" id="use_end_date" size="22" value='{$bonus_arr.use_end_date}' readonly="readonly" />
+                    <input name="selbtn4" type="button" id="selbtn4" onclick="return showCalendar('use_end_date', '%Y-%m-%d', false, false, 'selbtn4');" value="选择" class="button"/>    
+                </td>
+            </tr>
+            <tr>
+                <td class="label">&nbsp;</td>
+                <td>
+                    <input type="submit" value="确定" class="button" />
+                    <input type="reset" value="重置" class="button" />
+                    <input type="hidden" name="act" value="{$form_act}" />
+                    <input type="hidden" name="type_id" value="{$bonus_arr.type_id}" />    
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+<script type="text/javascript" src="__PUBLIC__/ec/js/utils.js"></script>
+<script type="text/javascript" src="__PUBLIC__/ec/js/validator.js"></script>
+<script language="JavaScript">
+document.forms['theForm'].elements['type_name'].focus();
+    
+/**
+ * 检查表单输入的数据
+ */
+function validate()
+{
+    validator = new Validator("theForm");
+    validator.required("type_name",      type_name_empty);
+    validator.required("type_money",     type_money_empty);
+    validator.isNumber("type_money",     type_money_isnumber, true);
+    validator.islt('send_start_date', 'send_end_date', send_start_lt_end);
+    validator.islt('use_start_date', 'use_end_date', use_start_lt_end);
+    if (document.getElementById(1).style.display == "")
+    {
+        var minAmount = parseFloat(document.forms['theForm'].elements['min_amount'].value);
+        if (isNaN(minAmount) || minAmount <= 0)
+        {
+            validator.addErrorMsg(invalid_min_amount);
+        }	
+    }
+    return validator.passed();
+}
+
+onload = function()
+{
+    get_value = '{$bonus_arr.send_type}';
+    
+    showunit(get_value)
+}
+
+/* 红包类型按订单金额发放时才填写 */
+function gObj(obj)
+{
+    var theObj;
+    if (document.getElementById)
+    {
+        if (typeof obj=="string") {
+            return document.getElementById(obj);
+        } else {
+            return obj.style;
+        }
+    }
+    return null;
+}
+
+function showunit(get_value)
+{
+    gObj("1").style.display =  (get_value == 2) ? "" : "none";
+    document.forms['theForm'].elements['selbtn1'].disabled  = (get_value != 1 && get_value != 2);
+    document.forms['theForm'].elements['selbtn2'].disabled  = (get_value != 1 && get_value != 2);
+    
+    return;
+}
+//-->  
+</script>
+
+<include file='__PUBLIC__/pagefooter.htm'/>
+
+

@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+	<meta charset="UTF-8"/>
+	<meta name="Description" content="{$zh.config.description}" />
+	<meta name="keywords" content="{$zh.config.keywords}" />
+	<meta name="format-detection" content="telephone=no" />
+	<meta http-equiv="Cache-Control" content="no-transform" />
+	<meta http-equiv="Cache-Control" content="no-siteapp" />
+	<meta name="applicable-device" content="pc,mobile"/>
+	<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1,minimum-scale=1,user-scalable=0;" />
+	<title>japan_travel</title>
+
+	<link rel="stylesheet" href="__TEMPLATE__/common/css/import.css"/>
+	<link rel="stylesheet" href="__TEMPLATE__/common/css/list.css"/>
+
+	<!--[if lt IE 9]>
+	<script src="__TEMPLATE__/common/scripts/html5.js"></script>
+	<![endif]-->
+</head>
+<body id="japan_travel">
+	<!-- 头部 -->
+		<!--#include virtual="__TEMPLATE__/common/inc/header.lbi"-->
+        <include file='__TEMPLATE__/common/inc/__WEBID___header.lbi'/>
+	<!-- //头部 -->
+	<!-- 中间内容 -->
+	<div id="content">
+		
+			<div class="main_content">
+				<div class="wrapper fix">
+					<!-- 路径 -->
+						<div class="path">
+							<a href="/">首页</a> {$pkname}
+						</div>
+						<!-- //路径 -->
+					<!-- 左边 -->
+					<div class="left_content">
+						
+						<!-- 筛选区域 -->
+						<div class="filter_area">
+                            <div class="one_filter">
+								<span class="title">目的城市：</span>
+								<ul class="fix" id="destid_list">
+                                    <if value=" $_GET['para1'] eq 1 ">
+                                        <if value="$destid eq 6 ">
+                                            <li class="on" data-value="6" >
+                                        <else/>
+                                            <li data-value="6" >
+                                        </if>
+                                        <a href="{|getSearchUrl:6,'dest_id'}">日本</a></li>
+                                        <if value=" $lastDestinfo['pinyin'] neq 'riben' ">
+                                            <if value="$destid eq $lastDestinfo['id'] ">
+                                                <li  class="on" data-value="{$lastDestinfo.id}" >
+                                            <else/>
+                                                <li  data-value="{$lastDestinfo.id}" >
+                                            </if>
+                                            <a href="{$lastDestinfo.id|getSearchUrl:@@,'dest_id'}">{$lastDestinfo.kindname}</a></li>
+                                        </if>
+                                    <elseif  value=" $_GET['para1'] eq 2 " />
+                                        <if value="$destid eq 1 ">
+                                            <li class="on" data-value="1" >
+                                        <else/>
+                                            <li data-value="1" >
+                                        </if>
+                                        <a href="{|getSearchUrl:1,'dest_id'}">其他国际</a></li>
+                                        <if value=" $lastDestinfo['pinyin'] neq 'qitaguoji' ">
+                                            <if value="$destid eq $lastDestinfo['id'] ">
+                                                <li  class="on" data-value="{$lastDestinfo.id}" >
+                                            <else/>
+                                                <li  data-value="{$lastDestinfo.id}" >
+                                            </if>
+                                            <a href="{$lastDestinfo.id|getSearchUrl:@@,'dest_id'}">{$lastDestinfo.kindname}</a></li>
+                                        </if>
+                                    <else/>
+                                        <if value="$destid eq 0 ">
+                                            <li class="on" data-value="0" >
+                                        <else/>
+                                            <li data-value="0" >
+                                        </if>
+                                        <a href="{|getSearchUrl:0,'dest_id'}">全部</a></li>
+                                        <if value=" !empty($lastDestinfo) ">
+                                            <if value="$destid eq $lastDestinfo['id'] ">
+                                                <li  class="on" data-value="{$lastDestinfo.id}" >
+                                            <else/>
+                                                <li  data-value="{$lastDestinfo.id}" >
+                                            </if>
+                                            <a href="{$lastDestinfo.id|getSearchUrl:@@,'dest_id'}">{$lastDestinfo.kindname}</a></li>
+                                        </if>
+                                    </if>
+									
+                                    <foreach from="$destlist" value="$destD" >
+                                        <if value="$destid eq $destD['id'] ">
+                                            <li  class="on" data-value="{$destD.id}" >
+                                        <else/>
+                                            <li  data-value="{$destD.id}" >
+                                        </if>
+                                        <a href="{$destD.id|getSearchUrl:@@,'dest_id'}">{$destD.kindname}</a></li>
+                                    </foreach>
+								</ul>
+							</div>
+                            <div class="one_filter">
+								<span class="title">出发城市：</span>
+								<ul class="fix" id="startcity_list">
+                                    <if value="$_GET['startcity'] eq 0 ">
+                                        <li class="on" data-value="0" >
+                                    <else/>
+                                        <li data-value="0" >
+                                    </if>
+									<a  href="{|getSearchUrl:0,'startcity'}">全部</a></li>
+                                    <foreach from="$startplace" value="$start" >
+                                        <if value="$_GET['startcity'] eq $start['id'] ">
+                                            <li class="on" data-value="{$start.id}" >
+                                        <else/>
+                                            <li data-value="{$start.id}" >
+                                        </if>
+                                        <a  href="{$start.id|getSearchUrl:@@,'startcity'}">{$start.cityname}</a></li>
+                                    </foreach>
+								</ul>
+							</div>
+							
+							
+							<div class="one_filter">
+								<span class="title">行程天数：</span>
+								<ul class="fix" id="day_list">
+                                    <if value="$_GET['day'] eq 0 ">
+                                        <li class="on" data-value="0">
+                                    <else/>
+                                        <li  data-value="0">
+                                    </if>
+									<a href="{|getSearchUrl:0,'day'}">全部</a></li>
+                                    <foreach from="$dayResult" value="$dayD" >
+                                        <if value="$_GET['day'] eq $dayD['word']">
+                                            <li data-value="{$dayD.word}"   class="on"  >
+                                        <else/>
+                                            <li data-value="{$dayD.word}"  >
+                                        </if>
+                                        <a href="{$dayD.word|getSearchUrl:@@,'day'}">{$dayD.title}</a></li>
+                                    </foreach>
+                                    
+								</ul>
+							</div>
+                            <foreach from="$attrGroupList" value="$attrGroup" >
+                            <div class="one_filter attr_list">
+								<span class="title">{$attrGroup.groupname}：</span>
+								<ul class="fix">
+                                    <?php
+                                    $attrids=$attrid;
+                                    $attridArr=explode('_',$attrids);
+                                    //p($attridArr);
+                                    ?>
+                                    <if value="$attrid eq 0 ">
+                                        <li class="on" data-value="0">
+                                    <else/>
+                                        <li  data-value="0">
+                                    </if>
+                                    <a href="{$attrGroup.attrid|getSearchUrl:null,null,@@}">全部</a></li>
+                                    <foreach from="$attrGroup['attrList']" value="$attrD" >
+									<?php 
+                                    
+                                    if(in_array($attrD['attrid'],$attridArr)){
+                                        ?>
+                                        <li  class="on" data-value="{$attrD.attrid}" >
+                                        <?php
+                                    }else{
+                                        ?>
+                                        <li data-value="{$attrD.attrid}" >
+                                        <?php
+                                    }
+                                    ?>
+									<a href="{$attrD.attrid|getSearchUrl:@@,'attrid'}">{$attrD.attrname}</a></li>
+                                    </foreach>
+								</ul>
+							</div>
+                            </foreach>
+							
+							<div class="one_filter">
+								<span class="title">价格区间：</span>
+								<ul class="fix" id="price_list">
+                                    <if value="$_GET['priceid'] eq 0 ">
+                                        <li class="on"  data-value="0" >
+                                    <else/>
+                                        <li   data-value="0" >
+                                    </if>
+									
+                                    <a href="{|getSearchUrl:0,'priceid'}">全部</a></li>
+                                    <foreach from="$priceResult" value="$priceD" >
+                                        <if value="$_GET['priceid'] eq $priceD['id']">
+                                            <li data-value="{$priceD.id}"   class="on"  >
+                                        <else/>
+                                            <li data-value="{$priceD.id}"  >
+                                        </if>
+                                        <a href="{$priceD.id|getSearchUrl:@@,'priceid'}">{$priceD.title}</a></li>
+                                    </foreach>
+								</ul>
+							</div>
+							<div class="final_filter">
+								<span class="result"><strong>91</strong> 条结果</span>
+								<div class="result_select">
+									<span>您已经选择：</span>
+									<div class="result_selected fix">
+										<!-- <span>目的城市：东京<a href="javascript:void(0);"></a></span> -->
+									</div>
+								</div>
+							</div>
+						</div>
+						<!-- //筛选区域 -->
+						<!-- 排序区域 -->
+						<div class="sort_area fix list_nav">
+							<span>综合</span>
+                            <a class="on" href="javascript:void(0);"  data-value="0" >默认排序</a>
+							<a  href="javascript:void(0);" data-value="1">推荐</a>
+							<a id="prize_sort" class="prize " href="javascript:void(0);" data-value="2">价格</a>
+							<a href="javascript:void(0);" data-value="3">销量</a>
+							<a href="javascript:void(0);" data-value="4">人气</a>
+						</div>
+						<!-- //排序区域 -->
+						<!-- 列表内容 -->
+						<div class="travel_list">
+                            <foreach from="$lineList" value="$lineD" >
+                            <div class="travel_one">
+								<div class="img">
+                                    <if value="empty($lineD['linepic']) ">
+                                        <img src="__TEMPLATE__/common/images/240x135_default.jpg" width="160" height="90" alt=""/>
+                                    <else/>
+                                        <img src="__ROOT__/{$lineD.linepic}" width="160" height="90" alt=""/>
+                                    </if>
+									
+								</div>
+								<div class="content">
+									<div class="intro">
+										<p class="main_intro">
+											<strong>{$lineD.title}</strong>
+										</p>
+										<p class="date_intro"><span class="green">{$lineD.startcity}出发</span> 出团日期：{$lineD.maxmindateshow}  </p>
+										<p class="sec_intro"><strong>特色：</strong>{$lineD.sellpoint}</p>
+										<p class="tag_intro">
+											<ul class="fix t_tag_list">
+                                                {$lineD.showattrs}
+											</ul>
+										</p>
+									</div>
+									<div class="price">
+                                        {$lineD.price}
+										<a class="btn_02" href="/lines/show_{$lineD.id}.html">预订</a>
+									</div>
+								</div>
+								{$lineD.iconshow}
+							</div>
+                            </foreach>
+							
+							
+						</div>
+						<!-- //列表内容 -->
+						<!-- 分页 -->
+						<div class="page fix">
+                            {$page}
+						</div>
+						<!-- //分页 -->
+					</div>
+					<!-- //左边 -->
+					<!-- 右边 -->
+					<aside class="right_content">
+						<div class="travel_list_right">
+							<dl>
+								<dt>热门线路</dt>
+                                <foreach from="$hotLineList" value="$hlineD" >
+                                <dd>
+									<a href="">
+										<span class="img">
+                                            <if value="empty($hlineD['linepic']) ">
+                                                <img src="__TEMPLATE__/common/images/240x135_default.jpg" width="210" height="118" alt=""/>
+                                            <else/>
+                                                <img src="__ROOT__/{$hlineD.linepic}" width="210" height="118" alt=""/>
+                                            </if>
+                                        </span>
+										<p class="intro">&lt;{$hlineD.title}&gt;{$hlineD.sellpoint}[{$hlineD.startcity}出发]</p>
+										<div class="price">
+                                        {$hlineD.price}<del>¥{$hlineD.storeprice}</del>
+                                        <ul class="fix t_tag_list">
+                                        {$hlineD.showattrs}
+                                        </ul>
+                                        </div>
+									</a>
+								</dd>
+								</foreach>
+        
+							</dl>
+						</div>
+					</aside>
+					<!-- //右边 -->
+				</div>
+			</div>
+
+	</div>
+    
+    <input type="hidden" id="para1" value="{$para1}"/>
+    <input type="hidden" id="destid" value="{$destid}"/>
+    <input type="hidden" id="attrid" value="{$attrid}" />
+    <input type="hidden" id="priceid" value="{$priceid}" />
+    <input type="hidden" id="day" value="{$day}" />
+    <input type="hidden" id="sorttype" value="{$sorttype}"/>
+    <input type="hidden" id="pinyin" value=""/>
+    <input type="hidden" id="startcity" value="{$startcity}" />
+    <input type="hidden" id="keyword" value=""/>
+    
+    
+    
+    
+	<!-- //中间内容 -->
+	<!-- 底部 -->
+		<!--#include virtual="__TEMPLATE__/common/inc/footer.lbi"-->
+	<!-- //底部 -->
+
+	<script src="__TEMPLATE__/common/scripts/jsloader.js" type="text/javascript"></script>
+	<script src="__TEMPLATE__/common/scripts/owl.carousel.min.js" type="text/javascript"></script>
+	<script>
+		$(function(){
+		      navBannerOn(<?php echo $_GET['para1']; ?>);
+
+            
+            var startcity =$("#startcity").val();
+            var para1=$("#para1").val();
+            var day =$("#day").val();
+            var priceid =$("#priceid").val();
+            var attrid = $("#attrid").val();
+            var sorttype = $("#sorttype").val();
+            var destid = $("#destid").val();
+            
+            //目的地天数选中
+            //search_item_selected("#destid_list","li",destid,'on');
+            //线路天数选中
+            //search_item_selected("#day_list","li",day,'on');
+            //线路属性选中
+            var attrArr = attrid.split('_');
+            for(i=0;i<attrArr.length;i++)
+            {
+        	 
+ 	         //search_attr_selected(".attr_list","li",attrArr[i],'on'); 
+            }
+            //价格范围选中
+            //search_item_selected("#price_list","li",priceid,'on');
+            //出发地选中
+            //search_item_selected("#startcity_list","li",startcity,'on');
+            
+            //排序状态选中
+           $(".list_nav a").each(function(){
+              var datavalue = $(this).attr('data-value');
+        	  if(datavalue == sorttype){
+        	  
+        	    $(this).addClass('on');
+        	  }
+        	  else{
+        	    $(this).removeClass('on');
+        	  }
+           
+           })
+            
+            //排序筛选
+        	$(".list_nav a").click(function(){
+        	   
+        	   $(this).parent('div').find('a').removeClass('on');
+        	   $(this).addClass('on');
+        	   $("#sorttype").val($(this).attr('data-value'));
+        	   Line.doSearch();
+        	
+        	})
+		});
+	</script>
+    
+    <script>
+    var siteUrl = '__HOST__';
+    var Line={
+        doSearch:function(){
+            var attrid=$("#attrid").val();
+            var priceid=$("#priceid").val();
+            var destid=$("#destid").val();
+            var para1=$("#para1").val();
+            var day = $("#day").val();
+            var sorttype = $("#sorttype").val();
+            var keyword = $("#keyword").val();
+            var pinyin = $("#pinyin").val();
+            var startcity = $("#startcity").val();
+            keyword = keyword == '请输入目的地或线路名称' ? 0 : keyword;
+            keyword = keyword==''  ? 0 : keyword;
+            pinyin = pinyin=='' ? destid : pinyin;
+            pinyin = pinyin==0 ? 'all' : pinyin;
+            var url = siteUrl+"/lines/"+pinyin+"-"+para1+"-0-"+day+"-"+priceid+"-"+sorttype+"-"+keyword+'-'+startcity+'-'+attrid;
+            window.open(url,'_self');
+            
+        }
+        
+    }
+
+    
+    function  search_item_selected(contain,tag,realvalue,class1){
+        var find = 0;
+        $(contain).find(tag).each(function(){
+				var datavalue = $(this).attr('data-value');
+               // alert(datavalue);
+				$(this).removeClass(class1);
+				if(datavalue == realvalue) {
+					$(this).addClass(class1)
+                    find = 1;
+				}
+			
+			})
+            if(find==0){
+                $(contain).find(tag).first().addClass(class1);
+            }
+            
+    }
+    
+    function search_attr_selected(contain,tag,realvalue,class1){
+        $(contain).each(function(){
+			   $(this).find(tag).each(function(){
+			        var datavalue = $(this).attr('data-value');
+					
+					if(datavalue == realvalue && realvalue!=0) {
+						$('li:first',$(this).parent()).removeClass(class1);
+						$(this).addClass(class1)
+					}
+			   
+			   })
+		        
+		 
+		 })
+    }
+    </script>
+</body>
+</html>

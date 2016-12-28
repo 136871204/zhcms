@@ -1,0 +1,16 @@
+<if value="$helps" >
+    <div class="left_help clearfix">
+        <foreach from="$helps" value="$help_cat" >
+            <dl>
+                <dt> 
+                    <img src="__TEMPLATE__/ec/common/images/left_help_biao.gif"/> 
+                    <a href='{$help_cat.cat_id}' title="{$help_cat.cat_name}">{$help_cat.cat_name}</a>
+                </dt>
+                <foreach from="$help_cat.article" value="$item" >
+                    <dd><a href="{$item.url}" title="{$item.title}">{$item.short_title}</a></dd>
+                </foreach>
+            </dl>
+        </foreach>
+    </div>
+    <div class="blank"></div>
+</if>

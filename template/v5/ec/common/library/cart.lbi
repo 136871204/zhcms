@@ -1,0 +1,7 @@
+<script type="text/javascript" src="__TEMPLATE__/ec/common/js/transport.js"></script>
+<div class="cart" id="ECS_CARTINFO">
+<?php
+echo insert_cart_info();
+?>
+</div>
+<div class="blank5"></div>

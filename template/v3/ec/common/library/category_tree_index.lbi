@@ -1,0 +1,43 @@
+<script type="text/javascript">
+          //初始化主菜单
+            function sw_nav2(obj,tag)
+            {
+            var DisSub2 = document.getElementById("DisSub2_"+obj);
+            var HandleLI2= document.getElementById("HandleLI2_"+obj);
+                if(tag==1)
+                {
+                    DisSub2.style.display = "block";
+					HandleLI2.className="current";
+                }
+                else
+                {
+                    DisSub2.style.display = "none";
+					HandleLI2.className="";
+                }
+            }
+</script>
+<div id="category_tree">
+    <dl class="clearfix" style=" margin-top:-455px;" >
+        <foreach from="$categories" value="$cat" key="$tno" >
+            <?php $no = $tno+1;?>
+            <div  class="dt"  <if value="$no eq 9">style="border-bottom:none;"</if>  onMouseOver="sw_nav2({$no},1);" onMouseOut="sw_nav2({$no},0);" >
+                <div id="HandleLI2_{$no}">
+                    <a    class="a<if value="$no mod 2 eq 0"><else/> t </if> "href="{$cat.url}">
+                        {$cat.name|htmlspecialchars:@@}
+                        <img src="__TEMPLATE__/ec/common/images/biao8.gif"/>
+                    </a>
+                </div>
+                <dd  id=DisSub2_{$no} style="display:none">
+                    <foreach from="$cat['cat_id']" value="$child"  >
+                        <a class="over_2" href="{$child.url}">{$child.name|htmlspecialchars:@@}</a>  
+                        <div class="clearfix">
+                            <foreach from="$child['cat_id']" value="$childer"  >
+                                <a class="over_3" href="{$childer.url}">{$childer.name|htmlspecialchars:@@}</a>
+                            </foreach>
+                        </div>
+                    </foreach>
+                </dd> 
+            </div>
+        </foreach>
+    </dl>
+</div>

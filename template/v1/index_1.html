@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{$web_title}</title>
+        <meta name="keywords" content="{$web_keywords}" />
+        <meta name="description" content="{$web_description}" />
+    </head>
+    <body>
+        <div class="topdiv" >
+        支店选址：<br />
+        <foreach from="$weblist" value="$web" >
+            <if value="$webid eq $web['id']">
+                <a href="{$web.weburl}"><span style="color: red;">{$web.webname}</span></a>
+            <else/>
+                <a href="{$web.weburl}">{$web.webname}</a>
+            </if>
+            <br />
+        </foreach><br />
+        微信地址：__ROOT__/{$web_weichat_qr}<img width="50" height="50"  src="__ROOT__/{$web_weichat_qr}" />
+        <br />
+        官方微博：{$web_weibo_link}
+        <br />
+        联系电话：<br />
+            {$web_allday_phone}
+        <br />
+        
+        主导航：<br />
+        <foreach from="$mainnav" value="$nav" >
+            <if value="$nav['isexternal'] eq 1 ">
+                <a target="_blank" href="{$nav.url}">[外部链接]{$nav.shortname}</a>
+            <else/>
+                <a href="{$nav.url}">{$nav.shortname}</a>
+            </if>
+            &nbsp;&nbsp;&nbsp;
+        </foreach>
+        <br />
+        主要banner
+        <foreach from="$mainBanner" value="$mb" >
+            <if value="$mb['new_window'] eq 1 ">
+                <a target="_blank" href="{$mb.url}"><img height="100" width="100" src="{$mb.main_image}" /></a>
+            <else/>
+                <a href="{$nav.url}"><img height="100" width="100" src="{$mb.main_image}" /></a>
+            </if>
+            &nbsp;&nbsp;&nbsp;
+        </foreach><br />
+        最新的线路:<br />
+        <foreach from="$newLineList" value="$newLine" >
+            <if value="empty($newLine['linepic']) ">
+            [默认图片]
+            <else/>
+            <img height="50" width="50" src="{$newLine.linepic}" />
+            </if>
+            {$newLine.linename}---
+            {$newLine.sellpoint}
+            <br />
+        </foreach><br />
+        推荐线路：<br />
+        <foreach from="$topLineListDataList" value="$topLineListData" >
+            <div>
+            {$topLineListData.kindname}--
+                <foreach from="$topLineListData['hotdest']" value="$hotdest"  key="$key" >
+                    <if value="count($topLineListData['hotDestLineList'][$key]['lineList']) gt 0 " >
+                    {$hotdest.kindname}
+                    </if>
+                    
+                </foreach>
+            </div>
+            <div>
+            &nbsp;&nbsp;目的地ID：{$topLineListData.kindname}--
+            <br />
+            
+            
+                <foreach from="$topLineListData['currentLineList']" value="$currentLineList" key="$key" >
+                &nbsp;&nbsp;{$key}线路名称：{$currentLineList.linename}----
+                    <if value="empty($currentLineList['linepic']) ">
+                        [默认图片]
+                    <else/>
+                        <img src="__ROOT__/{$currentLineList.linepic}" width="50" width="50" />
+                    </if>--
+                    出发地:{$currentLineList.startcity}---
+                    图标list:
+                    <foreach from="$currentLineList['iconlist_arr']" value="$icon"  >
+                    <img src="{$icon['picurl']}"/>
+                    </foreach>
+                <br />
+                </foreach><br />
+            
+                <foreach from="$topLineListData['hotDestLineList']" value="$hotDestLine"  >
+                    <if value="count($hotDestLine['lineList']) gt 0 " >
+                        &nbsp;&nbsp;目的地ID：{$hotDestLine.kindname}<br />
+                        <foreach from="$hotDestLine['lineList']" value="$line" key="$key" >
+                        
+                        &nbsp;&nbsp;{$key}线路名称：{$line.linename}----
+                        <br />
+                        </foreach><br />
+                    </if>
+                </foreach><br />
+            </div>
+        </foreach><br />
+        </div>
+        
+    </body>
+ </html>

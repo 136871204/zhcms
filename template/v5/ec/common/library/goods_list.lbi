@@ -1,0 +1,157 @@
+<div class="box">
+    <div class="box_1">
+        <h3>
+            <span>商品リスト</span><a name='goods_list'></a>
+            <form method="GET" class="sort" name="listform">
+                表示方法：
+                <a href="javascript:;" onClick="javascript:display_mode('list')"><img src="__TEMPLATE__/ec/common/style/images/display_mode_list<if value="$pager['display'] eq 'list'">_act</if>.gif" alt="{$lang.display.list}"/></a>
+                <a href="javascript:;" onClick="javascript:display_mode('grid')"><img src="__TEMPLATE__/ec/common/style/images/display_mode_grid<if value="$pager['display'] eq 'grid'">_act</if>.gif" alt="{$lang.display.grid}"/></a>
+                <a href="javascript:;" onClick="javascript:display_mode('text')"><img src="__TEMPLATE__/ec/common/style/images/display_mode_text<if value="$pager['display'] eq 'text'">_act</if>.gif" alt="{$lang.display.text}"/></a>&nbsp;&nbsp;
+                <a href="__METH__&category={$category}&display={$pager.display}&brand={$brand_id}&price_min={$price_min}&price_max={$price_max}&filter_attr={$filter_attr}&page={$pager.page}&sort=goods_id&order=<if value="$pager['sort'] eq 'goods_id' && $pager['order'] eq 'DESC'">ASC<else/>DESC</if>#goods_list"><img src="__TEMPLATE__/ec/common/style/images/goods_id_<if value="$pager['sort'] eq 'goods_id'">{$pager.order}<else/>default</if>.gif" alt=""/></a>
+                <a href="__METH__&category={$category}&display={$pager.display}&brand={$brand_id}&price_min={$price_min}&price_max={$price_max}&filter_attr={$filter_attr}&page={$pager.page}&sort=shop_price&order=<if value="$pager['sort'] eq 'shop_price' && $pager['order'] eq 'ASC'">DESC<else/>ASC</if>#goods_list"/><img src="__TEMPLATE__/ec/common/style/images/shop_price_<if value="$pager['sort'] eq 'shop_price'">{$pager.order}<else/>default</if>.gif" alt=""/></a>
+                <a href="__METH__&category={$category}&display={$pager.display}&brand={$brand_id}&price_min={$price_min}&price_max={$price_max}&filter_attr={$filter_attr}&page={$pager.page}&sort=last_update&order=<if value="$pager['sort'] eq 'last_update' && $pager['order'] eq 'DESC'">ASC<else/>DESC</if>#goods_list"/><img src="__TEMPLATE__/ec/common/style/images/last_update_<if value="$pager['sort'] eq 'last_update'">{$pager.order}<else/>default</if>.gif" alt=""/></a>
+                <input type="hidden" name="category" value="{$category}" />
+                <input type="hidden" name="display" value="{$pager.display}" id="display" />
+                <input type="hidden" name="brand" value="{$brand_id}" />
+                <input type="hidden" name="price_min" value="{$price_min}" />
+                <input type="hidden" name="price_max" value="{$price_max}" />
+                <input type="hidden" name="filter_attr" value="{$filter_attr}" />
+                <input type="hidden" name="page" value="{$pager.page}" />
+                <input type="hidden" name="sort" value="{$pager.sort}" />
+                <input type="hidden" name="order" value="{$pager.order}" />
+                <input type="hidden" name="a" value="{$zh.const.APP}" />
+                <input type="hidden" name="c" value="{$zh.const.CONTROL}" />
+                <input type="hidden" name="m" value="{$zh.const.METHOD}" />
+            </form>
+        </h3>
+        <if value="$category gt 0" >
+            <form name="compareForm" action="compare.php" method="post" onSubmit="return compareGoods(this);">
+        </if>
+        <if value="$pager['display'] eq 'list'">
+            <div class="goodsList">
+                <foreach from="$goods_list" value="$goods" key="$goods_key"   >
+                    <ul class="clearfix bgcolor"<if value="$goods_key mod 2 eq 0 ">id=""<else/>id="bgcolor"</if>>
+                        <li>
+                            <br/>
+                            <a href="javascript:;" id="compareLink" onClick="Compare.add({$goods.goods_id},'{$goods.goods_name}','{$goods.type}')" class="f6">比較</a>
+                        </li>
+                        <li class="thumb"><a href="{$goods.url}"><img src="{$goods.goods_thumb}" alt="{$goods.goods_name}" /></a></li>
+                        <li class="goodsName">
+                            <a href="{$goods.url}" class="f6">
+                            <if value="$goods.goods_style_name">
+                            {$goods.goods_style_name}<br />
+                            <else/>
+                            {$goods.goods_name}<br />
+                            </if>
+                            </a>
+                            <if value="$goods.goods_brief">
+                            簡単紹介：{$goods.goods_brief}<br />
+                            </if>
+                        </li>
+                        <li>
+                            <if value=" {$show_marketprice} ">
+                            市場価格:<font class="market">{$goods.market_price}</font><br />
+                            </if>
+                            <if value=" $goods['promote_price'] neq '' ">
+                            促銷価:<font class="shop">{$goods.promote_price}</font><br />
+                            <else/>
+                            当店価格:<font class="shop">{$goods.shop_price}</font><br />
+                            </if>
+                        </li>
+                        <li class="action">
+                            <a href="javascript:collect({$goods.goods_id});" class="abg f6">商品収蔵</a>
+                            <a href="javascript:addToCart({$goods.goods_id})"><img src="__TEMPLATE__/ec/common/style/images/bnt_buy_1.gif"/></a>
+                        </li>
+                    </ul>
+                </foreach>
+            </div>
+        <elseif value="$pager['display'] eq 'grid'"/>
+            <div class="centerPadd">
+                <div class="clearfix goodsBox" style="border:none;">
+                    <foreach from="$goods_list" value="$goods"    >
+                        <if value="$goods['goods_id']">
+                            <div class="goodsItem">
+                                <a href="{$goods.url}">
+                                    <img src="{$goods.goods_thumb}" alt="{$goods.goods_name}" class="goodsimg" />
+                                </a><br />
+                                <p><a href="{$goods.url}" title="{$goods.name}">{$goods.goods_name}</a></p>
+                                <if value=" {$show_marketprice} ">
+                                市場価格:<font class="market_s">{$goods.market_price}</font><br />
+                                </if>
+                                <if value=" $goods['promote_price'] neq '' ">
+                                促銷価:<font class="shop_s">{$goods.promote_price}</font><br />
+                                <else/>
+                                当店価格:<font class="shop_s">{$goods.shop_price}</font><br />
+                                </if>
+                                <a href="javascript:collect({$goods.goods_id});" class="f6">収蔵</a> |
+                                <a href="javascript:addToCart({$goods.goods_id})" class="f6">購入</a> |
+                                <a href="javascript:;" id="compareLink" onClick="Compare.add({$goods.goods_id},'{$goods.goods_name|htmlspecialchars:@@}','{$goods.type}')" class="f6">比較</a>
+                            </div>
+                        </if>
+                    </foreach>
+                </div>
+            </div>
+        <elseif value="$pager['display'] eq 'text'"/>
+            <div class="goodsList">
+                <foreach from="$goods_list" value="$goods"   key="$goods_key"   >
+                    <ul class="clearfix bgcolor"<if value="$goods_key mod 2 eq 0 ">id=""<else/>id="bgcolor"</if>>
+                        <li style="margin-right:15px;">
+                            <a href="javascript:;" id="compareLink" onClick="Compare.add({$goods.goods_id},'{$goods.goods_name}','{$goods.type}')" class="f6">比較</a>
+                        </li>
+                        <li class="goodsName">
+                            <a href="{$goods.url}" class="f6 f5">
+                            <if value="$goods.goods_style_name">
+                            {$goods.goods_style_name}<br />
+                            <else/>
+                            {$goods.goods_name}<br />
+                            </if>
+                            </a>
+                            <if value="$goods.goods_brief">
+                            簡単紹介：{$goods.goods_brief}<br />
+                            </if>
+                        </li>
+                        <li>
+                            <if value=" {$show_marketprice} ">
+                            市場価格:<font class="market">{$goods.market_price}</font><br />
+                            </if>
+                            <if value=" $goods['promote_price'] neq '' ">
+                            促銷価:<font class="shop">{$goods.promote_price}</font><br />
+                            <else/>
+                            当店価格:<font class="shop">{$goods.shop_price}</font><br />
+                            </if>
+                        </li>
+                        <li class="action">
+                            <a href="javascript:collect({$goods.goods_id});" class="abg f6">商品収蔵</a>
+                            <a href="javascript:addToCart({$goods.goods_id})"><img src="__TEMPLATE__/ec/common/style/images/bnt_buy_1.gif"/></a>
+                        </li>
+                    </ul>
+                </foreach>
+            </div>
+        </if>
+        <if value="$category gt 0" >
+            </form>
+        </if>
+    </div>
+</div>
+<div class="blank5"></div>
+<script type="Text/Javascript" language="JavaScript">
+function selectPage(sel)
+{
+    sel.form.submit();
+}
+</script>
+<script type="text/javascript">
+window.onload = function()
+{
+    Compare.init();
+    //fixpng();
+}
+var button_compare = '';
+var exist = "すでに%s個選んだ";
+var count_limit = "最大4個の商品を選んで比べてください";
+var goods_type_different = "\"%s\"とすでに選んだ商品タイプが違うから、比較することが出来ません";
+var compare_no_goods = "比較必要な商品を選んでません或いは比較する商品数は2個以下です。";
+var btn_buy = "購入";
+var is_cancel = "取り消し";
+var select_spe = "商品属性を選択してください";
+</script>

@@ -1,0 +1,47 @@
+<!--
+TODO:
+1.$captcha参数需要管理画面取得
+ -->
+<?php 
+    if ($_SESSION['ec_user_id'] > 0)
+    {
+        $user_info=get_user_info();
+    }
+    else
+    {
+        if (!empty($_COOKIE['ECS']['ec_username']))
+        {
+            $ecs_username=stripslashes($_COOKIE['ECS']['ec_username']);
+        }
+        //$captcha = intval($GLOBALS['_CFG']['captcha']);
+        $captcha = true;
+        if (
+                ($captcha & CAPTCHA_LOGIN) && 
+                (
+                    !($captcha & CAPTCHA_LOGIN_FAIL) || 
+                    (
+                        (
+                            $captcha & CAPTCHA_LOGIN_FAIL) && 
+                            $_SESSION['ec_login_fail'] > 2
+                    )
+                ) && 
+                gd_version() > 0
+            )
+        {
+            $enabled_captcha=1;
+            $rand=mt_rand();
+        }
+    }
+?>
+<div id="append_parent"></div>
+<if value="$user_info">
+    <font style="position:relative; top:10px;">
+        <font class="f4_b">{$user_info.username}</font>
+        <a href="{|U:'ec/EcUser/index'}">ユーザセンタ</a>|
+        <a href="{|U:'ec/EcUser/index'}&act=logout">ログアウト</a>
+    </font>
+<else/>
+    いらっしゃいませ&nbsp;&nbsp;&nbsp;&nbsp;
+    <a href="{|U:'ec/EcUser/index'}">ログイン</a>
+    <a href="{|U:'ec/EcUser/index'}&act=register">登録</a>
+</if>

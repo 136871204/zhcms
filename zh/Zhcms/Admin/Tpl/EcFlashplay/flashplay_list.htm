@@ -1,0 +1,95 @@
+
+<include file='__PUBLIC__/pageheader.htm'/>
+<script language="JavaScript">
+<!--
+// 这里把JS用到的所有语言都赋值到这里
+
+var process_request = "{$zh.language.admin_eccommon_js_process_request}";
+var todolist_caption = "{$zh.language.admin_eccommon_js_todolist_caption}";
+var todolist_autosave = "{$zh.language.admin_eccommon_js_todolist_autosave}";
+var todolist_save = "{$zh.language.admin_eccommon_js_todolist_save}";
+var todolist_clear = "{$zh.language.admin_eccommon_js_todolist_clear}";
+var todolist_confirm_save = "{$zh.language.admin_eccommon_js_todolist_confirm_save}";
+var setupConfirm = "{$zh.language.admin_ecflashplay_js_setupConfirm}";
+//-->
+</script>
+<div class="tab-div">
+    <!-- tab bar -->
+    <include file='__CONTROL_TPL__/flashplay_tab.htm'/>
+    <!-- body -->
+    <div class="tab-body">
+        <div class="list-div list-div-ad" id="listDiv">
+            <table cellspacing='1' cellpadding='3' id='list-table' width="70%">
+                <tr>
+                    <th width="400px">{$zh.language.admin_ecflashplay_flashplay_list_page_table_th1}</th>
+                    <th>{$zh.language.admin_ecflashplay_flashplay_list_page_table_th2}</th>
+                    <th>{$zh.language.admin_ecflashplay_flashplay_list_page_table_th3}</th>
+                    <th>{$zh.language.admin_ecflashplay_flashplay_list_page_table_th4}</th>
+                    <th width="70px">{$zh.language.admin_ecflashplay_flashplay_list_page_table_th5}</th>
+                </tr>
+                <foreach from="$playerdb" value="$item" key="$key">
+                <tr>
+                    <td><a href="{$item.src}" target="_blank">{$item.src}</a></td>
+                    <td align="left"><a href="{$item.url}" target="_blank">{$item.url}</a></td>
+                    <td align="left">{$item.text}</td>
+                    <td align="left">{$item.sort}</td>
+                    <td align="center">
+                        <a href="{|U:'index',array('act'=>'edit','id'=>$key)}" title="{$lang.edit}">
+                            <img src="__PUBLIC__/ec/images/icon_edit.gif" width="16" height="16" border="0" />
+                        </a>
+                        <a href="{|U:'index',array('act'=>'del','id'=>$key)}" onclick="return check_del();" title="{$lang.trash_img}">
+                            <img src="__PUBLIC__/ec/images/icon_drop.gif" width="16" height="16" border="0" />
+                        </a>
+                    </td>
+                </tr>
+                </foreach>
+            </table>
+            <table cellspacing="0">
+                <tr>
+                  <td>
+                    <input name="add" type="submit" id="btnSubmit" value="{$action_link_special.text}" onclick="location.href='{$action_link_special.href}';" class="button"/>
+                  </td>
+                </tr>
+            </table>
+        </div>
+        <div class="list-div list-div-ad" style="margin-top:15px;">
+            <table  style="display: none;">
+                <tr>
+                    <th>可用Flash轮播图片样式</th>
+                </tr>
+                <tr>
+                    <td>
+                        <foreach from="$flashtpls" value="$flashtpl" >
+                        <table style="float:left;width: 220px;">
+                            <tr>
+                                <td>
+                                    <strong>
+                                        <center>{$flashtpl.name}&nbsp;
+                                        <if value="$flashtpl['code'] eq $current_flashtpl">
+                                            <span style="color:red;" id="current_theme">{$lang.current_theme}</span>
+                                        </if>
+                                        </center>
+                                    </strong>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <if value="$flashtpl['screenshot']">
+                                        <img src="{$flashtpl.screenshot}" border="0" style="cursor:pointer" onclick="setupFlashTpl('{$flashtpl.code}', this)" />
+                                    </if>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td valign="top">{$flashtpl.desc}</td>
+                            </tr>
+                        </table>
+                        </foreach>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+<script language="JavaScript">
+</script>
+<include file='__PUBLIC__/pagefooter.htm'/>

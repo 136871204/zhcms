@@ -1,0 +1,52 @@
+<include file='__PUBLIC__/pageheader.htm'/>
+<script language="JavaScript">
+<!--
+// 这里把JS用到的所有语言都赋值到这里
+var process_request = "{$zh.language.admin_eccommon_js_process_request}";
+var todolist_caption = "{$zh.language.admin_eccommon_js_todolist_caption}";
+var todolist_autosave = "{$zh.language.admin_eccommon_js_todolist_autosave}";
+var todolist_save = "{$zh.language.admin_eccommon_js_todolist_save}";
+var todolist_clear = "{$zh.language.admin_eccommon_js_todolist_clear}";
+var todolist_confirm_save = "{$zh.language.admin_eccommon_js_todolist_confirm_save}";
+var todolist_confirm_clear = "{$zh.language.admin_eccommon_js_todolist_confirm_clear}";
+var no_card_sn = "{$zh.language.admin_ecvirtualcard_js_no_card_sn}";
+var separator_not_null = "{$zh.language.admin_ecvirtualcard_js_separator_not_null}";
+var uploadfile_not_null = "{$zh.language.admin_ecvirtualcard_js_uploadfile_not_null}";
+var updating_info = "{$zh.language.admin_ecvirtualcard_js_updating_info}";
+var updated_info = "{$zh.language.admin_ecvirtualcard_js_updated_info}";
+//-->
+</script>
+
+<div class="list-div" id="listDiv">
+    <form action="{|U:'index'}" method="post">
+        <table cellspacing='1' cellpadding='3'>
+            <tr>
+                <th><input type="checkbox" checked onclick="listTable.selectAll(this, 'checked')" />编号</th>
+                <th>{$zh.language.admin_ecvirtualcard_info_page_table_th2}</th>
+                <th>{$zh.language.admin_ecvirtualcard_info_page_table_th3}</th>
+                <th>{$zh.language.admin_ecvirtualcard_info_page_table_th4}</th>
+            </tr>
+            <foreach from="$list" value="$card" key="$key">
+            <tr>
+                <td><input type="checkbox" name="checked[]" value="{$key}" checked /> {$key}</td>
+                <td><input type="text" name="card_sn[{$key}]" value="{$card.card_sn}" size="15" /></td>
+                <td><input type="text" name="card_password[{$key}]" value="{$card.card_password}" size="15" /></td>
+                <td><input type="text" name="end_date[{$key}]" value="{$card.end_date}" size="15" /></td>
+            </tr>
+            </foreach>
+
+            <tr align="center">
+                <td colspan="6">
+                    <input type="hidden" name="goods_id" value="{$zh.request.goods_id}" />
+                    <input type="hidden" name="act" value="batch_insert" />
+                    <input type="submit" name="submit" value="{$zh.language.admin_ecvirtualcard_info_page_table_btn1}" />
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+
+
+
+
+<include file='__PUBLIC__/pagefooter.htm'/>

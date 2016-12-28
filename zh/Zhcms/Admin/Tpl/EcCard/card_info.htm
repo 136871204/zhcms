@@ -1,0 +1,110 @@
+<include file='__PUBLIC__/pageheader.htm'/>
+<script language="JavaScript">
+<!--
+// 这里把JS用到的所有语言都赋值到这里
+var process_request = "正在处理您的请求...";
+var todolist_caption = "记事本";
+var todolist_autosave = "自动保存";
+var todolist_save = "保存";
+var todolist_clear = "清除";
+var todolist_confirm_save = "是否将更改保存到记事本？";
+var todolist_confirm_clear = "是否清空内容？";
+var no_cardname = "没有输入贺卡名";
+var cardfee_un_num = "贺卡费用为空或不是数字";
+var cardmoney_un_num = "贺卡免费额度为空或不是数字";
+//-->
+</script>
+<div class="main-div">
+    <form method="post" action="{|U:'index'}" name="theForm" enctype="multipart/form-data" onsubmit="return validate()">
+        <table cellspacing="1" cellpadding="3" width="100%">
+            <tr>
+                <td class="label">贺卡名称</td>
+                <td><input type="text" name="card_name" maxlength="60" size = "30" value="{$card.card_name}" /><span class="require-field">*</span></td>
+            </tr>
+            <tr>
+                <td class="label">
+                    <a href="javascript:showNotice('notice_cardfee');" title="点击此处查看提示信息">
+                        <img src="__PUBLIC__/ec/images/notice.gif" width="16" height="16" border="0" alt="点击此处查看提示信息"/>
+                    </a>贺卡费用
+                </td>
+                <td>
+                    <input type="text" name="card_fee" maxlength="60" size="30" value="{$card.card_fee}" /><span class="require-field">*</span>
+                    <br />
+                    <span class="notice-span" <if value="$help_open">style="display:block" <else/> style="display:none" </if> id="notice_cardfee">
+                        使用这个贺卡所需要支付的费用，免费时设置为0
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="label">
+                    <a href="javascript:showNotice('notice_cardfreemoney');" title="点击此处查看提示信息">
+                        <img src="__PUBLIC__/ec/images/notice.gif" width="16" height="16" border="0" alt="点击此处查看提示信息"/>
+                    </a>贺卡免费额度
+                </td>
+                <td>
+                    <input type="text" name="free_money" maxlength="60" size="30" value="{$card.free_money}" /><span class="require-field">*</span>
+                    <br />
+                    <span class="notice-span" <if value="$help_open">style="display:block" <else/> style="display:none" </if> id="notice_cardfreemoney">
+                        当用户消费金额超过这个值时，将免费使用这个贺卡
+                        设置为0表明必须支付贺卡费用
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="label">
+                    <if value="$card['card_img'] neq '' " >
+                        <a href="javascript:showNotice('warn_cardimg');" title="点击此处查看提示信息">
+                            <img src="__PUBLIC__/ec/images/warning_small.gif" width="16" height="16" border="0" alt="点击此处查看提示信息"/>
+                        </a>
+                    </if>
+                    贺卡图纸
+                </td>
+                <td>
+                    <input type="file" name="card_img"  size="45"/>
+                    <if value="$card['card_img'] neq '' " >
+                        <input type="button" value="删除贺卡图纸" onclick="if (confirm('你确认删除该贺卡图纸吗？'))location.href='{|U:'index'}&act=drop_card_img&id={$card.card_id}'"/>
+                    </if>
+                    <br />
+                    <span class="notice-span" <if value="$help_open">style="display:block" <else/> style="display:none" </if> id="warn_cardimg">
+                        你已经上传过图片。再次上传时将覆盖原图片
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="label">贺卡描述</td>
+                <td><textarea  name="card_desc" cols="60" rows="4">{$card.card_desc}</textarea></td>
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+                <td>
+                    <input type="submit" class="button" value="确定" />
+                    <input type="reset" class="button" value="重置" />
+                    <input type="hidden" name="act" value="{$form_action}" />
+                    <input type="hidden" name="id" value="{$card.card_id}" />
+                    <input type="hidden" name="old_cardname" value="{$card.card_name}" />
+                    <input type="hidden" name="old_cardimg" value="{$card.card_img}"/>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+<script type="text/javascript" src="__PUBLIC__/ec/js/utils.js"></script>
+<script type="text/javascript" src="__PUBLIC__/ec/js/validator.js"></script>
+<script language="JavaScript">
+    document.forms['theForm'].elements['card_name'].focus();
+    /**
+     * 检查表单输入的数据
+     */
+    function validate()
+    {
+        validator = new Validator("theForm");
+        validator.required("card_name",  no_cardname);
+        validator.isNumber("card_fee",   cardfee_un_num, 1);
+        validator.isNumber("free_money", cardmoney_un_num, 1);
+        return validator.passed();
+    }
+//-->  
+</script>
+<include file='__PUBLIC__/pagefooter.htm'/>
+
+

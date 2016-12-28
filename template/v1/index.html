@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+	<meta charset="UTF-8"/>
+	<meta name="Description" content="{$web_keywords}" />
+	<meta name="keywords" content="{$web_description}" />
+	<meta name="format-detection" content="telephone=no" />
+	<meta http-equiv="Cache-Control" content="no-transform" />
+	<meta http-equiv="Cache-Control" content="no-siteapp" />
+	<meta name="applicable-device" content="pc,mobile" />
+	<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1,minimum-scale=1,user-scalable=0;" />
+	<title>{$web_title}</title>
+
+	<link rel="stylesheet" href="__TEMPLATE__/common/css/import.css" />
+	<link rel="stylesheet" href="__TEMPLATE__/common/css/owl.transitions.css" />
+	<link rel="stylesheet" href="__TEMPLATE__/common/css/owl.carousel.css" />
+	<link rel="stylesheet" href="__TEMPLATE__/common/css/owl.theme.css" />
+	<link rel="stylesheet" href="__TEMPLATE__/common/css/index.css" />
+
+	<!--[if lt IE 9]>
+	<script src="__TEMPLATE__/common/scripts/html5.js"></script>
+	<![endif]-->
+</head>
+<body id="index">
+	<!-- 头部 -->
+        <include file='__TEMPLATE__/common/inc/__WEBID___header.lbi'/>
+        
+        <!-- //头部 -->
+
+	<!-- //头部 -->
+	<!-- 中间内容 -->
+	<div id="content">
+		<div class="index_banner">
+			<div id="kv">
+				<div id="kv_detail" class="kv_datail">
+                    <foreach from="$mainBanner" value="$mb" >
+                        <div class="item" style="background-image:url({$mb.main_image});">
+                        <if value="$mb['new_window'] eq 1 ">
+                            <a target="_blank" href="{$mb.url}"></a>
+                        <else>
+                            <a href="{$mb.url}"></a>
+                        </if>
+                        </div>
+                    </foreach>
+                </div>
+			</div>
+			<div class="wrapper">
+				<!-- 轮播 -->
+				<div class="imp_news">
+					<div class="imp_news_bg"></div>
+					<div class="imp_content">
+						<div class="imp_button">
+							<a id="imp_prev" class="imp_prev" href="javascript:void(0);"></a>
+							<a id="imp_next" class="imp_next" href="javascript:void(0);"></a>
+						</div>
+						<div id="imp_detail">
+                        <ul>
+                            <foreach from="$newLineList" value="$newLine" >
+                                <li>
+									<a href="">
+										<span>
+                                            <if value="empty($newLine['linepic']) ">
+                                            <img src="__TEMPLATE__/common/images/60x60_default.jpg" width="60" height="60" alt=""/>
+                                            <else/>
+                                            <img src="{$newLine.linepic}" width="60" height="60" alt=""/>
+                                            </if>
+                                        </span>
+										<dl>
+											<dt>{$newLine.linename}</dt>
+											<dd>{$newLine.sellpoint}</dd>
+										</dl>
+										<i class="new">NEW</i>
+									</a>
+								</li>
+                            </foreach>    	
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- //轮播 -->
+		<div class="main_content">
+			<div class="wrapper fix">
+				<div class="left_content">
+                    <foreach from="$topLineListDataList" value="$topLineListData" >
+                    <div class="travel_content">
+						<div class="travel_tab">
+							<dl class="fix">
+								<dt>
+									<a href="javascript:void(0);">{$topLineListData.kindname}旅游</a>
+								</dt>
+								<dd>
+									<ul class="fix">
+										<li class="on"><a href="">精选</a></li>
+                                        <foreach from="$topLineListData['hotdest']" value="$hotdest"  key="$key"  >
+                                            <if value="count($topLineListData['hotDestLineList'][$key]['lineList']) gt 0 " >
+                                            <li><a href="">{$hotdest.kindname}</a></li>
+                                            </if>
+                                        </foreach>
+									</ul>
+								</dd>
+							</dl>
+							<a href="{$topLineListData.id|getSearchUrl:@@,'dest_id'}" class="more">更多 &gt;&gt;</a>
+						</div>
+						<div class="travel_list_content">
+							<div class="travel_list_detail">
+								<ul class="travel_list">
+                                    <foreach from="$topLineListData['currentLineList']" value="$currentLineList" key="$key" >
+                                    <li>
+										<a href="/lines/show_{$currentLineList.id}.html">
+                                            {$currentLineList.iconshow}
+											<span class="img">
+                                            <if value="empty($currentLineList['linepic']) ">
+                                                <img src="__TEMPLATE__/common/images/240x135_default.jpg" width="240" height="135" alt=""/>
+                                            <else/>
+                                                <img src="__ROOT__/{$currentLineList.linepic}" width="240" height="135" alt=""/>
+                                            </if>
+                                            
+                                            </span>
+											<dl>
+												<dt>
+													<span>{$currentLineList.startcity}出发</span>
+													<ul class="fix">
+                                                        {$currentLineList.showattrs}
+													</ul>
+												</dt>
+												<dd class="main_intro"><span class="holiday"></span>{$currentLineList.linename}</dd>
+												<dd class="sec_intro">{$currentLineList.sellpoint}</dd>
+												<dd class="date_intro">[{$currentLineList.shopname}] {$currentLineList.maxmindateshow} </dd>
+												<dd class="price_intro">
+                                                    <del class="org">¥{$currentLineList.storeprice}起</del>
+                                                    {$currentLineList.price}
+                                                </dd>
+											</dl>
+										</a>
+									</li>
+                                    </foreach>
+									
+									
+								</ul>
+							</div>
+                            <foreach from="$topLineListData['hotDestLineList']" value="$hotDestLine"  >
+                                <if value="count($hotDestLine['lineList']) gt 0 " >
+                                <div class="travel_list_detail">
+                                    <ul class="travel_list">
+                                    <foreach from="$hotDestLine['lineList']" value="$line" key="$key" >
+                                    <li>
+										<a href="/lines/show_{$line.id}.html">
+											{$line.iconshow}
+											<span class="img">
+                                                <if value="empty($line['linepic']) ">
+                                                    <img src="__TEMPLATE__/common/images/240x135_default.jpg" width="240" height="135" alt=""/>
+                                                <else/>
+                                                    <img src="__ROOT__/{$line.linepic}" width="240" height="135" alt=""/>
+                                                </if>
+                                            </span>
+											<dl>
+												<dt>
+													<span>{$line.startcity}出发</span>
+													<ul class="fix">
+														{$line.showattrs}
+													</ul>
+												</dt>
+												<dd class="main_intro"><span class="holiday"></span>{$line.linename}</dd>
+												<dd class="sec_intro">{$line.sellpoint}</dd>
+												<dd class="date_intro">[{$line.shopname}] {$line.maxmindateshow} </dd>
+												<dd class="price_intro"><del class="org">¥{$line.storeprice}起</del>
+                                                {$line.price}</dd>
+											</dl>
+										</a>
+									</li>
+                                    </foreach>
+                                    </ul>
+    							</div>
+                                </if>
+                            </foreach>
+							
+                            
+							
+							
+						</div>
+                    </div>
+				
+                    </foreach>
+					
+					
+				</div>
+				<aside class="right_content">
+					<dl class="aside_adv">
+						<dt>
+							<span>特别企划</span>
+						</dt>
+						
+                        <foreach from="$rightBanner1" value="$rb1" >
+                            <dd>
+                            <if value="$rb1['new_window'] eq 1 ">
+                                <a target="_blank" href="{$rb1.url}">
+                            <else>
+                                <a href="{$rb1.url}">
+                            </if>
+                            <img src="{$rb1.main_image}" width="240" height="200" alt=""/></a>
+                            </dd>
+                        </foreach>
+							
+						
+					</dl>
+					<dl class="aside_adv">
+						<dt>
+							<span>活动专区</span>
+						</dt>
+                        <foreach from="$rightBanner2" value="$rb2" >
+                            <dd>
+                            <if value="$rb2['new_window'] eq 1 ">
+                                <a target="_blank" href="{$rb2.url}">
+                            <else>
+                                <a href="{$rb2.url}">
+                            </if>
+                            <img src="{$rb2.main_image}" width="240" height="80" alt=""/></a>
+                            </dd>
+                        </foreach>
+
+					</dl>
+					<dl class="aside_adv">
+						<dt>
+							<span>HIS提供的链接</span>
+						</dt>
+                        <foreach from="$rightBanner3" value="$rb3" >
+                            <dd>
+                            <if value="$rb3['new_window'] eq 1 ">
+                                <a target="_blank" href="{$rb3.url}">
+                            <else>
+                                <a href="{$rb3.url}">
+                            </if>
+                            <img src="{$rb3.main_image}" width="240" height="80" alt=""/></a>
+                            </dd>
+                        </foreach>
+
+					</dl>
+				</aside>
+			</div>
+		</div>
+	</div>
+	<!-- //中间内容 -->
+	<!-- 底部 -->
+		<!--#include virtual="__TEMPLATE__/common/inc/footer.lbi"-->
+	<!-- //底部 -->
+    <!-- 底部 -->
+<footer id="footer">
+	<div class="wrapper fix">
+		<dl class="footer_sitemap">
+			<dt><a href="">网站地图</a></dt>
+			<dd>
+				<ul>
+					<li><a href="">日本旅游</a></li>
+					<li><a href="">其他国际旅游</a></li>
+					<li><a href="">JR RAIL Pass</a></li>
+					<li class="blank"><a href="">国际酒店</a></li>
+					<li class="blank"><a href="">国际机票</a></li>
+				</ul>
+			</dd>
+		</dl>
+		<dl class="footer_abouthis">
+			<dt><a href="">关于HIS</a></dt>
+			<dd>
+				<ul>
+					<li><a href="">关于我们</a></li>
+					<li><a href="">联系我们</a></li>
+					<li><a href="">法律声明</a></li>
+				</ul>
+			</dd>
+		</dl>
+		<dl class="footer_hb">
+			<dt><a href="">合作伙伴</a></dt>
+			<dd>
+				<ul>
+					<li class="fline"><a href="">businessname</a></li>
+					<li><a href="">businessname</a></li>
+					<li class="fline"><a href="">businessname</a></li>
+					<li><a href="">businessname</a></li>
+					<li class="fline"><a href="">businessname</a></li>
+					<li><a href="">businessname</a></li>
+					<li class="fline"><a href="">businessname</a></li>
+					<li><a href="">businessname</a></li>
+				</ul>
+			</dd>
+		</dl>
+		<dl class="footer_link">
+			<dt><a href="">友情链接</a></dt>
+			<dd>
+				<ul>
+					<li class="fline"><a href="">linkname</a></li>
+					<li><a href="">linkname</a></li>
+					<li class="fline"><a href="">linkname</a></li>
+					<li><a href="">linkname</a></li>
+					<li class="fline"><a href="">linkname</a></li>
+					<li><a href="">linkname</a></li>
+					<li class="fline"><a href="">linkname</a></li>
+					<li><a href="">linkname</a></li>
+				</ul>
+			</dd>
+		</dl>
+		<a class="footer_logo" href=""><img src="__TEMPLATE__/common/images/logo_02.gif" width="215" height="120" alt=""></a>
+	</div>
+	<div class="copyright">
+		Copyright © 2010 - 2015 H.I.S. Co,.Ltd. & H.I.S. China. All Rights Reserved.
+	</div>
+</footer>
+<!-- //底部 -->
+
+	<script src="__TEMPLATE__/common/scripts/jsloader.js" type="text/javascript"></script>
+	<script src="__TEMPLATE__/common/scripts/owl.carousel.min.js" type="text/javascript"></script>
+	<script src="__TEMPLATE__/common/scripts/jq_scroll.js" type="text/javascript"></script>
+	<script src="__TEMPLATE__/common/scripts/index.js" type="text/javascript"></script>
+
+	<script>
+		$(function(){
+			navBannerOn(0);
+		});
+	</script>
+</body>
+</html>

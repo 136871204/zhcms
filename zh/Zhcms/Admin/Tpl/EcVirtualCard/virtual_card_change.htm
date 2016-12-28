@@ -1,0 +1,138 @@
+<include file='__PUBLIC__/pageheader.htm'/>
+<script language="JavaScript">
+<!--
+// 这里把JS用到的所有语言都赋值到这里
+var process_request = "{$zh.language.admin_eccommon_js_process_request}";
+var todolist_caption = "{$zh.language.admin_eccommon_js_todolist_caption}";
+var todolist_autosave = "{$zh.language.admin_eccommon_js_todolist_autosave}";
+var todolist_save = "{$zh.language.admin_eccommon_js_todolist_save}";
+var todolist_clear = "{$zh.language.admin_eccommon_js_todolist_clear}";
+var todolist_confirm_save = "{$zh.language.admin_eccommon_js_todolist_confirm_save}";
+var todolist_confirm_clear = "{$zh.language.admin_eccommon_js_todolist_confirm_clear}";
+var no_card_sn = "{$zh.language.admin_ecvirtualcard_js_no_card_sn}";
+var separator_not_null = "{$zh.language.admin_ecvirtualcard_js_separator_not_null}";
+var uploadfile_not_null = "{$zh.language.admin_ecvirtualcard_js_uploadfile_not_null}";
+var updating_info = "{$zh.language.admin_ecvirtualcard_js_updating_info}";
+//-->
+</script>
+
+
+<div class="main-div">
+    <form name="theForm">
+        <table width="100%">
+            <tr>
+                <td colspan="2">
+                    {$zh.language.admin_ecvirtualcard_info_page_table_th5}：
+                    <ol>
+                      <li>{$zh.language.admin_ecvirtualcard_info_page_table_th6}</li>
+                      <li>{$zh.language.admin_ecvirtualcard_info_page_table_th7}</li>
+                      <li>{$zh.language.admin_ecvirtualcard_info_page_table_th8}</li>
+                    </ol>
+                </td>
+            </tr>
+            <tr>
+                <td class="label">{$zh.language.admin_ecvirtualcard_info_page_table_th9}</td>
+                <td><input name="old_string" type="text" id="old_string"/></td>
+            </tr>
+            <tr>
+                <td class="label">{$zh.language.admin_ecvirtualcard_info_page_table_th10}</td>
+                <td><input name="new_string" type="text" id="new_string"/></td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <div align="center">
+                        <input type="button" class="button" value="{$zh.language.admin_ecvirtualcard_info_page_table_btn1}" onclick="start_change()" />
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+
+<div class="list-div">
+    <table id="change_log" cellpadding="3" cellspacing="1">
+        <tr>
+            <th>{$zh.language.admin_ecvirtualcard_info_page_table_th11}</th>
+        </tr>
+    </table>
+</div>
+
+<script language="JavaScript" type="text/javascript">
+    /**
+    * 开始更新：检查原串和新串
+    */
+    function start_change()
+    {
+        var old_key = document.forms['theForm'].elements['old_string'].value;
+        var new_key = document.forms['theForm'].elements['new_string'].value;
+        
+        var ajaxurl=CONTROL +"&m=index&is_ajax=1&act=start_change";
+        Ajax.call(ajaxurl, "old_key=" + old_key + "&new_key=" + new_key, start_change_response, "GET", "JSON");
+    }
+    
+    function start_change_response(result)
+    {
+        if (result.error == 0)
+        {
+            var tbl = document.getElementById('change_log');
+            var body = tbl.rows[0].parentNode;
+            for (var i = body.childNodes.length - 1; i > 0; i--)
+            {
+                if (body.childNodes[i].tagName == 'TR')
+                {
+                    body.deleteRow(body.childNodes[i].rowIndex);
+                }
+            }
+            var row = tbl.insertRow(-1);
+            var cell = row.insertCell(-1);
+            cell.innerHTML = result.content;
+
+            var row = tbl.insertRow(-1);
+            var cell = row.insertCell(-1);
+            cell.id = 'updating';
+            cell.innerHTML = updating_info;
+
+            var row = tbl.insertRow(-1);
+            var cell = row.insertCell(-1);
+            //cell.innerHTML = updated_info;
+            var ajaxurl=CONTROL +"&m=index&is_ajax=1&act=on_change";
+            Ajax.call(ajaxurl, "updated=0", on_change_response, "GET", "JSON");
+        }
+        if (result.message.length > 0)
+        {
+            alert(result.message);
+        }
+    }
+    
+    function on_change_response(result)
+    {
+        if (result.error == 0)
+        {
+            // 没出错
+            if (result.message == '')
+            {
+                // 未结束
+                var ajaxurl=CONTROL +"&m=index&is_ajax=1&act=on_change";
+                Ajax.call(ajaxurl, "updated=" + result.content, on_change_response, "GET", "JSON");
+            }
+            else
+            {
+                // 已结束
+                var tbl = document.getElementById('change_log');
+                var row = tbl.insertRow(-1);
+                var cell = row.insertCell(-1);
+                cell.innerHTML = result.message;
+            }
+        }
+        else
+        {
+            // 出错了
+            var tbl = document.getElementById('change_log');
+            var row = tbl.insertRow(-1);
+            var cell = row.insertCell(-1);
+            cell.innerHTML = result.message;
+        }
+    }
+</script>
+
+<include file='__PUBLIC__/pagefooter.htm'/>

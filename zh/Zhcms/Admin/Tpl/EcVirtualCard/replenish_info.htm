@@ -1,0 +1,78 @@
+<include file='__PUBLIC__/pageheader.htm'/>
+<script language="JavaScript">
+<!--
+// 这里把JS用到的所有语言都赋值到这里
+var process_request = "{$zh.language.admin_eccommon_js_process_request}";
+var todolist_caption = "{$zh.language.admin_eccommon_js_todolist_caption}";
+var todolist_autosave = "{$zh.language.admin_eccommon_js_todolist_autosave}";
+var todolist_save = "{$zh.language.admin_eccommon_js_todolist_save}";
+var todolist_clear = "{$zh.language.admin_eccommon_js_todolist_clear}";
+var todolist_confirm_save = "{$zh.language.admin_eccommon_js_todolist_confirm_save}";
+var todolist_confirm_clear = "{$zh.language.admin_eccommon_js_todolist_confirm_clear}";
+var no_card_sn = "{$zh.language.admin_ecvirtualcard_js_no_card_sn}";
+var separator_not_null = "{$zh.language.admin_ecvirtualcard_js_separator_not_null}";
+var uploadfile_not_null = "{$zh.language.admin_ecvirtualcard_js_uploadfile_not_null}";
+var updating_info = "{$zh.language.admin_ecvirtualcard_js_updating_info}";
+//-->
+</script>
+<div class="main-div">
+    <form method="post" action="{|U:'index'}" name="theForm"  onsubmit="return validate()">
+        <table width="100%" >
+            <tr>
+                <td class="label">{$zh.language.admin_ecvirtualcard_info_page_table_th1}</td>
+                <td><input type="text" name="goods_name" maxlength="60"  value="{$card.goods_name}" disabled="true" /></td>
+            </tr>
+            <tr>
+                <td class="label">{$zh.language.admin_ecvirtualcard_info_page_table_th2}</td>
+                <td>
+                    <input type="text" name="card_sn" maxlength="60" size="40" value="{$card.card_sn}" />
+                    <span class="require-field">*</span>
+                </td>
+            </tr>
+            <tr>
+                <td class="label">{$zh.language.admin_ecvirtualcard_info_page_table_th3}</td>
+                <td><input type="text" name="card_password" maxlength="60" size="40" value="{$card.card_password}" /></td>
+            </tr>
+            <tr>
+                <td class="label">{$zh.language.admin_ecvirtualcard_info_page_table_th4}</td>
+                <td>
+                    <html_select_date prefix="end_date" field_order="YMD" month_format="%m"  day_value_format="%02d" start_year="-1" end_year="+10" display_days="yes" time="$card.end_date"/>
+                </td>
+            </tr>
+            <tr>
+                <td class="label">
+                    <input type="hidden" name="act" value="action" />
+                    <input type="hidden" name="goods_id" value="{$card.goods_id}" />
+                    <input type="hidden" name="old_card_sn" value="{$card.card_sn}" />
+                    <input type="hidden" name="card_id" value="{$card.card_id}" />
+                </td>
+                <td><input type="submit" value="{$zh.language.admin_ecvirtualcard_info_page_table_btn1}" class="button"  /></td>
+            </tr>
+        </table>
+    
+    </form>
+</div>
+<script type="text/javascript" src='__PUBLIC__/ec/js/validator.js'></script>
+<script language="JavaScript">
+    document.forms['theForm'].elements['card_sn'].focus();
+    
+    /**
+    * 检查表单输入的数据
+    */
+    function validate()
+    {
+        var frm = document.forms['theForm'];
+        if ((frm.elements['card_sn'].value.length > 0) || (frm.elements['card_password'].value.length > 0))
+        {
+            return true;
+        }
+        else
+        {
+            alert(no_card_sn);
+            return false;
+        }
+    }
+    
+</script>
+
+<include file='__PUBLIC__/pagefooter.htm'/>

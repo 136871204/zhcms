@@ -1,0 +1,150 @@
+<include file='__PUBLIC__/pageheader.htm'/>
+<script language="JavaScript">
+<!--
+// 这里把JS用到的所有语言都赋值到这里
+var process_request = "{$zh.language.admin_eccommon_js_process_request}";
+var todolist_caption = "{$zh.language.admin_eccommon_js_todolist_caption}";
+var todolist_autosave = "{$zh.language.admin_eccommon_js_todolist_autosave}";
+var todolist_save = "{$zh.language.admin_eccommon_js_todolist_save}";
+var todolist_clear = "{$zh.language.admin_eccommon_js_todolist_clear}";
+var todolist_confirm_save = "{$zh.language.admin_eccommon_js_todolist_confirm_save}";
+var todolist_confirm_clear = "{$zh.language.admin_eccommon_js_todolist_confirm_clear}";
+var no_content = "{$zh.language.admin_eccommentmanage_js_no_content}";
+//-->
+</script>
+<!-- comment content list -->
+<div class="main-div">
+    <table width="100%">
+        <tr>
+            <td>
+                <a href="mailto:{$msg.email}"><b><if value="$msg.user_name">{$msg.user_name}<else/>{$zh.language.admin_eccommentmanage_list_page_table_td1}</if></b></a>&nbsp;{$zh.language.admin_eccommentmanage_info_page_table_td1}
+                &nbsp;{$msg.add_time}&nbsp;{$zh.language.admin_eccommentmanage_info_page_table_td2}&nbsp;<b>{$id_value}</b>&nbsp;{$zh.language.admin_eccommentmanage_info_page_table_td3}
+            </td>
+        </tr>
+        <tr>
+            <td><hr color="#dadada" size="1"/></td>
+        </tr>
+        <tr>
+            <td>
+                <div style="overflow:hidden; word-break:break-all;">{$msg.content}</div>
+                <div align="right">
+                    <b>{$zh.language.admin_eccommentmanage_info_page_table_td4}:</b> {$msg.comment_rank}&nbsp;&nbsp;
+                    <b>{$zh.language.admin_eccommentmanage_list_page_table_th5}</b>: {$msg.ip_address}
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td align="center">
+                <if value='$msg.status eq "0"' >
+                    <input type="button" onclick="location.href='{|U:'index'}&act=check&check=allow&id={$msg.comment_id}'" value="{$zh.language.admin_eccommentmanage_list_page_table_td9}" class="button" />
+                <else/>
+                    <input type="button" onclick="location.href='{|U:'index'}&act=check&check=forbid&id={$msg.comment_id}'" value="{$zh.language.admin_eccommentmanage_list_page_table_td10}" class="button" />
+                </if>
+            </td>
+        </tr>
+    </table>
+</div>
+<if value="$reply_info.content" >
+<!-- reply content list -->
+<div class="main-div">
+    <table width="100%">
+        <tr>
+            <td>
+                {$zh.language.admin_eccommentmanage_info_page_table_td5}&nbsp;<a href="mailto:{$msg.email}"><b>{$reply_info.user_name}</b></a>&nbsp;{$zh.language.admin_eccommentmanage_info_page_table_td1}
+                &nbsp;{$reply_info.add_time}&nbsp;{$zh.language.admin_eccommentmanage_info_page_table_td6}
+            </td>
+        </tr>
+        <tr>
+            <td><hr color="#dadada" size="1"/></td>
+        </tr>
+        <tr>
+            <td>
+                <div style="overflow:hidden; word-break:break-all;">{$reply_info.content}</div>
+                <div align="right">
+                    <b>{$zh.language.admin_eccommentmanage_list_page_table_th5}</b>: {$reply_info.ip_address}
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>
+</if>
+
+
+<if value="$send_fail" >
+<ul style="padding:0; margin: 0; list-style-type:none; color: #CC0000;">
+    <li style="border: 1px solid #CC0000; background: #FFFFCC; padding: 10px; margin-bottom: 5px;" >{$zh.language.admin_eccommentmanage_info_page_table_td7}</li>
+</ul>
+</if>
+
+<div class="main-div">
+    <form method="post" action="{|U:'index'}&act=action" name="theForm" onsubmit="return validate()">
+        <table border="0" align="center">
+            <tr>
+                <th colspan="2">
+                    <strong>{$zh.language.admin_eccommentmanage_info_page_table_td8}</strong>
+                </th>
+            </tr>
+            <tr>
+                <td>{$zh.language.admin_eccommentmanage_list_page_table_th2}:</td>
+                <td>
+                    <input name="user_name" type="text" <if value=' $reply_info.user_name eq "" '>value="{$admin_info.username}"<else/> value="{$reply_info.user_name}"</if> size="30" readonly="true" />
+                </td>
+            </tr>
+            <tr>
+                <td>{$zh.language.admin_eccommentmanage_info_page_table_td9}:</td>
+                <td>
+                    <input name="email" type="text" <if value=' $reply_info.email eq "" '>value="{$admin_info.email}"<else/> value="{$reply_info.email}"</if> size="30" readonly="true" />
+                </td>
+            </tr>
+            <tr>
+                <td>{$zh.language.admin_eccommentmanage_info_page_table_td10}:</td>
+                <td><textarea name="content" cols="50" rows="4" wrap="VIRTUAL">{$reply_info.content}</textarea></td>
+            </tr>
+            <if value="$reply_info.content" >
+            <tr>
+                <td>&nbsp;</td>
+                <td>{$zh.lanuage.admin_eccommentmanage_info_page_table_td11}</td>
+            </tr>
+            </if>
+            <tr>
+                <td></td>
+                <td><input name="send_email_notice" type="checkbox" value='1'/>{$zh.language.admin_eccommentmanage_info_page_table_td12}</td>
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+                <td>
+                    <input name="submit" type="submit" value="{$zh.language.admin_eccommentmanage_list_page_table_btn2}" class="button"/>
+                    <input type="reset" value="{$zh.language.admin_eccommentmanage_list_page_table_btn3}" class="button"/>
+                    <if value="$reply_info.content" >
+                        <input type="submit" name="remail" value="{$zh.language.admin_eccommentmanage_info_page_table_td13}" class="button"/>
+                    </if>
+                    <input type="hidden" name="comment_id" value="{$msg.comment_id}"/>
+                    <input type="hidden" name="comment_type" value="{$msg.comment_type}"/>
+                    <input type="hidden" name="id_value" value="{$msg.id_value}"/>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+
+<script type="text/javascript" src="__PUBLIC__/ec/js/utils.js"></script>
+<script type="text/javascript" src="__PUBLIC__/ec/js/validator.js"></script>
+<script language="JavaScript">
+
+document.forms['theForm'].elements['content'].focus();
+
+/**
+ * 检查表单输入的数据
+ */
+function validate()
+{
+    validator = new Validator("theForm");
+    validator.required("content",  no_content);
+    return validator.passed();
+}
+
+
+</script>
+
+
+

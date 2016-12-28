@@ -1,0 +1,110 @@
+<if value="$full_page">
+    <include file='__PUBLIC__/pageheader.htm'/>
+    <script language="JavaScript">
+    <!--
+    // 这里把JS用到的所有语言都赋值到这里
+    var process_request = "処理中...";
+    var todolist_caption = "ノート";
+    var todolist_autosave = "自動保存";
+    var todolist_save = "保存";
+    var todolist_clear = "クリア";
+    var todolist_confirm_save = "ノートに最新情報保存するか？";
+    var todolist_confirm_clear = "内容をクリアしますか？";
+    //-->
+    </script>
+    <script type="text/javascript" src="__PUBLIC__/ec/js/utils.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/ec/js/listtable.js"></script>
+    
+    <form method="post" action="" name="listForm">
+    <!-- start brand list -->
+        <div class="list-div" id="listDiv">
+</if>
+            <table cellspacing='1' cellpadding='3' id='list-table'>
+                <tr>
+                    <th>名称</th>
+                    <th>表示選択</th>
+                    <th>new open</th>
+                    <th>ソート</th>
+                    <th>位置</th>
+                    <th width="60px">操作</th>
+                </tr>
+                <if value="!empty($navdb)">
+                    <foreach from="$navdb" value="$val">
+                    <tr>
+                        <td align="center">
+                            <if value="$val['id']">
+                                {$val.name}
+                            <else/>
+                                &nbsp;
+                            </if>
+                        </td>
+                        <td align="center">
+                            <if value="$val['id']">
+                                <if value="$val['ifshow'] eq '1' ">
+                                    <img src="__PUBLIC__/ec/images/yes.gif" onclick="listTable.toggle(this, 'toggle_ifshow', {$val.id})" />
+                                <else/>
+                                    <img src="__PUBLIC__/ec/images/no.gif" onclick="listTable.toggle(this, 'toggle_ifshow', {$val.id})" />
+                                </if>
+                            </if>
+                        </td>
+                        <td align="center">
+                            <if value="$val['id']">
+                                <if value="$val['opennew'] eq '1' ">
+                                    <img src="__PUBLIC__/ec/images/yes.gif" onclick="listTable.toggle(this, 'toggle_opennew', {$val.id})" />
+                                <else/>
+                                    <img src="__PUBLIC__/ec/images/no.gif" onclick="listTable.toggle(this, 'toggle_opennew', {$val.id})" />
+                                </if>
+                            </if>
+                        </td>
+                        <td align="center">
+                            <if value="$val['id']">
+                                <span onclick="listTable.edit(this, 'edit_sort_order', {$val.id})">{$val.vieworder}</span>
+                            </if>
+                        </td>
+                        <td align="center">
+                            <if value="$val['id']">
+                                {$lang[$val.type]}
+                            </if>
+                        </td>
+                        <td align="center">
+                            <if value="$val['id']">
+                                <a href="{|U:'index',array('act'=>'edit','id'=>$val['id'])}" title="変更">
+                                    <img src="__PUBLIC__/ec/images/icon_edit.gif" width="16" height="16" border="0" />
+                                </a>
+                                <a href="{|U:'index',array('act'=>'del','id'=>$val['id'])}" onclick="return confirm('削除しますか?');" title="削除">
+                                    <img src="__PUBLIC__/ec/images/no.gif" width="16" height="16" border="0" />
+                                </a>
+                            </if>
+                        </td>
+                    </tr>
+                    </foreach>
+                <else/>
+                    <tr><td class="no-records" colspan="10">データなし</td></tr>
+                </if>
+            </table>
+            <table cellpadding="4" cellspacing="0">
+                <tr>
+                    <td align="right">
+                    <include file='__PUBLIC__/page.htm'/>
+                    </td>
+                </tr>
+            </table>
+            
+            
+<if value="$full_page">
+        </div>
+    </form>
+<!-- end 添加货品 -->
+
+<script type="text/javascript">
+listTable.recordCount = {$record_count};
+listTable.pageCount = {$page_count};
+
+  
+<foreach from="$filter" value="$item" key="$key">
+listTable.filter.{$key} = '{$item}';
+</foreach>
+
+
+</script>
+</if>

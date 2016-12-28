@@ -1,0 +1,86 @@
+<if value="$full_page">
+    <include file='__PUBLIC__/pageheader.htm'/>
+    <script language="JavaScript">
+    <!--
+    // 这里把JS用到的所有语言都赋值到这里
+    var process_request = "{$zh.language.admin_eccommon_js_process_request}";
+    var todolist_caption = "{$zh.language.admin_eccommon_js_todolist_caption}";
+    var todolist_autosave = "{$zh.language.admin_eccommon_js_todolist_autosave}";
+    var todolist_save = "{$zh.language.admin_eccommon_js_todolist_save}";
+    var todolist_clear = "{$zh.language.admin_eccommon_js_todolist_clear}";
+    var todolist_confirm_save = "{$zh.language.admin_eccommon_js_todolist_confirm_save}";
+    var todolist_confirm_clear = "{$zh.language.admin_eccommon_js_todolist_confirm_clear}";
+    var tag_name_not_empty = "{$zh.language.admin_ectagmanage_js_tag_name_not_empty}";
+    //-->
+    </script>
+    <script type="text/javascript" src="__PUBLIC__/ec/js/utils.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/ec/js/listtable.js"></script>
+    
+
+    <form method="POST" action="{|U:'index'}&act=batch_drop" name="listForm">
+        <!-- start tag list -->
+        <div class="list-div" id="listDiv">
+</if>
+            <table cellpadding="3" cellspacing="1">
+                <tr>
+                    <th>
+                        <input onclick='listTable.selectAll(this, "checkboxes")' type="checkbox"/>
+                        <a href="javascript:listTable.sort('tag_id'); ">{$zh.language.admin_ectagmanage_info_page_table_th1}</a>{$sort_tag_id}
+                    </th>
+                    <th><a href="javascript:listTable.sort('tag_words'); ">{$zh.language.admin_ectagmanage_info_page_table_th2}</a>{$sort_tag_words}</th>
+                    <th><a href="javascript:listTable.sort('user_name'); ">{$zh.language.admin_ectagmanage_info_page_table_th3}</a>{$sort_user_name}</th>
+                    <th><a href="javascript:listTable.sort('goods_name'); ">{$zh.language.admin_ectagmanage_info_page_table_th4}</a>{$sort_goods_name}</th>
+                    <th>{$zh.language.admin_ectagmanage_info_page_table_th5}</th>
+                </tr>
+                <if value="!empty($tag_list)">
+                    <foreach from="$tag_list" value="$tag">
+                        <tr>
+                            <td><span><input name="checkboxes[]" type="checkbox" value="{$tag.tag_id}"/>{$tag.tag_id}</span></td>
+                            <td class="first-cell"><span onclick="javascript:listTable.edit(this, 'edit_tag_name', {$tag.tag_id})">{$tag.tag_words}</span></td>
+                            <td align="left"><span>{$tag.user_name}</span></td>
+                            <td align="left"><span><a href="../goods.php?id={$tag.goods_id}" target="_blank">{$tag.goods_name}</a></span></td>
+                            <td align="center">
+                                <span>
+                                    <a href="{|U:'index'}&amp;act=edit&amp;id={$tag.tag_id}" title="{$zh.language.admin_ectagmanage_info_page_table_th6}">
+                                        <img src="__PUBLIC__/ec/images/icon_edit.gif" border="0" height="16" width="16" />
+                                    </a>
+                                    <a href="javascript:;" onclick="listTable.remove({$tag.tag_id}, '{$zh.language.admin_ectagmanage_info_page_table_th7}')" title="{$zh.language.admin_ectagmanage_info_page_table_th8}">
+                                        <img src="__PUBLIC__/ec/images/icon_drop.gif" border="0" height="16" width="16"/>
+                                    </a>
+                                </span>
+                            </td>
+                        </tr>
+                    </foreach>
+                <else/>
+                    <tr><td class="no-records" colspan="10">{$zh.language.admin_ectagmanage_info_page_table_th9}</td></tr>
+                </if>
+                <tr>
+                    <td colspan="2">
+                        <input type="submit" class="button" id="btnSubmit" value="{$zh.language.admin_ectagmanage_info_page_table_th10}" disabled="true" />
+                    </td>
+                    <td align="right" nowrap="true" colspan="3">
+                        <include file='__PUBLIC__/page.htm'/>
+                    </td>
+                </tr>
+            </table>
+            
+            
+            
+<if value="$full_page">
+        </div>
+    </form>
+<!-- end 添加货品 -->
+
+<script type="text/javascript">
+    listTable.recordCount = {$record_count};
+    listTable.pageCount = {$page_count};
+
+  
+    <foreach from="$filter" value="$item" key="$key">
+    listTable.filter.{$key} = '{$item}';
+    </foreach>
+
+
+</script>
+<include file='__PUBLIC__/pagefooter.htm'/>
+</if>

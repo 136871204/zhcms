@@ -1,0 +1,202 @@
+<if value="$full_page">
+    <include file='__PUBLIC__/pageheader.htm'/>
+    <script language="JavaScript">
+    <!--
+    // 这里把JS用到的所有语言都赋值到这里
+    var process_request = "{$zh.language.admin_eccommon_js_process_request}";
+    var todolist_caption = "{$zh.language.admin_eccommon_js_todolist_caption}";
+    var todolist_autosave = "{$zh.language.admin_eccommon_js_todolist_autosave}";
+    var todolist_save = "{$zh.language.admin_eccommon_js_todolist_save}";
+    var todolist_clear = "{$zh.language.admin_eccommon_js_todolist_clear}";
+    var todolist_confirm_save = "{$zh.language.admin_eccommon_js_todolist_confirm_save}";
+    var todolist_confirm_clear = "{$zh.language.admin_eccommon_js_todolist_confirm_clear}";
+    var no_title = "{$zh.language.admin_ecarticle_js_no_title}";
+    var no_cat = "{$zh.language.admin_ecarticle_js_no_cat}";
+    var not_allow_add = "{$zh.language.admin_ecarticle_js_not_allow_add}";
+    var drop_confirm = "{$zh.language.admin_ecarticle_js_drop_confirm}";
+    //-->
+    </script>
+    <script type="text/javascript" src="__PUBLIC__/ec/js/utils.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/ec/js/listtable.js"></script>
+    
+    <div class="form-div">
+        <form action="javascript:searchArticle()" name="searchForm" >
+            <img src="__PUBLIC__/ec/images/icon_search.gif" width="26" height="22" border="0" alt="SEARCH" />
+            <select name="cat_id" >
+                <option value="0">{$zh.language.admin_ecarticle_info_page_article_list1}</option>
+                {$cat_select}
+            </select>
+            {$zh.language.admin_ecarticle_info_page_article_list2}  <input type="text" name="keyword" id="keyword" />
+            <input type="submit" value="{$zh.language.admin_ecarticle_info_page_article_list3}" class="button" />
+        </form>
+    </div>
+
+    <form method="POST" action="{|U:'index'}" name="listForm">
+        <!-- start list -->
+        <div class="list-div" id="listDiv">
+</if>
+            <table cellspacing='1' cellpadding='3' id='list-table'>
+                <tr>
+                    <th>
+                        <input onclick='listTable.selectAll(this, "checkboxes")' type="checkbox"/>
+                        <a href="javascript:listTable.sort('article_id'); ">{$zh.language.admin_ecarticle_info_page_article_list4}</a>{$sort_article_id}
+                    </th>
+                    <th><a href="javascript:listTable.sort('title'); ">{$zh.language.admin_ecarticle_info_page_article_list2}</a>{$sort_title}</th>
+                    <th><a href="javascript:listTable.sort('cat_id'); ">{$zh.language.admin_ecarticle_info_page_article_list5}</a>{$sort_cat_id}</th>
+                    <th><a href="javascript:listTable.sort('article_type'); ">{$zh.language.admin_ecarticle_info_page_article_list6}</a>{$sort_article_type}</th>
+                    <th><a href="javascript:listTable.sort('is_open'); ">{$zh.language.admin_ecarticle_info_page_article_list7}</a>{$sort_is_open}</th>
+                    <th><a href="javascript:listTable.sort('add_time'); ">{$zh.language.admin_ecarticle_info_page_article_list8}</a>{$sort_add_time}</th>
+                    <th>{$zh.language.admin_ecarticle_info_page_article_list9}</th>
+                </tr>
+                <if value="!empty($article_list)">
+                    <foreach from="$article_list" value="$list">
+                    <tr>
+                        <td>
+                            <span>
+                                <input name="checkboxes[]" type="checkbox" value="{$list.article_id}" <if value='$list.cat_id elt 0' >disabled="true"</if>/>
+                                {$list.article_id}
+                            </span>
+                        </td>
+                        <td class="first-cell"><span onclick="javascript:listTable.edit(this, 'edit_title', {$list.article_id})">{$list.title}</span></td>
+                        <td align="left">
+                            <span>
+                                <if value='$list.cat_id gt 0' >
+                                    {$list.cat_name|htmlspecialchars:@@}
+                                <else>
+                                    {$zh.language.admin_ecarticle_info_page_article_list10}
+                                </if>
+                            </span>
+                        </td>
+                        <td align="center"><span><if value="$list.article_type eq 0">{$zh.language.admin_ecarticle_info_page_article_list11}<else>{$zh.language.admin_ecarticle_info_page_article_list12}</if></span></td>
+                        <td align="center">
+                            <if value="$list.cat_id gt 0">
+                                <span>
+                                    <img src="__PUBLIC__/ec/images/<if value="$list.is_open eq 1">yes<else/>no</if>.gif" onclick="listTable.toggle(this, 'toggle_show', {$list.article_id})" />
+                                </span>
+                            <else/>
+                                <img src="__PUBLIC__/ec/images/yes.gif" alt="yes" />
+                            </if>
+                        </td>
+                        <td align="center"><span>{$list.date}</span></td>
+                        <td align="center" nowrap="true">
+                            <span>
+                                <a href="../article.php?id={$list.article_id}" target="_blank" title="{$zh.language.admin_ecarticle_info_page_article_list13}">
+                                    <img src="__PUBLIC__/ec/images/icon_view.gif" border="0" height="16" width="16" />
+                                </a>&nbsp;
+                                <a href="{|U:'index'}&act=edit&id={$list.article_id}" title="{$zh.language.admin_ecarticle_info_page_article_list14}">
+                                    <img src="__PUBLIC__/ec/images/icon_edit.gif" border="0" height="16" width="16" />
+                                </a>&nbsp;
+                                <if value="$list.cat_id  gt 0">
+                                    <a href="javascript:;" onclick="listTable.remove({$list.article_id}, '{$zh.language.admin_ecarticle_info_page_article_list15}')" title="{$zh.language.admin_ecarticle_info_page_article_list16}">
+                                        <img src="__PUBLIC__/ec/images/icon_drop.gif" border="0" height="16" width="16"/>
+                                    </a>
+                                </if>
+                            </span>
+                        </td>
+                    </tr>
+                    </foreach>
+                <else/>
+                    <tr><td class="no-records" colspan="10">{$zh.language.admin_ecarticle_info_page_article_list17}</td></tr>
+                </if>
+                <tr>&nbsp;
+                    <td align="right" nowrap="true" colspan="8"><include file='__PUBLIC__/page.htm'/></td>
+                </tr>
+            </table>
+            
+            
+            
+<if value="$full_page">
+        </div>
+        
+        <div>
+            <input type="hidden" name="act" value="batch" />
+            <select name="type" id="selAction" onchange="changeAction()">
+                <option value="">{$zh.language.admin_ecarticle_info_page_article_list18}</option>
+                <option value="button_remove">{$zh.language.admin_ecarticle_info_page_article_list19}</option>
+                <option value="button_hide">{$zh.language.admin_ecarticle_info_page_article_list20}</option>
+                <option value="button_show">{$zh.language.admin_ecarticle_info_page_article_list21}</option>
+                <option value="move_to">{$zh.language.admin_ecarticle_info_page_article_list22}</option>
+            </select>
+            <select name="target_cat" style="display:none">
+                <option value="0">{$zh.language.admin_ecarticle_info_page_article_list18}</option>
+                {$cat_select}
+            </select>
+            
+            <input type="submit" value="{$zh.language.admin_ecarticle_info_page_article_list23}" id="btnSubmit" name="btnSubmit" class="button" disabled="true" />
+        </div>
+        
+    </form>
+<!-- end 添加货品 -->
+
+<script type="text/javascript">
+    listTable.recordCount = {$record_count};
+    listTable.pageCount = {$page_count};
+    
+      
+    <foreach from="$filter" value="$item" key="$key">
+    listTable.filter.{$key} = '{$item}';
+    </foreach>
+    
+    
+    onload = function()
+    {
+        // 开始检查订单
+        //startCheckOrder();
+    }
+    
+    
+    /**
+    * @param: bool ext 其他条件：用于转移分类
+    */
+    function confirmSubmit(frm, ext)
+    {
+        if (frm.elements['type'].value == 'button_remove')
+        {
+            return confirm(drop_confirm);
+        }
+        else if (frm.elements['type'].value == 'not_on_sale')
+        {
+            return confirm(batch_no_on_sale);
+        }
+        else if (frm.elements['type'].value == 'move_to')
+        {
+            ext = (ext == undefined) ? true : ext;
+            return ext && frm.elements['target_cat'].value != 0;
+        }
+        else if (frm.elements['type'].value == '')
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
+    
+    function changeAction()
+    {
+        
+        var frm = document.forms['listForm'];
+        
+        // 切换分类列表的显示
+        frm.elements['target_cat'].style.display = frm.elements['type'].value == 'move_to' ? '' : 'none';
+        
+        if (!document.getElementById('btnSubmit').disabled &&
+        confirmSubmit(frm, false))
+        {
+            frm.submit();
+        }
+    }
+    
+    /* 搜索文章 */
+    function searchArticle()
+    {
+        listTable.filter.keyword = Utils.trim(document.forms['searchForm'].elements['keyword'].value);
+        listTable.filter.cat_id = parseInt(document.forms['searchForm'].elements['cat_id'].value);
+        listTable.filter.page = 1;
+        listTable.loadList();
+    }
+
+</script>
+<include file='__PUBLIC__/pagefooter.htm'/>
+</if>

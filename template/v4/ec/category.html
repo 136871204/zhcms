@@ -1,0 +1,136 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="Keywords" content="{$keywords}" />
+    <meta name="Description" content="{$description}" />
+    <title>{$page_title}</title>
+    <link rel="shortcut icon" href="favicon.ico" />
+    <link rel="icon" href="animated_favicon.gif" type="image/gif" />
+    <link href="{$ecs_css_path}" rel="stylesheet" type="text/css" />
+    <if value="$cat_style">
+        <link href="{$cat_style}" rel="stylesheet" type="text/css" />
+    </if>
+    <script type="text/javascript" src="__TEMPLATE__/ec/common/js/common.js"></script>
+    <script type="text/javascript" src="__TEMPLATE__/ec/common/js/global.js"></script>
+    <script type="text/javascript" src="__TEMPLATE__/ec/common/js/compare.js"></script>
+
+</head> 
+<body>
+    <include file='__TEMPLATE__/ec/common/library/page_header.lbi'/>
+    <!--当前位置 start-->
+    <div class="block box">
+        <div id="ur_here">
+            <include file='__TEMPLATE__/ec/common/library/ur_here.lbi'/>
+        </div>
+    </div>
+    <!--当前位置 end-->
+    
+    <div class="blank"></div>
+    <div class="block clearfix">
+        <!--left start-->
+        <div class="AreaL">
+            <include file='__TEMPLATE__/ec/common/library/cart.lbi'/>
+            <include file='__TEMPLATE__/ec/common/library/category_tree.lbi'/>
+            <include file='__TEMPLATE__/ec/common/library/history.lbi'/>
+        </div>
+        <!--left end-->
+        
+        <!--right start-->
+        <div class="AreaR">
+            <!--组合搜索 开始-->
+            <if value="{$brands.1} or {$price_grade.1} or $filter_attr_list" >
+                <div class="box">
+                    <div class="box_1">
+                        <h3><span>商品筛选</span></h3>
+                        <if value="{$brands.1}" >
+                            <div class="screeBox">
+                                <strong>品牌：</strong>
+                                <foreach from="$brands" value="$brand"    >
+                                    <if value="$brand.selected" >
+                                        <span>{$brand.brand_name}</span>
+                                    <else/>
+                                        <a href="{$brand.url}">{$brand.brand_name}</a>&nbsp;
+                                    </if>
+                                </foreach>
+                            </div>
+                        </if>
+                        <if value="{$price_grade.1}" >
+                            <div class="screeBox">
+                                <strong>价格：</strong>
+                                <foreach from="$price_grade" value="$grade"    >
+                                    <if value="$grade.selected" >
+                                        <span>{$grade.price_range}</span>
+                                    <else/>
+                                        <a href="{$grade.url}">{$grade.price_range}</a>&nbsp;
+                                    </if>
+                                </foreach>
+                            </div>
+                        </if>
+                        <foreach from="$filter_attr_list" value="$filter_attr"    >
+                            <div class="screeBox">
+                                <strong>{$filter_attr.filter_attr_name} :</strong>
+                                <foreach from="$filter_attr.attr_list" value="$attr"    >
+                                    <if value="$attr.selected" >
+                                        <span>{$attr.attr_value}</span>
+                                    <else/>
+                                        <a href="{$attr.url}">{$attr.attr_value}</a>&nbsp;
+                                    </if>
+                                </foreach>
+                            </div>
+                        </foreach>
+                    </div>
+                </div>
+                <div class="blank"></div>
+            </if>
+            <!--组合搜索 结束-->
+            <include file='__TEMPLATE__/ec/common/library/recommend_best.lbi'/>
+            <include file='__TEMPLATE__/ec/common/library/goods_list.lbi'/>
+            <include file='__TEMPLATE__/ec/common/library/pages.lbi'/>
+            
+        </div>
+        <!--right end-->
+    </div>
+    <div class="blank5"></div>
+    <!--帮助-->
+    <div class="block">
+        <div class="box">
+            <div class="helpTitBg clearfix">
+                <include file='__TEMPLATE__/ec/common/library/help.lbi'/>
+            </div>
+        </div>
+    </div>
+    <div class="blank"></div>
+    <!--帮助-->
+    
+    <!--友情链接 start-->
+    <if value="$img_links  or $txt_links" >
+    <div id="bottomNav" class="box">
+        <div class="box_1">
+            <div class="links clearfix">
+                <!--开始图片类型的友情链接-->
+                <foreach from="$img_links" value="$link"  >
+                <a href="{$link.url}" target="_blank" title="{$link.name}">
+                    <img src="{$link.logo}" alt="{$link.name}" border="0" />
+                </a>
+                </foreach>
+                <!--结束图片类型的友情链接-->
+                <if value="$txt_links" >
+                    <!--开始文字类型的友情链接-->
+                    <foreach from="$txt_links" value="$link"  >
+                        [<a href="{$link.url}" target="_blank" title="{$link.name}">{$link.name}</a>]
+                    </foreach>
+                    <!--结束文字类型的友情链接-->
+                </if>
+            </div>
+        </div>
+    </div>
+    </if>
+    <!--友情链接 end-->
+    <div class="blank"></div>
+    <include file='__TEMPLATE__/ec/common/library/page_footer.lbi'/>
+    
+    
+</body>
+
+</html>

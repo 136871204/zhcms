@@ -1,0 +1,124 @@
+<if value="$full_page">
+    <include file='__PUBLIC__/pageheader.htm'/>
+    <script language="JavaScript">
+    <!--
+    // 这里把JS用到的所有语言都赋值到这里
+    var process_request = "正在处理您的请求...";
+    var todolist_caption = "记事本";
+    var todolist_autosave = "自动保存";
+    var todolist_save = "保存";
+    var todolist_clear = "清除";
+    var todolist_confirm_save = "是否将更改保存到记事本？";
+    var todolist_confirm_clear = "是否清空内容？";
+    var type_name_empty = "请输入红包类型名称!";
+    var type_money_empty = "请输入红包类型价格!";
+    var order_money_empty = "请输入订单金额!";
+    var type_money_isnumber = "类型金额必须为数字格式!";
+    var order_money_isnumber = "订单金额必须为数字格式!";
+    var bonus_sn_empty = "请输入红包的序列号!";
+    var bonus_sn_number = "红包的序列号必须是数字!";
+    var bonus_sum_empty = "请输入您要发放的红包数量!";
+    var bonus_sum_number = "红包的发放数量必须是一个整数!";
+    var bonus_type_empty = "请选择红包的类型金额!";
+    var user_rank_empty = "您没有指定会员等级!";
+    var user_name_empty = "您至少需要选择一个会员!";
+    var invalid_min_amount = "请输入订单下限（大于0的数字）";
+    var send_start_lt_end = "红包发放开始日期不能大于结束日期";
+    var use_start_lt_end = "红包使用开始日期不能大于结束日期";
+    //-->
+    </script>
+    <script type="text/javascript" src="__PUBLIC__/ec/js/utils.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/ec/js/listtable.js"></script>
+    
+
+    <form method="POST" action="{|U:'index'}&act=batch&bonus_type={$zh.get.bonus_type}" name="listForm">
+        <!-- start user_bonus list -->
+        <div class="list-div" id="listDiv">
+</if>
+            <table cellpadding="3" cellspacing="1">
+                <tr>
+                    <th>
+                        <input onclick='listTable.selectAll(this, "checkboxes")' type="checkbox"/>
+                        <a href="javascript:listTable.sort('bonus_id'); ">编号</a>{$sort_bonus_id}
+                    </th>
+                    <if value="$show_bonus_sn" >
+                    <th><a href="javascript:listTable.sort('bonus_sn'); ">红包序列号</a>{$sort_bonus_sn}</th>
+                    </if>
+                    <th><a href="javascript:listTable.sort('type_name'); ">红包类型</a>{$sort_type_name}</th>
+                    <th><a href="javascript:listTable.sort('order_id'); ">订单号</a>{$sort_order_id}</th>
+                    <th><a href="javascript:listTable.sort('user_id'); ">使用会员</a>{$sort_user_id}</th>
+                    <th><a href="javascript:listTable.sort('used_time'); ">使用时间</a>{$sort_used_time}</th>
+                    <if value="$show_mail" >
+                    <th><a href="javascript:listTable.sort('emailed'); ">邮件通知</a>{$sort_emailed}</th>
+                    </if>
+                    <th>操作</th>
+                </tr>
+                <if value="!empty($bonus_list)">
+                    <foreach from="$bonus_list" value="$bonus">
+                    <tr>
+                        <td><span><input value="{$bonus.bonus_id}" name="checkboxes[]" type="checkbox"/>{$bonus.bonus_id}</span></td>
+                        <if value="$show_bonus_sn" >
+                        <td>{$bonus.bonus_sn}</td>
+                        </if>
+                        <td>{$bonus.type_name}</td>
+                        <td>{$bonus.order_sn}</td>
+                        <td>
+                            <if value="$bonus['email']" >
+                                <a href="mailto:{$bonus.email}">{$bonus.user_name}</a>
+                            <else/>
+                                {$bonus.user_name}
+                            </if>
+                        </td>
+                        <td align="right">{$bonus.used_time}</td>
+                        <if value="$show_mail" >
+                        <td align="center">{$bonus.emailed}</td>
+                        </if>
+                        <td align="center">
+                            <a href="javascript:;" onclick="listTable.remove({$bonus.bonus_id}, '确定删除吗？', 'remove_bonus')">删除</a>
+                            <if value="$show_mail and $bonus['order_id'] eq 0 and $bonus['email'] ">
+                            <a href="{|U:'index'}&act=send_mail&bonus_id={$bonus.bonus_id}">发邮件</a>
+                            </if>
+                        </td>
+                    </tr>
+                    </foreach>
+                <else/>
+                    <tr><td class="no-records" colspan="11">没有找到任何记录</td></tr>
+                </if>
+            </table>
+            <table cellpadding="4" cellspacing="0">
+                <tr>
+                    <td>
+                        <input type="submit" name="drop" id="btnSubmit" value="删除" class="button" disabled="true" />
+                        <if value="$show_mail" >
+                            <input type="submit" name="mail" id="btnSubmit1" value="发邮件" class="button" disabled="true" />
+                        </if>
+                    </td>
+                    <td align="right"><include file='__PUBLIC__/page.htm'/></td>
+                </tr>
+            </table>
+            
+            
+<if value="$full_page">
+        </div>
+    </form>
+<!-- end 添加货品 -->
+
+<script type="text/javascript">
+    listTable.recordCount = {$record_count};
+    listTable.pageCount = {$page_count};
+    listTable.query = "query_bonus";
+  
+    <foreach from="$filter" value="$item" key="$key">
+    listTable.filter.{$key} = '{$item}';
+    </foreach>
+
+    onload = function()
+    {
+    // 开始检查订单
+    //startCheckOrder();
+        document.forms['listForm'].reset();
+    }
+
+</script>
+<include file='__PUBLIC__/pagefooter.htm'/>
+</if>

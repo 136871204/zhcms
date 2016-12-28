@@ -1,0 +1,107 @@
+<if value="$full_page">
+    <include file='__PUBLIC__/pageheader.htm'/>
+    <script language="JavaScript">
+    <!--
+    // 这里把JS用到的所有语言都赋值到这里
+    var process_request = "正在处理您的请求...";
+    var todolist_caption = "记事本";
+    var todolist_autosave = "自动保存";
+    var todolist_save = "保存";
+    var todolist_clear = "清除";
+    var todolist_confirm_save = "是否将更改保存到记事本？";
+    var todolist_confirm_clear = "是否清空内容？";
+    var select_date_value = "ログをクリアする時,クリアしたい日付を選んでください";
+    //-->
+    </script>
+    <script type="text/javascript" src="__PUBLIC__/ec/js/utils.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/ec/js/listtable.js"></script>
+    
+    <div class="form-div">
+        <table>
+            <tr>
+                <td width="50%">
+                    <form name="theForm" method="POST" action="{|U:'index'}">
+                        IPアドレスで見る
+                        <select name="ip">
+                            <option value='0'>IPアドレス選択</option>
+                            <html_options  options="{$ip_list}" selected="{$ip}" >
+                        </select>
+                        <input type="submit" value="確定" class="button" />
+                    </form>
+                </td>
+                <td>
+                    <form name="Form2" action="{|U:'index'}&act=batch_drop" method="POST">
+                        ログ削除
+                        <select name="log_date">
+                            <option value="0">選択した日付をクリア...</option>
+                            <option value="1">一週間前</option>
+                            <option value="2">一ヶ月前</option>
+                            <option value="3">三ヶ月前</option>
+                            <option value="4">半年前</option>
+                            <option value="5">一年前</option>
+                        </select>
+                        <input  name="drop_type_date" type="submit" value="確定" class="button" />
+                    </form>
+                </td>
+            </tr>
+        </table>
+    </div>
+    
+    <form method="POST" action="{|U:'index'}&act=batch_drop" name="listForm">
+    <!-- start admin_logs list -->
+        <div class="list-div" id="listDiv">
+</if>
+            <table cellpadding="3" cellspacing="1">
+                <tr>
+                    <th>
+                        <input onclick='listTable.selectAll(this, "checkboxes")' type="checkbox"/>
+                        <a href="javascript:listTable.sort('log_id'); ">番号</a>{$sort_log_id}
+                    </th>
+                    <th><a href="javascript:listTable.sort('user_id'); ">操作者</a>{$sort_user_id}</th>
+                    <th><a href="javascript:listTable.sort('log_time'); ">操作日付</a>{$sort_log_time}</th>
+                    <th><a href="javascript:listTable.sort('ip_address'); ">IPアドレス</a>{$sort_ip_address}</th>
+                    <th>操作レコード</th>
+                </tr>
+                <if value="!empty($log_list)">
+                    <foreach from="$log_list" value="$list">
+                    <tr>
+                        <td width="10%"><span><input name="checkboxes[]" type="checkbox" value="{$list.log_id}" />{$list.log_id}</span></td>
+                        <td width="15%" class="first-cell"><span>{$list.username}</span></td>
+                        <td width="20%" align="center"><span>{$list.log_time}</span></td>
+                        <td width="15%" align="left"><span>{$list.ip_address}</span></td>
+                        <td width="40%" align="left"><span>{$list.log_info}</span></td>
+                    </tr>
+                    </foreach>
+                <else/>
+                    <tr><td class="no-records" colspan="10">記録なし</td></tr>
+                </if>
+                <tr>
+                    <td colspan="2">
+                        <input name="drop_type_id" type="submit" id="btnSubmit" value="ログ削除" disabled="true" class="button" />
+                    </td>
+                    <td align="right" nowrap="true" colspan="10">
+                        <include file='__PUBLIC__/page.htm'/>
+                    </td>
+                </tr>
+            </table>
+            
+            
+            
+<if value="$full_page">
+        </div>
+    </form>
+<!-- end 添加货品 -->
+
+<script type="text/javascript">
+listTable.recordCount = {$record_count};
+listTable.pageCount = {$page_count};
+
+  
+<foreach from="$filter" value="$item" key="$key">
+listTable.filter.{$key} = '{$item}';
+</foreach>
+
+
+</script>
+<include file='__PUBLIC__/pagefooter.htm'/>
+</if>

@@ -1,0 +1,14 @@
+<script type="text/javascript" src="__TEMPLATE__/ec/common/js/transport_jquery.js"></script>
+<script type="text/javascript" src="__TEMPLATE__/ec/common/js/utils.js"></script>
+<div id="ECS_COMMENT">
+<?php
+$comments_cmt = assign_comment($comments_arr['id'],          $comments_arr['type']);
+$comments=$comments_cmt['comments'];
+$comments_pager=$comments_cmt['pager'];
+$comments_pager['current_app']=APP;
+$comments_pager['current_control']=CONTROL;
+$comments_pager['current_meth']='index';
+?>
+<include file='__TEMPLATE__/ec/common/library/comments_list.lbi'/>
+
+</div>

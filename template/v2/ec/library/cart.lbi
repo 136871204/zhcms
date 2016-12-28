@@ -1,0 +1,6 @@
+<div class="cart" id="ECS_CARTINFO">
+<?php 
+    echo insert_cart_info();
+?>
+</div> 
+<div class="blank5"></div>

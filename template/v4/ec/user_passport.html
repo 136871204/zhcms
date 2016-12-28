@@ -1,0 +1,413 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!--
+TODO:
+1.画面没有完成
+ -->
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="Keywords" content="{$keywords}" />
+    <meta name="Description" content="{$description}" />
+    <title>{$page_title}</title>
+    <link rel="shortcut icon" href="favicon.ico" />
+    <link rel="icon" href="animated_favicon.gif" type="image/gif" />
+    <link href="{$ecs_css_path}" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="__TEMPLATE__/ec/common/js/common.js"></script>
+    <script type="text/javascript" src="__TEMPLATE__/ec/common/js/user.js"></script>
+    <script type="text/javascript" src="__TEMPLATE__/ec/common/js/transport.js"></script>
+</head>
+<body>
+    <include file='__TEMPLATE__/ec/common/library/page_header.lbi'/>
+    <!--当前位置 start-->
+    <div class="block box">
+        <div id="ur_here">
+            <include file='__TEMPLATE__/ec/common/library/ur_here.lbi'/>
+        </div>
+    </div>
+    <!--当前位置 end-->
+    <div class="blank"></div>
+    <!--#登录界面 start-->
+    <if value="$action eq 'login'">
+    <div class="usBox clearfix">
+        <div class="usBox_1 f_l">
+            <div class="logtitle"></div>
+            <form name="formLogin" action="{|U:'ec/EcUser/index'}" method="post" onSubmit="return userLogin()">
+                <table width="100%" border="0" align="left" cellpadding="3" cellspacing="5">
+                    <tr>
+                        <td width="15%" align="right">用户名</td>
+                        <td width="85%"><input name="username" type="text" size="25" class="inputBg" /></td>
+                    </tr>
+                    <tr>
+                        <td align="right">密码</td>
+                        <td>
+                            <input name="password" type="password" size="15"  class="inputBg"/>
+                        </td>
+                    </tr>
+                    <!-- 判断是否启用验证 -->
+                    <if value="$enabled_captcha">
+                    <tr>
+                        <td align="right">验证码</td>
+                        <td>
+                            <input type="text" size="8" name="captcha" class="inputBg" />
+                            <img src="{|U:'ec/EcCaptcha/index'}&is_login=1&{$rand}" alt="captcha" style="vertical-align: middle;cursor: pointer;" onClick="this.src='{|U:'ec/EcCaptcha/index'}&is_login=1&'+Math.random()" /> 
+                        </td>
+                    </tr>
+                    </if>
+                    <tr>
+                        <td colspan="2">
+                            <input type="checkbox" value="1" name="remember" id="remember" />
+                            <label for="remember">请保存我这次的登录信息。</label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td align="left">
+                            <input type="hidden" name="act" value="act_login" />
+                            <input type="hidden" name="back_act" value="{$back_act}" />
+                            <input type="submit" name="submit" value="" class="us_Submit" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>
+                            <a href="{|U:'ec/EcUser/index'}&act=qpassword_name" class="f3">密码问题找回密码</a>&nbsp;&nbsp;&nbsp;
+                            <a href="{|U:'ec/EcUser/index'}&act=get_password" class="f3">注册邮件找回密码</a>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+        <div class="usTxt">
+            <strong>如果您不是会员，请注册</strong>  <br />
+            <strong class="f4">友情提示：</strong><br />
+            <if value="$car_off eq 1">
+                不注册为会员也可在本店购买商品<br />
+            </if>
+            <if value="$car_off eq 0">
+                不注册为会员不可以在本店购买商品<br />
+            </if>
+            但注册之后您可以：<br />
+            1. 保存您的个人资料<br />
+            2. 收藏您关注的商品<br />
+            3. 享受会员积分制度<br />
+            4. 订阅本店商品信息  <br />
+            <a href="{|U:'ec/EcUser/index'}&act=register"><img src="__TEMPLATE__/ec/common/style/images/bnt_ur_reg.gif" /></a>
+        </div>
+    </div>
+    </if>
+    <!--#登录界面 end-->
+    
+    <!--*会员注册界面 start-->
+    <if value="$action eq 'register'">
+        <if value="$shop_reg_closed eq 1">
+        <div class="usBox">
+            <div class="usBox_2 clearfix">
+                <div class="f1 f5" align="center">该网店暂停注册</div>
+            </div>
+        </div>
+        <else/>
+        <script type="text/javascript" src="__TEMPLATE__/ec/common/js/utils.js"></script>
+        <div class="usBox">
+            <div class="usBox_2 clearfix">
+                <div class="regtitle"></div>
+                <form action="{|U:'ec/EcUser/index'}" method="post" name="formUser" onsubmit="return register();">
+                    <table width="100%"  border="0" align="left" cellpadding="5" cellspacing="3">
+                        <tr>
+                            <td width="13%" align="right">用户名</td>
+                            <td width="87%">
+                                <input name="username" type="text" size="25" id="username" onblur="is_registered(this.value);" class="inputBg"/>
+                                <span id="username_notice" style="color:#FF0000"> *</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="right">email</td>
+                            <td>
+                                <input name="email" type="text" size="25" id="email" onblur="checkEmail(this.value);"  class="inputBg"/>
+                                <span id="email_notice" style="color:#FF0000"> *</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="right">密码</td>
+                            <td>
+                                <input name="password" type="password" id="password1" onblur="check_password(this.value);" onkeyup="checkIntensity(this.value)" class="inputBg" style="width:179px;" />
+                                <span style="color:#FF0000" id="password_notice"> *</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="right">密码强度</td>
+                            <td>
+                                <table width="145" border="0" cellspacing="0" cellpadding="1">
+                                    <tr align="center">
+                                        <td width="33%" id="pwd_lower">弱</td>
+                                        <td width="33%" id="pwd_middle">中</td>
+                                        <td width="33%" id="pwd_high">强</td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="right">确认密码</td>
+                            <td>
+                                <input name="confirm_password" type="password" id="conform_password" onblur="check_conform_password(this.value);"  class="inputBg" style="width:179px;"/>
+                                <span style="color:#FF0000" id="conform_password_notice"> *</span>
+                            </td>
+                        </tr>
+                        <foreach from="$extend_info_list" value="$field"  >
+                            <if value="$field['id'] eq 6">
+                                <tr>
+                                    <td align="right">密码提示问题</td>
+                                    <td>
+                                        <select name='sel_question'>
+                                            <option value='0'>请选择密码提示问题</option>
+                                            <html_options  options="{$passwd_questions}"  />
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td align="right" <if value="$field.is_need"> id="passwd_quesetion" </if> >密码问题答案</td>
+                                    <td>
+                                        <input name="passwd_answer" type="text" size="25" class="inputBg" maxlengt='20'/>
+                                        <if value="$field.is_need"> <span style="color:#FF0000"> *</span> </if> 
+                                    </td>
+                                </tr>
+                            <else/>
+                                <tr>
+                                    <td align="right" <if value="$field.is_need"> id="extend_field{$field.id}i"</if> >{$field.reg_field_name}
+                                    <td>
+                                        <input name="extend_field{$field.id}" type="text" size="25" class="inputBg" />
+                                        <if value="$field.is_need"> <span style="color:#FF0000"> *</span> </if>
+                                    </td>
+                                </tr>
+                            </if>
+                        </foreach>
+                        <!-- 判断是否启用验证码 -->
+                        <if value="$enabled_captcha">
+                        <tr>
+                            <td align="right">验证码</td>
+                            <td>
+                                <input type="text" size="8" name="captcha" class="inputBg" />
+                                <img src="{|U:'ec/EcCaptcha/index'}&{$rand}" alt="captcha" style="vertical-align: middle;cursor: pointer;" onClick="this.src='{|U:'ec/EcCaptcha/index'}&'+Math.random()" /> 
+                            </td>
+                        </tr>
+                        </if>
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td>
+                                <label>
+                                <input name="agreement" type="checkbox" value="1" checked="checked" />
+                                我已看过并接受《<a href="{|U:'ec/EcArticle/index'}&cat_id=-1" style="color:blue" target="_blank">用户协议</a>》
+                                </label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td align="left">
+                                <input name="act" type="hidden" value="act_register" />
+                                <input type="hidden" name="back_act" value="{$back_act}" />
+                                <input name="Submit" type="submit" value="" class="us_Submit_reg"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td class="actionSub">
+                                <a href="{|U:'ec/EcUser/index'}&act=login">我已有账号，我要登录</a><br />
+                                <a href="{|U:'ec/EcUser/index'}&act=get_password">您忘记密码了吗？</a>
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+            </div>
+        </div>
+        </if>
+    </if>
+    <!--#会员注册界面 end-->
+    
+    <!--*找回密码界面 -->
+    <if value="$action eq 'get_password'">
+        <script type="text/javascript" src="__TEMPLATE__/ec/common/js/utils.js"></script>
+        <script type="text/javascript">
+            var user_name_empty = "请输入您的用户名！";
+            var email_address_empty = "请输入您的电子邮件地址！";
+            var email_address_error = "您输入的电子邮件地址格式不正确！";
+            var new_password_empty = "请输入您的新密码！";
+            var confirm_password_empty = "请输入您的确认密码！";
+            var both_password_error = "您两次输入的密码不一致！";
+        </script>
+        <div class="usBox">
+            <div class="usBox_2 clearfix">
+                <form action="{|U:'index'}" method="post" name="getPassword" onsubmit="return submitPwdInfo();">
+                    <br />
+                    <table width="70%" border="0" align="center">
+                        <tr>
+                            <td colspan="2" align="center"><strong>请输入您注册的用户名和注册时填写的电子邮件地址。</strong></td>
+                        </tr>
+                        <tr>
+                            <td width="29%" align="right">用户名</td>
+                            <td width="61%"><input name="user_name" type="text" size="30" class="inputBg" /></td>
+                        </tr>
+                        <tr>
+                            <td align="right">电子邮件地址</td>
+                            <td><input name="email" type="text" size="30" class="inputBg" /></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>
+                                <input type="hidden" name="act" value="send_pwd_email" />
+                                <input type="submit" name="submit" value="提交" class="bnt_blue" style="border:none;" />
+                                <input name="button" type="button" onclick="history.back()" value="返回上一页" style="border:none;" class="bnt_blue_1" />
+                            </td>
+                        </tr>
+                    </table>
+                    <br />
+                </form>
+            </div>
+        </div>
+    </if>
+    
+    <!--*通过问题找回密码的确认找回账号界面 -->
+    <if value="$action eq 'qpassword_name'">
+        <div class="usBox">
+            <div class="usBox_2 clearfix">
+                <form action="{|U:'index'}" method="post">
+                    <br />
+                    <table width="70%" border="0" align="center">
+                        <tr>
+                            <td colspan="2" align="center"><strong>请输入您注册的用户名以取得您的密码提示问题。</strong></td>
+                        </tr>
+                        <tr>
+                            <td width="29%" align="right">用户名</td>
+                            <td width="61%"><input name="user_name" type="text" size="30" class="inputBg" /></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>
+                                <input type="hidden" name="act" value="get_passwd_question" />
+                                <input type="submit" name="submit" value="提交" class="bnt_blue" style="border:none;" />
+                                <input name="button" type="button" onclick="history.back()" value="返回上一页" style="border:none;" class="bnt_blue_1" />
+                            </td>
+                        </tr>
+                    </table>
+                    <br />
+                </form>
+            </div>
+        </div>
+    </if>
+    
+    <!--*根据输入账号显示密码问题界面 -->
+    <if value="$action eq 'get_passwd_question'">
+        <div class="usBox">
+            <div class="usBox_2 clearfix">
+                <form action="{|U:'index'}" method="post">
+                    <br />
+                    <table width="70%" border="0" align="center">
+                        <tr>
+                            <td colspan="2" align="center"><strong>请根据您注册时设置的密码问题输入设置的答案</strong></td>
+                        </tr>
+                        <tr>
+                            <td width="29%" align="right">密码提示问题：</td>
+                            <td width="61%">{$passwd_question}</td>
+                        </tr>
+                        <tr>
+                            <td align="right">密码问题答案：</td>
+                            <td><input name="passwd_answer" type="text" size="20" class="inputBg" /></td>
+                        </tr>
+                        <!-- 判断是否启用验证码 -->
+                        <if value="$enabled_captcha">
+                        <tr>
+                            <td align="right">验证码</td>
+                            <td>
+                                <input type="text" size="8" name="captcha" class="inputBg" />
+                                <img src="{|U:'ec/EcCaptcha/index'}&is_login=1&{$rand}" alt="captcha" style="vertical-align: middle;cursor: pointer;" onClick="this.src='{|U:'ec/EcCaptcha/index'}&is_login=1&'+Math.random()" /> 
+                            </td>
+                        </tr>
+                        </if>
+                        <tr>
+                            <td></td>
+                            <td>
+                                <input type="hidden" name="act" value="check_answer" />
+                                <input type="submit" name="submit" value="提交" class="bnt_blue" style="border:none;" />
+                                <input name="button" type="button" onclick="history.back()" value="返回上一页" style="border:none;" class="bnt_blue_1" />
+                            </td>
+                        </tr>
+                    </table>
+                    <br />
+                </form>
+            </div>
+        </div>
+    </if>
+    
+    <if value="$action eq 'reset_password'">
+        <script type="text/javascript">
+            var user_name_empty = "请输入您的用户名！";
+            var email_address_empty = "请输入您的电子邮件地址！";
+            var email_address_error = "您输入的电子邮件地址格式不正确！";
+            var new_password_empty = "请输入您的新密码！";
+            var confirm_password_empty = "请输入您的确认密码！";
+            var both_password_error = "您两次输入的密码不一致！";
+        </script>
+        <div class="usBox">
+            <div class="usBox_2 clearfix">
+                <form action="{|U:'index'}" method="post" name="getPassword2" onSubmit="return submitPwd()">
+                    <br />
+                    <table width="80%" border="0" align="center">
+                        <tr>
+                            <td>新密码:</td>
+                            <td><input name="new_password" type="password" size="25" class="inputBg" /></td>
+                        </tr>
+                        <tr>
+                            <td>确认密码:</td>
+                            <td><input name="confirm_password" type="password" size="25"  class="inputBg"/></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" align="center">
+                                <input type="hidden" name="act" value="act_edit_password" />
+                                <input type="hidden" name="uid" value="{$uid}" />
+                                <input type="hidden" name="code" value="{$code}" />
+                                <input type="submit" name="submit" value="确定" />
+                            </td>
+                        </tr>
+                    </table>
+                    <br />
+                </form>
+            </div>
+        </div>
+    </if>
+    <div class="blank"></div>
+    <include file='__TEMPLATE__/ec/common/library/page_footer.lbi'/>
+    
+    
+    
+</body>
+<script type="text/javascript">
+var process_request = "正在处理您的请求...";
+var username_empty = "- 用户名不能为空。";
+var username_shorter = "- 用户名长度不能少于 3 个字符。";
+var username_invalid = "- 用户名只能是由字母数字以及下划线组成。";
+var password_empty = "- 登录密码不能为空。";
+var password_shorter = "- 登录密码不能少于 6 个字符。";
+var confirm_password_invalid = "- 两次输入密码不一致";
+var email_empty = "- Email 为空";
+var email_invalid = "- Email 不是合法的地址";
+var agreement = "- 您没有接受协议";
+var msn_invalid = "- msn地址不是一个有效的邮件地址";
+var qq_invalid = "- QQ号码不是一个有效的号码";
+var home_phone_invalid = "- 家庭电话不是一个有效号码";
+var office_phone_invalid = "- 办公电话不是一个有效号码";
+var mobile_phone_invalid = "- 手机号码不是一个有效号码";
+var msg_un_blank = "* 用户名不能为空";
+var msg_un_length = "* 用户名最长不得超过7个汉字";
+var msg_un_format = "* 用户名含有非法字符";
+var msg_un_registered = "* 用户名已经存在,请重新输入";
+var msg_can_rg = "* 可以注册";
+var msg_email_blank = "* 邮件地址不能为空";
+var msg_email_registered = "* 邮箱已存在,请重新输入";
+var msg_email_format = "* 邮件地址不合法";
+var msg_blank = "不能为空";
+var no_select_question = "- 您没有完成密码提示问题的操作";
+var passwd_balnk = "- 密码中不能包含空格";
+var username_exist = "用户名 %s 已经存在";
+</script>
+</html>

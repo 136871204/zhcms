@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>flati</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="">
+<meta name="author" content="">
+
+<link href='http://fonts.useso.com/css?family=Lato:400,700,300' rel='stylesheet' type='text/css'>
+<!--[if IE]>
+	<link href="http://fonts.useso.com/css?family=Lato" rel="stylesheet" type="text/css">
+	<link href="http://fonts.useso.com/css?family=Lato:400" rel="stylesheet" type="text/css">
+	<link href="http://fonts.useso.com/css?family=Lato:700" rel="stylesheet" type="text/css">
+	<link href="http://fonts.useso.com/css?family=Lato:300" rel="stylesheet" type="text/css">
+<![endif]-->
+<link href="__TEMPLATE__/common/css/bootstrap.css" rel="stylesheet">
+<link href="__TEMPLATE__/common/css/font-awesome.min.css" rel="stylesheet">
+<link href="__TEMPLATE__/common/css/theme.css" rel="stylesheet">
+<link href="__TEMPLATE__/common/css/prettyPhoto.css" rel="stylesheet" type="text/css"/>
+
+<!--[if lt IE 9]>
+<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+</head>
+
+<body>
+<include file='__TEMPLATE__/common/inc/header.lbi'/>
+	
+	<!--page-->
+	<!--banner-->
+	<div id="banner">
+	<div class="container intro_wrapper">
+	<div class="inner_content">
+    <p class="text-info">{$zhcms.catname}</p>
+	<h1 class="title">{$zhcms.title}</h1>
+	
+	</div>
+		</div>
+			</div>
+			
+	<div class="container wrapper">
+	<div class="inner_content">
+	<div class="pad30"></div>
+		
+				<div class="row">
+                    <div class="span4">
+                    
+                      <h2><span>简单介绍</span></h2>
+						<p class="lead">
+                        {$zhcms.list_desc|nl2br:@@}
+                        </p>
+						
+						<h4><span>提供服务</span></h4>
+						<ul class="fa-ul">
+                            <foreach from="$flagCache" value="$flag" >
+                                <if value=" in_array($flag,$selectFlag)">
+                                <li> {$flag} 有</li> 
+                                <else/>
+                                <li> {$flag} 无</li> 
+                                </if>
+                            </foreach>
+						</ul>
+                        <h4><span>公开日</span></h4>
+                        <p class="lead">
+                        {$zhcms.open_date|date:'Y年m月d日',@@}
+                        </p>
+                        <h4><span>客户</span></h4>
+                        <p class="lead">
+                        {$zhcms.client}
+                        </p>
+                        <h4><span>网站链接</span></h4>
+                        <p class="lead">
+                        <a  href="{$zhcms.home_link}" target="_blank">{$zhcms.home_link}</a>
+                        </p>
+                        <h4><span>对应设备</span></h4>
+                        <p class="lead">
+                        {$zhcms.devices}
+                        </p>
+                        
+						 <div class="pad15"></div>
+						
+						<p>{$zhcms.simple_desc|nl2br:@@}</p>          
+						
+						
+				
+						
+						<div class="pad25"></div>
+						</div>
+						
+						<div class="span8 pad15">
+							<!-- slider starts -->
+             				 <div id="nslider" class="nivoSlider"> 
+								<!-- add your images here -->
+                                
+                                <foreach from="{$zhcms.site_capture.path}" value="$imgpath" >
+                                <img src="{$imgpath}" alt="" title="#nivocaption1" />
+                                </foreach>
+                              </div> 
+                     <!-- add your captions here -->
+						<div id="nivocaption1" class="nivo-html-caption">Caption One</div>
+						<div id="nivocaption2" class="nivo-html-caption">Caption Two</div>
+						<div id="nivocaption3" class="nivo-html-caption">Caption Three</div> 
+						<div class="pad25"></div>
+						</div>
+							</div>
+						</div>
+					</div>
+					
+				<!--related projects-->	
+				<div class="strip2">
+				<h1>项目人员</h1>
+
+					
+				<div class="container wrapper">
+				<div class="inner_content">
+				<div class="inner_content col_full">
+			
+			<div id="slider_related">
+                <foreach from="{$memberlist}" value="$member" >
+                    <div class="slider-item">
+        				<div class="slider-image">
+        				<div class="hover_colour">
+        				<img src="{$member.main_image}" alt=""/>
+        				</div> 
+        				<a class="related_link" href="#">{$member.title}</a>
+        				</div>
+        			</div>
+                </foreach>
+    			
+    			
+			</div>
+    				<div id="sl-prev2" class="widget-scroll-prev2"><i class="fa fa-chevron-left white"></i></div>
+    				<div id="sl-next2" class="widget-scroll-next2"><i class="fa fa-chevron-right white but_marg"></i></div>
+    				</div>
+    			<!--//projects-->
+			</div>
+			</div>
+		</div>
+	<!--//page-->
+	<include file='__TEMPLATE__/common/inc/footer.lbi'/>
+				
+<script src="__TEMPLATE__/common/js/jquery.js"></script>
+<script src="__TEMPLATE__/common/js/bootstrap.min.js"></script>
+<script src="__TEMPLATE__/common/js/jquery.touchSwipe.min.js"></script>
+<script src="__TEMPLATE__/common/js/jquery.mousewheel.min.js"></script>	
+<script src="__TEMPLATE__/common/js/jquery.nivo.slider.pack.js"></script>
+<script type="text/javascript" src="__TEMPLATE__/common/js/jquery.prettyPhoto.js"></script>
+<script type="text/javascript" src="__TEMPLATE__/common/js/scripts.js"></script>
+<script type="text/javascript" src="__TEMPLATE__/common/js/jquery.carouFredSel-6.2.1-packed.js"></script>
+<script type="text/javascript">
+//<![CDATA[
+jQuery(document).ready(function($) {
+	var portfolioCarousel = $("#slider_related");
+	portfolioCarousel.carouFredSel({
+	width : "100%", height : "auto",
+	circular : false, responsive : true, infinite : false, auto : false,
+		items : {  width : 230,
+		visible: { min: 1, max:5 }
+			},
+	swipe: { onMouse: true, onTouch: true },
+	prev : { button : "#sl-prev2", key : "left" },
+	next : {  button : "#sl-next2", key : "right" },
+		 onCreate : function () {
+		$(window).on('resize', function(){
+		portfolioCarousel.parent().add(portfolioCarousel).css('height', portfolioCarousel.children().first().outerHeight() + 'px');
+		})
+		.trigger('resize'); }
+		});
+			});
+			//]]>
+		</script>
+		
+<script type="text/javascript">
+//<![CDATA[
+	 $(document).ready(function () {
+	$('.nivoSlider').nivoSlider({
+	 effect: 'fade', manualAdvance: true });
+		});
+		//]]>
+	</script>
+</body>
+</html>

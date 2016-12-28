@@ -1,0 +1,35 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>首页</title>
+    </head>
+    <body>
+        <include file='__TEMPLATE__/erp/common/library/page_header.lbi'/>
+        
+        
+        <h1>公司名：{$company_info.company_name}</h1>
+        <br />
+        剩余积分:{$company_info.company_points}
+        <br />
+        <div>
+            <span>现在没有完了的工作</span><br />
+            <div>
+                <foreach from="$uncomplete_task_list" value="$task"  >
+                    <p>
+                        <span>开始时间：<?php echo date("Y/m/d H:i:s", $task['starttime']);?></span>&nbsp;&nbsp;&nbsp;&nbsp;
+                        {$task.log_title}
+                        <span>使用积分：{$task.log_points}</span>&nbsp;&nbsp;&nbsp;&nbsp;
+                        <if value="$task['log_status'] eq 1" >
+                            （买入）
+                        <elseif value="$task['log_status'] eq 2"/>
+                            （作业中）
+                        </if>
+                    </p>
+                </foreach>
+            </div>
+        </div>
+        <include file='__TEMPLATE__/erp/common/library/page_footer.lbi'/>
+        
+    </body>
+</html>

@@ -1,0 +1,105 @@
+<include file='__PUBLIC__/pageheader.htm'/>
+<script language="JavaScript">
+<!--
+// 这里把JS用到的所有语言都赋值到这里
+var process_request = "正在处理您的请求...";
+var todolist_caption = "记事本";
+var todolist_autosave = "自动保存";
+var todolist_save = "保存";
+var todolist_clear = "清除";
+var todolist_confirm_save = "是否将更改保存到记事本？";
+var todolist_confirm_clear = "是否清空内容？";
+var posit_name_empty = "广告位名称不能为空!";
+var ad_width_empty = "请输入广告位的宽度!";
+var ad_height_empty = "请输入广告位的高度!";
+var ad_width_number = "广告位的宽度必须是一个数字!";
+var ad_height_number = "广告位的高度必须是一个数字!";
+var no_outside_address = "建议您指定该广告所要投放的站点的名称，方便于该广告的来源统计!";
+var width_value = "广告位的宽度值必须在1到1024之间!";
+var height_value = "广告位的高度值必须在1到1024之间!";
+var ad_name_empty = "请输入广告名称!";
+var ad_link_empty = "请输入广告的链接URL!";
+var ad_text_empty = "广告的内容不能为空!";
+var ad_photo_empty = "广告的图片不能为空!";
+var ad_flash_empty = "广告的flash不能为空!";
+var ad_code_empty = "广告的代码不能为空!";
+var empty_position_style = "广告位的模版不能为空!";
+//-->
+</script>
+        
+<div class="form-div">
+    <form action="" method="post" name="js_code">
+        <table width="100%">
+            <tr>
+                <td class="label">投放广告的站点名称：</td>
+                <td><input type="text" name="outside_address" size="30" /></td>
+            </tr>
+            <tr>
+                <td class="label">选择编码：</td>
+                <td>
+                    <select name="charset" id="charset">
+                    <html_options  options="$lang_list"  >
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <div align="center">
+                    <input type="button" name="gen_code" value="生成并复制JS代码" onclick="validate(); genCode(); autocopy()" class="button" />
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <div align="center">
+                    <textarea name="ads_js" cols="70" rows="5">{$js_code}</textarea>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+<script type="text/javascript" src="__PUBLIC__/ec/js/utils.js"></script>
+<script type="text/javascript" src="__PUBLIC__/ec/js/validator.js"></script>
+<script language="JavaScript">
+
+var elements = document.forms['js_code'].elements;
+var url = '{$url}';
+
+document.forms['js_code'].elements['outside_address'].focus();
+
+/**
+ * 检查表单输入的数据
+ */
+function validate()
+{
+    validator = new Validator("js_code");
+    validator.required("outside_address",  no_outside_address);
+    return validator.passed();
+}
+
+/**
+ * 生成代码
+ */
+function genCode()
+{
+    // 生成代码
+    var code = '<script src="' + url;
+        code += '&from=' + encodeURI(elements['outside_address'].value);
+        code += '&charset=' + elements['charset'].value;
+        code += '"></script\>';
+        elements['ads_js'].value = code;
+}
+
+function autocopy()
+{
+    if (Browser.isIE)
+    {
+        window.clipboardData.setData('text', document.js_code.ads_js.value);
+    }
+    document.forms['js_code'].elements['ads_js'].select();
+}
+</script>
+
+<include file='__PUBLIC__/pagefooter.htm'/>
+

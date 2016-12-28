@@ -1,0 +1,21 @@
+<if value="$fittings">
+<div class="box">
+    <div class="box_1">
+        <h3><span>相关配件</span></h3>
+        <div class="boxCenterList clearfix">
+            <foreach from="$fittings" value="$goods_fit"  >
+            <ul class="clearfix">
+                <li class="goodsimg">
+                    <a href="{$goods_fit.url}" target="_blank"><img src="{$goods_fit.goods_thumb}" alt="{$goods_fit.name}" class="B_blue" /></a>
+                </li>
+                <li>
+                    <a href="{$goods_fit.url}" target="_blank" title="{$goods_fit.goods_name}">{$goods_fit.short_name}</a><br />
+                    配件价格：<font class="f1">{$goods_fit.fittings_price}</font><br />
+                </li>
+            </ul>
+            </foreach>
+        </div>
+    </div>
+</div>
+<div class="blank5"></div>
+</if>

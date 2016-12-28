@@ -1,0 +1,24 @@
+<if value="$promotion_goods" >
+    <div id="sales" class="f_l clearfix">
+        <h1>
+            <a href="{|U:'ec/EcSearch/index'}&intro=promotion">
+                <img src="__TEMPLATE__/ec/common/style/images/more.gif" />
+            </a>
+        </h1>
+        <div class="clearfix goodBox">
+            <foreach from="$promotion_goods" value="$goods" key="$promotion_foreach_key"  >
+                <if value="$promotion_foreach_key lt 3" >
+                <div class="goodList">
+                    <a href="{$goods.url}">
+                        <img src="{$goods.thumb}" border="0" alt="{$goods.name}"/>
+                    </a><br />
+                    <p>
+                        <a href="{$goods.url}" title="{$goods.name}">{$goods.short_name}</a>
+                    </p>
+                    促销价：<font class="f1">{$goods.promote_price}</font>
+                </div>
+                </if>
+            </foreach>
+        </div>
+    </div>
+</if>

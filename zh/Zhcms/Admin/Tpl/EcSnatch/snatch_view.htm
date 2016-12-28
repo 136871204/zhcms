@@ -1,0 +1,110 @@
+<if value="$full_page">
+    <include file='__PUBLIC__/pageheader.htm'/>
+    <script language="JavaScript">
+    <!--
+    // 这里把JS用到的所有语言都赋值到这里
+    var process_request = "正在处理您的请求...";
+    var todolist_caption = "记事本";
+    var todolist_autosave = "自动保存";
+    var todolist_save = "保存";
+    var todolist_clear = "清除";
+    var todolist_confirm_save = "是否将更改保存到记事本？";
+    var todolist_confirm_clear = "是否清空内容？";
+    var no_name = "没有输入活动名";
+    var no_desc = "没有输入活动描述";
+    var no_goods_id = "没有选择商品";
+    var invalid_min_price = "价格下限为空或不是数字";
+    var invalid_max_price = "最多需支付的价格为空或不是数字";
+    var invalid_integral = "消耗积分为空或不是整数";
+    var invalid_starttime = "输入的起始时间格式不对，月份，时间应补足两位";
+    var invalid_endtime = "输入的结束时间格式不对，月份，时间应补足两位";
+    var invalid_gt = "输入的结束时间应大于起始日期";
+    var invalid_price = "输入的价格上限应大于价格下限。";
+    var search_is_null = "没有搜索到任何商品，请重新搜索";
+    //-->
+    </script>
+    <script type="text/javascript" src="__PUBLIC__/ec/js/utils.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/ec/js/listtable.js"></script>
+    
+
+    <!-- 添加货品 -->
+    <div class="list-div">
+        <table width="100%" cellpadding="3" cellspacing="1">
+            <tr>
+                <th colspan="8"><strong>活动名称 </strong></th>
+            </tr>
+            <tr>
+                <td><strong>活动开始时间: </strong></td><td colspan="3">{$info.start_time}</td>
+                <td><strong>活动结束时间: </strong></td><td colspan="3">{$info.end_time}</td>
+            </tr>
+            <if value="$result" >
+            <tr>
+                <td align="left"><strong>出价用户: </strong></td><td>{$result.user_name}</td>
+                <td><strong>邮件: </strong></td><td>{$result.email}</td>
+                <td><strong>出价时间: </strong></td><td>{$result.bid_time}</td>
+                <td><strong>最小唯一价格: </strong></td><td>{$result.bid_price}</td>
+            </tr>
+            </if>
+        </table>
+    </div>
+    
+    <form method="post" action="" name="listForm">
+        <div class="list-div" id="listDiv">
+</if>
+            <table cellpadding="3" cellspacing="1">
+                <tr>
+                    <th><a href="javascript:listTable.sort('log_id');">编号</a>{$sort_snatch_id}</th>
+                    <th><a href="javascript:listTable.sort('user_name');">出价用户</a>{$sort_user_name}</th>
+                    <th><a href="javascript:listTable.sort('bid_time');">出价时间</a>{$sort_bid_time}</th>
+                    <th><a href="javascript:listTable.sort('bid_price');">所出价格</a>{$sort_bid_price}</th>
+                </tr>
+                <if value="!empty($bid_list)">
+                    <foreach from="$bid_list" value="$bid">
+                    <tr>
+                        <td align="center">{$bid.log_id}</td>
+                        <td class="first-cell">{$bid.user_name}</td>
+                        <td align="right">{$bid.bid_time}</td>
+                        <td align="right">{$bid.bid_price}</td>
+                    </tr>
+                    </foreach>
+                <else/>
+                    <tr><td class="no-records" colspan="10">没有找到任何记录</td></tr>
+                </if>
+                <tr>
+                    <td align="right" nowrap="true" colspan="8"><include file='__PUBLIC__/page.htm'/></td>
+                </tr>
+            </table>
+<if value="$full_page">
+        </div>
+    </form>
+<!-- end 添加货品 -->
+
+<script type="text/javascript">
+    listTable.recordCount = {$record_count};
+    listTable.pageCount = {$page_count};
+    listTable.query = "query_bid";
+    
+      
+    <foreach from="$filter" value="$item" key="$key">
+    listTable.filter.{$key} = '{$item}';
+    </foreach>
+
+  onload = function()
+  {
+     // document.forms['searchForm'].elements['keyword'].focus();
+      // 开始检查订单
+      //startCheckOrder();
+  }
+  /**
+   * 搜索文章
+   */
+  function searchSnatch()
+  {
+    var keyword = Utils.trim(document.forms['searchForm'].elements['keyword'].value);
+    listTable.filter.keywords = keyword;
+    listTable.filter.page = 1;
+    listTable.loadList();
+  }
+  
+</script>
+</if>

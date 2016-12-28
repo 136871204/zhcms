@@ -1,0 +1,7 @@
+<div class="block box">
+    <div class="blank"></div>
+    <div id="ur_here">
+    当前位置:{$ur_here} 
+    </div>
+</div>
+<div class="blank"></div>

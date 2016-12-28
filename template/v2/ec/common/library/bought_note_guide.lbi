@@ -1,0 +1,9 @@
+<script type="text/javascript" src="__TEMPLATE__/ec/common/js/transport_jquery.js"></script>
+<script type="text/javascript" src="__TEMPLATE__/ec/common/js/utils.js"></script>
+<div id="ECS_BOUGHT">
+<?php
+    //TODO;这里还没有做好
+    $insert_bought_notes_arr=array('id'=>$_GET['id']);
+    echo insert_bought_notes($insert_bought_notes_arr);
+?>
+</div>

@@ -1,0 +1,234 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="Keywords" content="{$keywords}" />
+    <meta name="Description" content="{$description}" />
+    <title>{$page_title}</title>
+    <link rel="shortcut icon" href="favicon.ico" />
+    <link rel="icon" href="animated_favicon.gif" type="image/gif" />
+    <link href="{$ecs_css_path}" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="__TEMPLATE__/ec/common/js/common.js"></script>
+    <script type="text/javascript" src="__TEMPLATE__/ec/common/js/lefttime.js"></script>
+    <script type="text/javascript">
+        var process_request = "正在处理您的请求...";
+        var goodsname_not_null = "商品名不能为空！";
+    </script>
+</head> 
+<body>
+    <include file='__TEMPLATE__/ec/common/library/page_header.lbi'/>
+    <!--当前位置 start-->
+    <div class="block box">
+        <div id="ur_here">
+            <include file='__TEMPLATE__/ec/common/library/ur_here.lbi'/>
+        </div>
+    </div>
+    <!--当前位置 end-->
+    <div class="blank"></div>
+    <div class="block clearfix">
+        <!--left start-->
+        <div class="AreaL">
+            <include file='__TEMPLATE__/ec/common/library/cart.lbi'/>
+            <include file='__TEMPLATE__/ec/common/library/category_tree.lbi'/>
+            <include file='__TEMPLATE__/ec/common/library/goods_related.lbi'/>
+            <include file='__TEMPLATE__/ec/common/library/goods_fittings.lbi'/>
+            <include file='__TEMPLATE__/ec/common/library/goods_article.lbi'/>
+            <include file='__TEMPLATE__/ec/common/library/goods_attrlinked.lbi'/>
+            <include file='__TEMPLATE__/ec/common/library/history.lbi'/>
+        </div>
+        <!--left end-->
+        <!--right start-->
+        <div class="AreaR">
+            <div class="blank5"></div>
+            <div class="box">
+                <div class="box_1">
+                    <h3><span>团购商品详情</span></h3>
+                    <div class="boxCenterList">
+                        <ul class="group clearfix">
+                            <li style="margin-right:8px; text-align:center;">
+                                <a href="{$gb_goods.url}">
+                                    <img src="{$gb_goods.goods_thumb}" alt="{$gb_goods.goods_name}" />
+                                </a>
+                            </li>
+                            <li style="width:555px; line-height:23px;">
+                                团购商品：<font class="f5">{$gb_goods.goods_name}</font><br/>
+                                <if value="$zh.config.ec_show_goodssn" >
+                                   商品货号：{$gb_goods.goods_sn}<br/>
+                                </if>
+                                <if value="$gb_goods['brand_name'] neq '' and  $zh.config.ec_show_brand " >
+                                    商品品牌：{$gb_goods.brand_name}<br/>
+                                </if>
+                                <if value="$zh.config.ec_show_goodsweight" >
+                                    商品重量：{$gb_goods.goods_weight}<br/>
+                                </if>
+                                起止时间：{$group_buy.formated_start_date} -- {$group_buy.formated_end_date}<br/>
+                                价格阶梯：<br />
+                                <table width="100%" border="0" cellpadding="5" cellspacing="1" bgcolor="#dddddd">
+                                    <tr>
+                                        <th width="29%" bgcolor="#FFFFFF">数量</th>
+                                        <th width="71%" bgcolor="#FFFFFF">价格</th>
+                                    </tr>
+                                    <foreach from="$group_buy.price_ladder" value="$item"    >
+                                        <tr>
+                                            <td width="29%" bgcolor="#FFFFFF">{$item.amount}</td>
+                                            <td width="71%" bgcolor="#FFFFFF">{$item.formated_price}</td>
+                                        </tr>
+                                    </foreach>
+                                </table>
+                                <if value="$group_buy['deposit'] gt 0" >
+                                    保证金： {$group_buy.formated_deposit}<br />
+                                </if>
+                                <if value="$group_buy['restrict_amount'] gt 0" >
+                                    限购数量： {$group_buy.restrict_amount}<br />
+                                </if>
+                                <if value="$group_buy['gift_integral'] gt 0" >
+                                    赠送积分： {$group_buy.gift_integral}<br />
+                                </if>
+                                <if value="$group_buy['status'] eq 0 " >
+                                    该团购活动尚未开始，请继续关注。
+                                <elseif value="$group_buy['status'] eq 1 "/>
+                                    <font class="f4">
+                                         该团购活动正在火热进行中，距离结束时间还有：
+                                         <span id="leftTime">请稍等, 正在载入中...</span>
+                                    </font><br />
+                                    当前价格： {$group_buy.formated_cur_price}<br />
+                                    当前定购数量： {$group_buy.valid_goods}<br />
+                                <elseif value="$group_buy['status'] eq 2 "/>
+                                    该团购活动已结束，正在等待处理... 当前价格： {$group_buy.formated_cur_price} 当前定购数量： {$group_buy.valid_goods}
+                                <elseif value="$group_buy['status'] eq 3 "/>
+                                    该团购活动已成功结束！
+                                    成交价格： {$group_buy.formated_trans_price}<br />
+                                    成交数量： {$group_buy.trans_amount}
+                                <elseif value="$group_buy['status'] eq 4 "/>
+                                    该团购活动已结束，没有成功。
+                                </if>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="blank5"></div>
+            <div class="box">
+                <div class="box_1">
+                    <h3><span>商品属性：</span></h3>
+                    <div class="boxCenterList">
+                        <form action="group_buy.php?act=buy" method="post" name="ECS_FORMBUY" id="ECS_FORMBUY">
+                            <table width="100%" border="0" cellpadding="5" cellspacing="1" bgcolor="#dddddd">
+                                <foreach from="$specification" value="$spec"  key="$spec_key"  >
+                                    <tr>
+                                        <td width="22%" bgcolor="#FFFFFF">{$spec.name}</td>
+                                        <td width="78%" bgcolor="#FFFFFF">
+                                            <if value="$zh.config.ec_goodsattr_style eq 1" >
+                                                <foreach from="$spec.values" value="$value"  key="$key"  >
+                                                    <label for="spec_value_{$value.id}">
+                                                        <input type="radio" name="spec_{$spec_key}" value="{$value.id}" id="spec_value_{$value.id}" <if value="$key eq 0">checked</if> />
+                                                        {$value.label} 
+                                                    </label>
+                                                </foreach>
+                                            <else/>
+                                                <select name="spec_{$spec_key}" style="border:1px solid #ccc;">
+                                                    <foreach from="$spec.values" value="$value"  key="$key"  >
+                                                        <option label="{$value.label}" value="{$value.id}">{$value.label} </option>
+                                                    </foreach>
+                                                </select>
+                                            </if>
+                                        </td>
+                                    </tr>
+                                </foreach>
+                                <!--如果登录了，显示购买按钮 -->
+                                <if value="$zh.session.ec_user_id gt 0 " >
+                                    <tr>
+                                        <td bgcolor="#FFFFFF"><strong>购买数量:</strong></td>
+                                        <td bgcolor="#FFFFFF">
+                                            <input name="number" type="text" class="inputBg" id="number" value="1" size="4" />
+                                            <input type="hidden" name="group_buy_id" value="{$group_buy.group_buy_id}" />
+                                            <input type="image" src="__TEMPLATE__/ec/common/style/images/bnt_buy_1.gif" style="vertical-align:middle;" />
+                                        </td>
+                                    </tr>
+                                <else/>
+                                    <tr>
+                                        <td colspan="2" align="right" bgcolor="#FFFFFF"><br />
+                                        <font class="f_red">提示：您需要先注册成为本站会员并且登录后，才能参加商品团购!</font></td>
+                                    </tr>
+                                </if>
+                            </table>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="blank5"></div>
+            <div class="box">
+                <div class="box_1">
+                    <h3><span>团购说明</span></h3>
+                    <div class="boxCenterList">
+                        {$group_buy.group_buy_desc}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--right end-->
+    </div>
+    <div class="blank"></div>
+    
+    <!--帮助-->
+    <div class="block">
+        <div class="box">
+            <div class="helpTitBg clearfix">
+                <include file='__TEMPLATE__/ec/common/library/help.lbi'/>
+            </div>
+        </div>
+    </div>
+    <div class="blank"></div>
+    <!--帮助-->
+    
+    <!--友情链接 start-->
+    <if value="$img_links  or $txt_links" >
+    <div id="bottomNav" class="box">
+        <div class="box_1">
+            <div class="links clearfix">
+                <!--开始图片类型的友情链接-->
+                <foreach from="$img_links" value="$link"  >
+                <a href="{$link.url}" target="_blank" title="{$link.name}">
+                    <img src="{$link.logo}" alt="{$link.name}" border="0" />
+                </a>
+                </foreach>
+                <!--结束图片类型的友情链接-->
+                <if value="$txt_links" >
+                    <!--开始文字类型的友情链接-->
+                    <foreach from="$txt_links" value="$link"  >
+                        [<a href="{$link.url}" target="_blank" title="{$link.name}">{$link.name}</a>]
+                    </foreach>
+                    <!--结束文字类型的友情链接-->
+                </if>
+            </div>
+        </div>
+    </div>
+    </if>
+    <!--友情链接 end-->
+    <div class="blank"></div>
+    <include file='__TEMPLATE__/ec/common/library/page_footer.lbi'/>
+</body>
+<script type="text/javascript">
+var gmt_end_time = {$group_buy.gmt_end_date|default_value:@@,0};
+var day = "天";
+var now_time = 1460012680;
+var hour = "小时";
+var now_time = 1460012680;
+var minute = "分钟";
+var now_time = 1460012680;
+var second = "秒";
+var now_time = 1460012680;
+var end = "结束";
+var now_time = 1460012680;
+
+onload = function()
+{
+  try
+  {
+    onload_leftTime(now_time);
+  }
+  catch (e)
+  {}
+}
+</script>
+</html>

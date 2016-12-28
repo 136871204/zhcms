@@ -1,0 +1,79 @@
+<if value="$full_page">
+    <include file='__PUBLIC__/pageheader.htm'/>
+    <script language="JavaScript">
+    <!--
+    // 这里把JS用到的所有语言都赋值到这里
+    var process_request = "{$zh.language.admin_eccommon_js_process_request}";
+    var todolist_caption = "{$zh.language.admin_eccommon_js_todolist_caption}";
+    var todolist_autosave = "{$zh.language.admin_eccommon_js_todolist_autosave}";
+    var todolist_save = "{$zh.language.admin_eccommon_js_todolist_save}";
+    var todolist_clear = "{$zh.language.admin_eccommon_js_todolist_clear}";
+    var todolist_confirm_save = "{$zh.language.admin_eccommon_js_todolist_confirm_save}";
+    var todolist_confirm_clear = "{$zh.language.admin_eccommon_js_todolist_confirm_clear}";
+    var vote_name_empty = "{$zh.language.admin_ecvote_js_vote_name_empty}";
+    var option_name_empty = "{$zh.language.admin_ecvote_js_option_name_empty}";
+    var drop_confirm = "{$zh.language.admin_ecvote_js_drop_confirm}";
+    var drop = "{$zh.language.admin_ecvote_js_drop}";
+    //-->
+    </script>
+    <script type="text/javascript" src="__PUBLIC__/ec/js/utils.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/ec/js/listtable.js"></script>
+    
+    <form method="POST" action="{|U:'index'}" name="listForm">
+        <!-- start list -->
+        <div class="list-div" id="listDiv">
+</if>
+            <table cellpadding="3" cellspacing="1">
+                <tr>
+                    <th>{$zh.language.admin_ecvote_page_table_th1}</th>
+                    <th>{$zh.language.admin_ecvote_page_table_th2}</th>
+                    <th>{$zh.language.admin_ecvote_page_table_th3}</th>
+                    <th>{$zh.language.admin_ecvote_page_table_th4}</th>
+                    <th>{$zh.language.admin_ecvote_page_table_th5}</th>
+                </tr>
+                <if value="!empty($lists)">
+                    <foreach from="$lists" value="$list">
+                    <tr>
+                        <td class="first-cell">
+                        <span onclick="javascript:listTable.edit(this, 'edit_vote_name', {$list.vote_id})">{$list.vote_name}</span>
+                        </td>
+                        <td align="center"><span>{$list.begin_date}</span></td>
+                        <td align="center"><span>{$list.end_date}</span></td>
+                        <td align="right"><span>{$list.vote_count}</span></td>
+                        <td align="center">
+                            <a href="{|U:'index'}&act=option&id={$list.vote_id}" title="{$zh.language.admin_ecvote_page_table_th6}">
+                                <img src="__PUBLIC__/ec/images/icon_view.gif" border="0" height="16" width="16" />
+                            </a>&nbsp;
+                            <a href="{|U:'index'}&act=edit&id={$list.vote_id}" title="{$zh.language.admin_ecvote_page_table_th7}">
+                                <img src="__PUBLIC__/ec/images/icon_edit.gif" border="0" height="16" width="16" />
+                            </a>&nbsp;
+                            <a href="javascript:;" onclick="listTable.remove({$list.vote_id}, '{$zh.language.admin_ecvote_page_table_th8}')" title="{$zh.language.admin_ecvote_page_table_th9}">
+                                <img src="__PUBLIC__/ec/images/icon_drop.gif" border="0" height="16" width="16" />
+                            </a>
+                        </td>
+                    </tr>
+                    </foreach>
+                <else/>
+                    <tr><td class="no-records" colspan="10">{$zh.language.admin_ecvote_page_table_th10}</td></tr>
+                </if>
+                <tr>&nbsp;
+                    <td align="right" nowrap="true" colspan="10"><include file='__PUBLIC__/page.htm'/></td>
+                </tr>
+            </table> 
+<if value="$full_page">
+        </div>
+    </form>
+<!-- end 添加货品 -->
+
+<script type="text/javascript">
+    listTable.recordCount = {$record_count};
+    listTable.pageCount = {$page_count};
+    
+      
+    <foreach from="$filter" value="$item" key="$key">
+    listTable.filter.{$key} = '{$item}';
+    </foreach>
+    
+</script>
+<include file='__PUBLIC__/pagefooter.htm'/>
+</if>

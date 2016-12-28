@@ -1,0 +1,101 @@
+<include file='__PUBLIC__/pageheader.htm'/>
+<script language="JavaScript">
+<!--
+// 这里把JS用到的所有语言都赋值到这里
+var process_request = "正在处理您的请求...";
+var todolist_caption = "记事本";
+var todolist_autosave = "自动保存";
+var todolist_save = "保存";
+var todolist_clear = "清除";
+var todolist_confirm_save = "是否将更改保存到记事本？";
+var todolist_confirm_clear = "是否清空内容？";
+var no_brandname = "ブランド名を入力してください！";
+var require_num = "ソートは数値を入力してください";
+//-->
+</script>
+<div class="main-div">
+    <form method="post" action="{|U:'index'}" name="theForm" enctype="multipart/form-data" onsubmit="return validate()">
+        <table cellspacing="1" cellpadding="3" width="100%">
+            <tr>
+                <td class="label">ブランド名</td>
+                <td>
+                    <input type="text" name="brand_name" maxlength="60" value="{$brand.brand_name}" /><span class="require-field">*</span>
+                </td>
+            </tr>
+            <tr>
+                <td class="label">ブランドホームページ</td>
+                <td>
+                    <input type="text" name="site_url" maxlength="60" size="40" value="{$brand.site_url}" />
+                </td>
+            </tr>
+            <tr>
+                <td class="label">
+                    <a href="javascript:showNotice('warn_brandlogo');" title="クリックしてヒントを見る">
+                        <img src="__PUBLIC__/ec/images/notice.gif" width="16" height="16" border="0" alt="クリックしてヒントを見る"/>
+                    </a>ブランドLOGO 
+                </td>
+                <td>
+                    <input type="file" name="brand_logo" id="logo" size="45"/>
+                    <if value=" $brand['brand_logo'] neq ''">
+                    <input type="button" value="画像削除" onclick="if (confirm('この画像削除しますか？'))location.href='{|U:'index'}&act=drop_logo&id={$brand.brand_id}'"/>
+                    </if>
+                    <br />
+                    <span class="notice-span" <if value="$help_open">style="display:block" <else/> style="display:none" </if> id="warn_brandlogo">
+                    <if value=" $brand['brand_logo'] neq ''">
+                    画像アップしてください，ブランドのLOGOとして使う！
+                    <else/>
+                    すでに画像アップしたので。再びアップすと元の画像を上書きすること！
+                    </if>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="label">ブランド紹介</td>
+                <td><textarea  name="brand_desc" cols="60" rows="4"  >{$brand.brand_desc}</textarea></td>
+            </tr>
+            <tr>
+                <td class="label">ソート</td>
+                <td><input type="text" name="sort_order" maxlength="40" size="15" value="{$brand.sort_order}" /></td>
+            </tr>
+            <tr>
+                <td class="label">表示</td>
+                <td>
+                    <input type="radio" name="is_show" value="1" <if value="$brand['is_show'] eq 1">checked="checked"</if> /> YES
+                    <input type="radio" name="is_show" value="0" <if value="$brand['is_show'] eq 0">checked="checked"</if> /> NO
+                    (該当ブランドには商品がない場合，トップおよびカテゴリページにはこのブランド表示しないこと。)
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" align="center">
+                    <br />
+                    <input type="submit" class="button" value="確定" />
+                    <input type="reset" class="button" value="リセット" />
+                    <input type="hidden" name="act" value="{$form_action}" />
+                    <input type="hidden" name="old_brandname" value="{$brand.brand_name}" />
+                    <input type="hidden" name="id" value="{$brand.brand_id}" />
+                    <input type="hidden" name="old_brandlogo" value="{$brand.brand_logo}"/>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+<script type="text/javascript" src="__PUBLIC__/ec/js/utils.js"></script>
+<script type="text/javascript" src="__PUBLIC__/ec/js/validator.js"></script>
+<script language="JavaScript">
+document.forms['theForm'].elements['brand_name'].focus();
+    
+  /**
+ * 检查表单输入的数据
+ */
+function validate()
+{
+    validator = new Validator("theForm");
+    validator.required("brand_name",  no_brandname);
+    validator.isNumber("sort_order", require_num, true);
+    return validator.passed();
+}
+//-->  
+</script>
+<include file='__PUBLIC__/pagefooter.htm'/>
+
+

@@ -1,0 +1,57 @@
+<!--
+TODO:
+1.javascipty方法没有完成
+ -->
+<div class="box">
+    <div class="box_1">
+        <h3><span>邮件订阅</span></h3>
+        <div class="boxCenterList RelaArticle">
+            <input type="text" id="user_email" class="inputBg" /><br />
+            <div class="blank5"></div>
+            <input type="button" class="bnt_blue" value="订阅" onclick="add_email_list();" />
+            <input type="button" class="bnt_bonus"  value="退订" onclick="cancel_email_list();" />
+        </div>
+    </div>
+</div>
+<div class="blank5"></div>
+<script type="text/javascript">
+var email = document.getElementById('user_email');
+function add_email_list()
+{
+    if (check_email())
+    {
+        var ajaxurl='index.php?a=ec&c=EcUser&m=index&act=email_list&job=add&email=' + email.value;
+        Ajax.call(ajaxurl, '', rep_add_email_list, 'GET', 'TEXT');
+    }
+}
+function rep_add_email_list(text)
+{
+    alert(text);
+}
+
+function cancel_email_list()
+{
+    if (check_email())
+    {
+        var ajaxurl='index.php?a=ec&c=EcUser&m=index&act=email_list&job=del&email=' + email.value;
+        Ajax.call(ajaxurl, '', rep_cancel_email_list, 'GET', 'TEXT');
+    }
+}
+function rep_cancel_email_list(text)
+{
+    alert(text);
+}
+
+function check_email()
+{
+    if (Utils.isEmail(email.value))
+    {
+        return true;
+    }
+    else
+    {
+        alert('无效的email地址');
+        return false;
+    }
+}
+</script>

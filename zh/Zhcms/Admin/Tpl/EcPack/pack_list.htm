@@ -1,0 +1,87 @@
+<if value="$full_page">
+    <include file='__PUBLIC__/pageheader.htm'/>
+    <script language="JavaScript">
+    <!--
+    // 这里把JS用到的所有语言都赋值到这里
+    var process_request = "正在处理您的请求...";
+    var todolist_caption = "记事本";
+    var todolist_autosave = "自动保存";
+    var todolist_save = "保存";
+    var todolist_clear = "清除";
+    var todolist_confirm_save = "是否将更改保存到记事本？";
+    var todolist_confirm_clear = "是否清空内容？";
+    var no_packname = "没有输入包装名";
+    var packfee_un_num = "包装费用为空或不是数字";
+    var packmoney_un_num = "包装免费额度为空或不是数字";
+    //-->
+    </script>
+    <script type="text/javascript" src="__PUBLIC__/ec/js/utils.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/ec/js/listtable.js"></script>
+    
+    
+    <form method="post" action="" name="listForm">
+        <div class="list-div" id="listDiv">
+</if>
+            <table cellpadding="3" cellspacing="1">
+                <tr>
+                    <th><a href="javascript:listTable.sort('pack_name'); ">商品包装名称</a>{$sort_pack_name}</th>
+                    <th><a href="javascript:listTable.sort('pack_fee'); ">费用</a>{$sort_pack_fee}</th>
+                    <th><a href="javascript:listTable.sort('free_money');">免费额度</a>{$sort_free_money}</th>
+                    <th>包装描述</th>
+                    <th>操作</th>
+                </tr>
+                <if value="!empty($packs_list)">
+                    <foreach from="$packs_list" value="$pack">
+                    <tr>
+                        <td class="first-cell">
+                            <if value="$pack['pack_img']" >
+                                <a href = "<?php echo EC_DATA_DIR ?>/packimg/{$pack.pack_img}" target="_brank">
+                                    <img src="__PUBLIC__/ec/images/picflag.gif" width="16" height="16" border="0" alt="" />
+                                </a>
+                            <else/>
+                                <img src="__PUBLIC__/ec/images/picnoflag.gif" width="16" height="16" border="0" alt="" />
+                            </if>
+                            <span onclick="listTable.edit(this, 'edit_name', {$pack.pack_id})">{$pack.pack_name}</span>
+                        </td>
+                        <td align="right"><span onclick="listTable.edit(this, 'edit_pack_fee', {$pack.pack_id})">{$pack.pack_fee}</span></td>
+                        <td align="right"><span onclick="listTable.edit(this, 'edit_free_money', {$pack.pack_id})">{$pack.free_money}</span></td>
+                        <td>{$pack.pack_desc|sub_str:@@,50}</td>
+                        <td align="center" nowrap="true" valign="top">
+                            <a href="{|U:'index'}&act=edit&amp;id={$pack.pack_id}" title="编辑">
+                                <img src="__PUBLIC__/ec/images/icon_edit.gif" border="0" height="16" width="16"/>
+                            </a>
+                            <a href="javascript:;" onclick="listTable.remove({$pack.pack_id}, '确定要删除吗？')" title="删除">
+                                <img src="__PUBLIC__/ec/images/icon_drop.gif" border="0" height="16" width="16"/>
+                            </a>
+                        </td>
+                    </tr>
+                    </foreach>
+                <else/>
+                    <tr><td class="no-records" colspan="10">没有找到任何记录</td></tr>
+                </if>
+            </table>
+            <table cellpadding="4" cellspacing="0">
+                <tr>
+                    <td align="right"><include file='__PUBLIC__/page.htm'/></td>
+                </tr>
+            </table>
+                
+            
+<if value="$full_page">
+        </div>
+    </form>
+<!-- end 添加货品 -->
+
+<script type="text/javascript">
+    listTable.recordCount = {$record_count};
+    listTable.pageCount = {$page_count};
+    
+      
+    <foreach from="$filter" value="$item" key="$key">
+    listTable.filter.{$key} = '{$item}';
+    </foreach>
+
+
+</script>
+<include file='__PUBLIC__/pagefooter.htm'/>
+</if>

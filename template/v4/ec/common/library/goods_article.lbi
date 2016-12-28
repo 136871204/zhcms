@@ -1,0 +1,13 @@
+<if value="$goods_article_list">
+<div class="box">
+    <div class="box_1">
+        <h3><span>相关文章</span></h3>
+        <div class="boxCenterList RelaArticle">
+            <foreach from="$goods_article_list" value="$article"  >
+                <a href="{$article.url}" title="{$article.title}">{$article.short_title}</a><br />
+            </foreach>
+        </div>
+    </div>
+</div>
+<div class="blank5"></div>
+</if>

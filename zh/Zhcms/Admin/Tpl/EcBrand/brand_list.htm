@@ -1,0 +1,82 @@
+<if value="$full_page">
+    <include file='__PUBLIC__/pageheader.htm'/>
+    <script language="JavaScript">
+    <!--
+    // 这里把JS用到的所有语言都赋值到这里    
+    var process_request = "正在处理您的请求...";
+    var todolist_caption = "记事本";
+    var todolist_autosave = "自动保存";
+    var todolist_save = "保存";
+    var todolist_clear = "清除";
+    var todolist_confirm_save = "是否将更改保存到记事本？";
+    var todolist_confirm_clear = "是否清空内容？";
+    var no_brandname = "ブランド名を入力してください！";
+    var require_num = "ソートは数値を入力してください";
+    //-->
+    </script>
+    <script type="text/javascript" src="__PUBLIC__/ec/js/utils.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/ec/js/listtable.js"></script>
+    
+    <!-- 品牌搜索 -->
+    <include file='__CONTROL_TPL__/brand_search.htm'/>
+    
+    <form method="post" action="" name="listForm">
+    <!-- start brand list -->
+        <div class="list-div" id="listDiv">
+</if>
+            <table cellpadding="3" cellspacing="1">
+                <tr>
+                    <th>ブランド名</th>
+                    <th>ブランドホームページ</th>
+                    <th>ブランド紹介</th>
+                    <th>ソート</th>
+                    <th>表示</th>
+                    <th>操作</th>
+                </tr>
+                <if value="!empty($brand_list)">
+                    <foreach from="$brand_list" value="$brand">
+                    <tr>
+                        <td class="first-cell">
+                            <span style="float:right">{$brand.brand_logo}</span>
+                            <span onclick="javascript:listTable.edit(this, 'edit_brand_name', {$brand.brand_id})">{$brand.brand_name}</span>
+                        </td>
+                        <td>{$brand.site_url}</td>
+                        <td align="left">{$brand.brand_desc|ec_sub_str:@@,36}</td>
+                        <td align="right"><span onclick="javascript:listTable.edit(this, 'edit_sort_order', {$brand.brand_id})">{$brand.sort_order}</span></td>
+                        <td align="center"><img src="__PUBLIC__/ec/images/<if value='{$brand.is_show}'>yes<else/>no</if>.gif" onclick="listTable.toggle(this, 'toggle_show', {$brand.brand_id})" /></td>
+                        <td align="center">
+                            <a href="{|U:'index',array('act'=>'edit','id'=>$brand['brand_id'])}" title="変更">変更</a> |
+                            <a href="javascript:;" onclick="listTable.remove({$brand.brand_id}, '削除しますか？')" title="削除">削除</a> 
+                        </td>
+                    </tr>
+                    </foreach>
+                <else/>
+                    <tr><td class="no-records" colspan="10">データなし</td></tr>
+                </if>
+                <tr>
+                    <td align="right" nowrap="true" colspan="6">
+                    <include file='__PUBLIC__/page.htm'/>
+                    </td>
+                </tr>
+            </table>
+            
+            
+            
+<if value="$full_page">
+        </div>
+    </form>
+<!-- end 添加货品 -->
+
+<script type="text/javascript">
+listTable.recordCount = {$record_count};
+listTable.pageCount = {$page_count};
+
+  
+<foreach from="$filter" value="$item" key="$key">
+listTable.filter.{$key} = '{$item}';
+</foreach>
+
+
+</script>
+<include file='__PUBLIC__/pagefooter.htm'/>
+</if>

@@ -1,0 +1,130 @@
+<include file='__PUBLIC__/pageheader.htm'/>
+<script language="JavaScript">
+<!--
+// 这里把JS用到的所有语言都赋值到这里
+var process_request = "{$zh.language.admin_eccommon_js_process_request}";
+var todolist_caption = "{$zh.language.admin_eccommon_js_todolist_caption}";
+var todolist_autosave = "{$zh.language.admin_eccommon_js_todolist_autosave}";
+var todolist_save = "{$zh.language.admin_eccommon_js_todolist_save}";
+var todolist_clear = "{$zh.language.admin_eccommon_js_todolist_clear}";
+var todolist_confirm_save = "{$zh.language.admin_eccommon_js_todolist_confirm_save}";
+var todolist_confirm_clear = "{$zh.language.admin_eccommon_js_todolist_confirm_clear}";
+var please_select_goods = "{$zh.language.admin_ecgoodsbatch_js_please_select_goods}";
+var please_input_sn = "{$zh.language.admin_ecgoodsbatch_js_please_input_sn}";
+var goods_cat_not_leaf = "{$zh.language.admin_ecgoodsbatch_js_goods_cat_not_leaf}";
+var please_select_cat = "{$zh.language.admin_ecgoodsbatch_js_please_select_cat}";
+var please_upload_file = "{$zh.language.admin_ecgoodsbatch_js_please_upload_file}";
+//-->
+</script>
+<div class="main-div">
+    <form action="{|U:'index'}&act=upload" method="post" enctype="multipart/form-data" name="theForm" onsubmit="return formValidate()">
+        <table cellspacing="1" cellpadding="3" width="100%">
+            <tr>
+                <td class="label">{$zh.language.admin_ecgoodsbatch_info_page_table_th1}</td>
+                <td>
+                    <select name="data_cat" id="data_cat">
+                        <option value="0">{$zh.language.admin_ecgoodsbatch_common28}</option>
+                        <html_options  options="{$data_format}"  />
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td class="label">{$zh.language.admin_ecgoodsbatch_info_page_table_th2}：</td>
+                <td>
+                    <select name="cat" id="cat">
+                        <option value="0">{$zh.language.admin_ecgoodsbatch_common28}</option>
+                        {$cat_list}
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td class="label">{$zh.language.admin_ecgoodsbatch_info_page_table_th3}：</td>
+                <td>
+                    <select name="charset" id="charset">
+                        <html_options  options="{$lang_list}"  />
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td class="label">
+                    <a href="javascript:showNotice('noticeFile');" title="{$zh.language.admin_ecgoodsbatch_common29}">
+                        <img src="__PUBLIC__/ec/images/notice.gif" width="16" height="16" border="0" alt="{$zh.language.admin_ecgoodsbatch_common29}"/>
+                    </a>{$zh.language.admin_ecgoodsbatch_info_page_table_th4}：
+                </td>
+                <td>
+                    <input name="file" type="file" size="40"/>
+                    <br />
+                    <span class="notice-span" <if value="$help_open">style="display:block" <else/> style="display:none" </if> id="noticeFile">
+                        {$zh.language.admin_ecgoodsbatch_info_page_table_th5}
+                    </span>
+                </td>
+            </tr>
+            <foreach from="$download_list" value="$download" key="$charset">
+            <tr>
+                <td>&nbsp;</td>
+                <td><a href="{|U:'index'}&act=download&charset={$charset}">{$download}</a></td>
+            </tr>
+            </foreach>
+            <tr align="center">
+                <td colspan="2"><input name="submit" type="submit" id="submit" value="{$zh.language.admin_ecgoodsbatch_info_page_table_btn1}" class="button" /></td>
+            </tr>
+        </table>
+    </form>
+    <table width="100%">
+        <tr>
+            <td>&nbsp;</td>
+            <td width="80%">
+                {$zh.language.admin_ecgoodsbatch_info_page_table_th6}：
+                <ol>
+                  <li>{$zh.language.admin_ecgoodsbatch_info_page_table_th7}</li>
+                  <li>{$zh.language.admin_ecgoodsbatch_info_page_table_th8}</li>
+                  <li>{$zh.language.admin_ecgoodsbatch_info_page_table_th9}</li>
+                  <li>{$zh.language.admin_ecgoodsbatch_info_page_table_th10}</li>
+                </ol>
+            </td>
+            <td>&nbsp;</td>
+        </tr>
+    </table>
+</div>
+<script type="text/javascript" src='__PUBLIC__/ec/js/utils.js'></script>
+<script type="text/javascript" src='__PUBLIC__/ec/js/validator.js'></script>
+<script language="JavaScript">
+    var elements;
+    onload = function()
+    {
+        // 文档元素对象
+        elements = document.forms['theForm'].elements;
+    }
+    /**
+     * 检查是否底级分类
+     */
+    function checkIsLeaf(selObj)
+    {
+        if (selObj.options[selObj.options.selectedIndex].className != 'leafCat')
+        {
+            alert(goods_cat_not_leaf);
+            selObj.options.selectedIndex = 0;
+        }
+    }
+    
+    /**
+     * 检查输入是否完整
+     */
+    function formValidate()
+    {
+        if (elements['cat'].value <= 0)
+        {
+            alert(please_select_cat);
+            return false;
+        }
+        if (elements['file'].value == '')
+        {
+            alert(please_upload_file);
+            return false;
+        }
+        return true;
+    }
+    
+</script>
+
+<include file='__PUBLIC__/pagefooter.htm'/>

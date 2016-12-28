@@ -1,0 +1,86 @@
+<if value="$full_page">
+    <include file='__PUBLIC__/pageheader.htm'/>
+    <script language="JavaScript">
+    <!--
+    // 这里把JS用到的所有语言都赋值到这里
+    var process_request = "正在处理您的请求...";
+    var todolist_caption = "记事本";
+    var todolist_autosave = "自动保存";
+    var todolist_save = "保存";
+    var todolist_clear = "清除";
+    var todolist_confirm_save = "是否将更改保存到记事本？";
+    var todolist_confirm_clear = "是否清空内容？";
+    var batch_drop_confirm = "您确实要删除选中的办事处吗？";
+    var region_exists = "该地区已存在";
+    var no_agencyname = "没有填办事处名称";
+    //-->
+    </script>
+    <script type="text/javascript" src="__PUBLIC__/ec/js/utils.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/ec/js/listtable.js"></script>
+    
+    <form method="post" action="{|U:'index'}" name="listForm" onsubmit="return confirm(batch_drop_confirm);">
+        <div class="list-div" id="listDiv">
+</if>
+            <table cellpadding="3" cellspacing="1">
+                <tr>
+                    <th> 
+                        <input onclick='listTable.selectAll(this, "checkboxes")' type="checkbox" />
+                        <a href="javascript:listTable.sort('agency_id'); ">编号</a>{$sort_agency_id} 
+                    </th>
+                    <th><a href="javascript:listTable.sort('agency_name'); ">办事处名称</a>{$sort_agency_name}</th>
+                    <th>办事处描述</th>
+                    <th>操作</th>
+                </tr>
+                <if value="!empty($agency_list)">
+                    <foreach from="$agency_list" value="$agency">
+                    <tr>
+                        <td>
+                            <input type="checkbox" name="checkboxes[]" value="{$agency.agency_id}" />
+                            {$agency.agency_id}
+                        </td>
+                        <td class="first-cell">
+                        <span onclick="javascript:listTable.edit(this, 'edit_agency_name', {$agency.agency_id})">{$agency.agency_name}</span>
+                        </td>
+                        <td>{$agency.agency_desc|nl2br}</td>
+                        <td align="center">
+                            <a href="{|U:'index'}&act=edit&id={$agency.agency_id}" title="编辑">编辑</a> |
+                            <a href="javascript:;" onclick="listTable.remove({$agency.agency_id}, '确定删除吗')" title="删除">删除</a>      
+                        </td>
+                    </tr>
+                    </foreach>
+                <else/>
+                    <tr><td class="no-records" colspan="4">没有找到任何记录</td></tr>
+                </if>
+            </table>
+            <table id="page-table" cellspacing="0">
+                <tr>
+                    <td>
+                        <input name="remove" type="submit" id="btnSubmit" value="删除" class="button" disabled="true" />
+                        <input name="act" type="hidden" value="batch" />
+                    </td>
+                    <td align="right" nowrap="true">
+                        <include file='__PUBLIC__/page.htm'/>
+                    </td>
+                </tr>
+            </table>
+
+                
+            
+<if value="$full_page">
+        </div>
+    </form>
+<!-- end 添加货品 -->
+
+<script type="text/javascript">
+    listTable.recordCount = {$record_count};
+    listTable.pageCount = {$page_count};
+    
+      
+    <foreach from="$filter" value="$item" key="$key">
+    listTable.filter.{$key} = '{$item}';
+    </foreach>
+
+
+</script>
+<include file='__PUBLIC__/pagefooter.htm'/>
+</if>

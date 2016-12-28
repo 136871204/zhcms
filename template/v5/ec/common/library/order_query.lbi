@@ -1,0 +1,36 @@
+<if value="empty($order_query)" >
+    <script>
+        var invalid_order_sn = "無効な注文番号";
+    </script>
+    <div class="box">
+        <div class="box_1">
+            <h3><span>注文番号検索</span></h3>
+            <div class="boxCenterList">
+                <form name="ecsOrderQuery">
+                    <input type="text" name="order_sn" class="inputBg" /><br />
+                    <div class="blank5"></div>
+                    <input type="button" value="検索" class="bnt_blue_2" onclick="orderQuery()" />
+                </form>
+                <div id="ECS_ORDER_QUERY" style="margin-top:8px;">
+                    <else/>
+                        <if value="$order_query.user_id" >
+                            <b>注文番号：</b>
+                            <a href="{|U:'ec/EcUser/index'}&act=order_detail&order_id={$order_query.order_id}" class="f6">
+                                {$order_query.order_sn}
+                            </a><br/>
+                        <else/>
+                            <b>注文番号：</b>{$order_query.order_sn}<br/>
+                        </if>
+                        <b>注文状態：</b><br/><font class="f1">{$order_query.order_status}</font><br/>
+                        <if value="$order_query.invoice_no">
+                            <b>配達書 ：</b>{$order_query.invoice_no}<br/>
+                        </if>
+                        <if value="$order_query.shipping_date">
+                            配達時間： {$order_query.shipping_date}<br/>
+                        </if>
+                    </if>
+                </div>
+            </div>
+        </div>
+    </div>
+<div class="blank5"></div>

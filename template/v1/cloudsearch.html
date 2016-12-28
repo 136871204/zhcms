@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+	<meta charset="UTF-8"/>
+	<meta name="Description" content="{$zh.config.description}" />
+	<meta name="keywords" content="{$zh.config.keywords}" />
+	<meta name="format-detection" content="telephone=no" />
+	<meta http-equiv="Cache-Control" content="no-transform" />
+	<meta http-equiv="Cache-Control" content="no-siteapp" />
+	<meta name="applicable-device" content="pc,mobile"/>
+	<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1,minimum-scale=1,user-scalable=0;" />
+	<title>japan_travel</title>
+
+	<link rel="stylesheet" href="__TEMPLATE__/common/css/import.css"/>
+	<link rel="stylesheet" href="__TEMPLATE__/common/css/list.css"/>
+
+	<!--[if lt IE 9]>
+	<script src="__TEMPLATE__/common/scripts/html5.js"></script>
+	<![endif]-->
+</head>
+<body id="japan_travel">
+	<!-- 头部 -->
+		<!--#include virtual="__TEMPLATE__/common/inc/header.lbi"-->
+        <include file='__TEMPLATE__/common/inc/__WEBID___header.lbi'/>
+	<!-- //头部 -->
+	<!-- 中间内容 -->
+	<div id="content">
+		
+			<div class="main_content">
+				<div class="wrapper fix">
+					<!-- 路径 -->
+						<div class="path">
+							<a href="/">首页</a> {$pkname}
+						</div>
+						<!-- //路径 -->
+					<!-- 左边 -->
+					<div class="left_content">
+						
+						<!-- 筛选区域 -->
+						<div class="filter_area">
+    
+
+						</div>
+						<!-- //筛选区域 -->
+
+						<!-- 列表内容 -->
+						<div class="travel_list">
+                            <foreach from="$resultlines" value="$lineD" >
+                            <div class="travel_one">
+								<div class="img">
+                                    <if value="empty($lineD['linepic']) ">
+                                        <img src="__TEMPLATE__/common/images/240x135_default.jpg" width="160" height="90" alt=""/>
+                                    <else/>
+                                        <img src="__ROOT__/{$lineD.linepic}" width="160" height="90" alt=""/>
+                                    </if>
+									
+								</div>
+								<div class="content">
+									<div class="intro">
+										<p class="main_intro">
+											<strong class="li_title"><a>{$lineD.linename}</a></strong>
+										</p>
+										<p class="date_intro"><span class="green">{$lineD.startcity}出发</span> 出团日期：{$lineD.maxmindateshow}  </p>
+										<p class="sec_intro"><strong>特色：</strong>{$lineD.sellpoint}</p>
+										<p class="tag_intro">
+											<ul class="fix t_tag_list">
+                                                {$lineD.showattrs}
+											</ul>
+										</p>
+									</div>
+									<div class="price">
+                                        {$lineD.price}
+										<a class="btn_02" href="/lines/show_{$lineD.id}.html">预订</a>
+									</div>
+								</div>
+								{$lineD.iconshow}
+							</div>
+                            </foreach>
+							
+							
+						</div>
+						<!-- //列表内容 -->
+						<!-- 分页 -->
+						<div class="page fix">
+                            {$page}
+						</div>
+						<!-- //分页 -->
+					</div>
+					<!-- //左边 -->
+					
+				</div>
+			</div>
+
+	</div>
+    
+    <input type="hidden" id="para1" value="{$para1}"/>
+    <input type="hidden" id="destid" value="{$destid}"/>
+    <input type="hidden" id="attrid" value="{$attrid}" />
+    <input type="hidden" id="priceid" value="{$priceid}" />
+    <input type="hidden" id="day" value="{$day}" />
+    <input type="hidden" id="sorttype" value="{$sorttype}"/>
+    <input type="hidden" id="pinyin" value=""/>
+    <input type="hidden" id="startcity" value="{$startcity}" />
+    <input type="hidden" id="keyword" value=""/>
+    
+    
+    
+    
+	<!-- //中间内容 -->
+	<!-- 底部 -->
+		<!--#include virtual="__TEMPLATE__/common/inc/footer.lbi"-->
+	<!-- //底部 -->
+
+	<script src="__TEMPLATE__/common/scripts/jsloader.js" type="text/javascript"></script>
+	<script src="__TEMPLATE__/common/scripts/owl.carousel.min.js" type="text/javascript"></script>
+	<script>
+		$(function(){
+		     $(".li_title a").each(function(index, element) {
+	   
+            	     var words={$words|json_encode:@@};
+            		 var text=$(element).text();
+            		 for(var i in words)
+            		 {
+            			 text=text.replace(words[i],"<font color='red'>"+words[i]+"</font>");
+            		 }
+            		 
+            		 $(element).html(text);
+            		 
+            		 
+            	   
+            });
+		});
+	</script>
+    
+    <script>
+    
+    </script>
+</body>
+</html>

@@ -1,0 +1,96 @@
+<?php if(!defined("ZHPHP_PATH"))exit;C("SHOW_NOTICE",FALSE);?><div id="ECS_BOUGHT">
+<?php
+    //TODO;这里还没有做好
+    $insert_bought_notes_arr=array('id'=>$_GET['id']);
+    /* 商品购买记录 */
+    $sql = 'SELECT u.user_name, og.goods_number, oi.add_time, IF(oi.order_status IN (2, 3, 4), 0, 1) AS order_status ' .
+           'FROM ' . 
+                    $GLOBALS['ec_globals']['ecs']->table('ec_order_info') . ' AS oi LEFT JOIN ' . 
+                    $GLOBALS['ec_globals']['ecs']->table('ec_users') . ' AS u ON oi.user_id = u.user_id, ' . 
+                    $GLOBALS['ec_globals']['ecs']->table('ec_order_goods') . ' AS og ' .
+           'WHERE 
+                    oi.order_id = og.order_id AND ' . time() . ' - oi.add_time < 2592000 AND 
+                    og.goods_id = ' . $insert_bought_notes_arr['id'] . ' ORDER BY oi.add_time DESC LIMIT 5';
+    $bought_notes = M()->getAll($sql);
+    if(!empty($bought_notes))
+    {
+        foreach ($bought_notes as $key => $val)
+        {
+            $bought_notes[$key]['add_time'] = local_date("Y-m-d G:i:s", $val['add_time']);
+        }
+    }
+    $sql = 'SELECT count(*) ' .
+           'FROM ' . 
+                    $GLOBALS['ec_globals']['ecs']->table('ec_order_info') . ' AS oi LEFT JOIN ' . 
+                    $GLOBALS['ec_globals']['ecs']->table('ec_users') . ' AS u ON oi.user_id = u.user_id, ' . 
+                    $GLOBALS['ec_globals']['ecs']->table('ec_order_goods') . ' AS og ' .
+           'WHERE oi.order_id = og.order_id AND ' . time() . ' - oi.add_time < 2592000 AND og.goods_id = ' . $insert_bought_notes_arr['id'];
+    $bought_notes_count = M()->getOne($sql,'count(*)');
+    
+    /* 商品购买记录分页样式 */
+    $bought_notes_pager = array();
+    $bought_notes_pager['page']         = $bought_notes_page = 1;
+    $bought_notes_pager['size']         = $bought_notes_size = 5;
+    $bought_notes_pager['record_count'] = $bought_notes_count;
+    $bought_notes_pager['page_count']   = $bought_notes_page_count = ($bought_notes_count > 0) ? intval(ceil($bought_notes_count / $bought_notes_size)) : 1;;
+    $bought_notes_pager['page_first']   = "javascript:gotoBuyPage(1,$arr[id])";
+    $bought_notes_pager['page_prev']    = $bought_notes_page > 1 ? "javascript:gotoBuyPage(" .($bought_notes_page-1). ",$arr[id])" : 'javascript:;';
+    $bought_notes_pager['page_next']    = $bought_notes_page < $bought_notes_page_count ? 'javascript:gotoBuyPage(' .($bought_notes_page + 1) . ",$arr[id])" : 'javascript:;';
+    $bought_notes_pager['page_last']    = $bought_notes_page < $bought_notes_page_count ? 'javascript:gotoBuyPage(' .$bought_notes_page_count. ",$arr[id])"  : 'javascript:;';
+
+    $bought_notes;
+    $bought_notes_pager;
+
+    
+    
+    //p($bought_notes);die;
+?>
+    <div class="box">
+        <div class="box_1">
+            <h3>
+                <span class="text">购买记录</span>
+                (近期成交数量<font class="f1"><?php echo $bought_notes_pager['record_count'];?></font>)
+            </h3>
+            <div class="boxCenterList">
+                <?php if($bought_notes){?>
+                    TODO:bought_note_guide.lbi1;
+                <?php  }else{ ?>
+                    还没有人购买过此商品 
+                <?php }?>
+                <!--翻页 start-->
+                <div id="buy_pagebar" class="f_r" style="margin-top:10px">
+                    <form name="selectPageForm" action="" method="get">
+                        <input type="hidden" name="m" value="<?php echo $current_form['current_meth'];?>"/>
+                        <input type="hidden" name="c" value="<?php echo $current_form['current_control'];?>"/>
+                        <input type="hidden" name="a" value="<?php echo $current_form['current_app'];?>"/>
+                        <?php if($pager['styleid'] == 0){?>
+                            <div id="buy_pager">
+                                总计<?php echo $bought_notes_pager['record_count'];?>个记录，共<?php echo $bought_notes_pager['page_count'];?>页。 
+                                <span> 
+                                    <a href="<?php echo $bought_notes_pager['page_first'];?>">第一页</a> 
+                                    <a href="<?php echo $bought_notes_pager['page_prev'];?>">上一页</a> 
+                                    <a href="<?php echo $bought_notes_pager['page_next'];?>">下一页</a> 
+                                    <a href="<?php echo $bought_notes_pager['page_last'];?>">最末页</a> 
+                                </span>
+                                <?php if(is_array($bought_notes_pager['search'])):?><?php $index=0; ?><?php  foreach($bought_notes_pager['search'] as $key=>$item){ ?>
+                                    <input type="hidden" name="<?php echo $key;?>" value="<?php echo $item;?>" />
+                                <?php $index++; ?><?php }?><?php endif;?>
+                            </div>
+                        <?php  }else{ ?>
+                            TODO:TODO:bought_note_guide.lbi2;
+                        <?php }?>
+                    </form>
+                    <script type="Text/Javascript" language="JavaScript">
+                    function selectPage(sel)
+                    {
+                        sel.form.submit();
+                    }
+                    </script>
+                </div>
+                <!--翻页 END-->
+                
+            </div>
+        </div>
+    </div>
+    <div class="blank5"></div>
+</div>

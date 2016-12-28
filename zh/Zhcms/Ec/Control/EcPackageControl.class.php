@@ -1,0 +1,84 @@
+<?php
+
+/**
+ * 网站前台
+ * Class IndexControl
+ * @author 周鸿 <136871204@qq.com>
+ */
+class EcPackageControl extends EcControl {
+    
+    public function __init(){
+        define('IN_ECS', true);
+        parent::ecinit();
+        
+        //echo 'aaa';die;
+    }
+    
+    public function index(){
+        header("Content-type:text/html;charset=utf-8");
+        $ecs=$GLOBALS['ec_globals']['ecs'];
+        
+        $this -> assign_template();
+        $position = assign_ur_here(0, '超值礼包列表');
+        $this->assign('page_title',       $position['title']);    // 页面标题
+        $this->assign('ur_here',          $position['ur_here']);  // 当前位置
+        
+        /* 读出所有礼包信息 */
+
+        $now = gmtime();
+        $sql = "SELECT * FROM " . $ecs->table('ec_goods_activity'). " WHERE `start_time` <= '$now' AND `end_time` >= '$now' AND `act_type` = '4' ORDER BY `end_time`";
+        $res = M()->query($sql);
+        
+        $list = array();
+        if(!empty($res))
+        {
+            foreach($res as $row)
+            {
+                $row['start_time']  = local_date('Y-m-d H:i', $row['start_time']);
+                $row['end_time']    = local_date('Y-m-d H:i', $row['end_time']);
+                $ext_arr = unserialize($row['ext_info']);
+                unset($row['ext_info']);
+                if ($ext_arr)
+                {
+                    foreach ($ext_arr as $key=>$val)
+                    {
+                        $row[$key] = $val;
+                    }
+                }
+                $sql = "SELECT pg.package_id, pg.goods_id, pg.goods_number, pg.admin_id, ".
+                       " g.goods_sn, g.goods_name, g.market_price, g.goods_thumb, ".
+                       " IFNULL(mp.user_price, g.shop_price * '$_SESSION[ec_discount]') AS rank_price " .
+                       " FROM " . $GLOBALS['ec_globals']['ecs']->table('ec_package_goods') . " AS pg ".
+                       "   LEFT JOIN ". $GLOBALS['ec_globals']['ecs']->table('ec_goods') . " AS g ".
+                       "   ON g.goods_id = pg.goods_id ".
+                       " LEFT JOIN " . $GLOBALS['ec_globals']['ecs']->table('ec_member_price') . " AS mp ".
+                            "ON mp.goods_id = g.goods_id AND mp.user_rank = '$_SESSION[ec_user_rank]' ".
+                       " WHERE pg.package_id = " . $row['act_id']. " ".
+                       " ORDER BY pg.goods_id";
+                $goods_res = M()->getAll($sql);
+                $subtotal = 0;
+                if(!empty($goods_res))
+                {
+                    foreach($goods_res as $key => $val)
+                    {
+                        $goods_res[$key]['goods_thumb']  = get_image_path($val['goods_id'], $val['goods_thumb'], true);
+                        $goods_res[$key]['market_price'] = price_format($val['market_price']);
+                        $goods_res[$key]['rank_price']   = price_format($val['rank_price']);
+                        $subtotal += $val['rank_price'] * $val['goods_number'];
+                    }
+                }
+                $row['goods_list']    = $goods_res;
+                $row['subtotal']      = price_format($subtotal);
+                $row['saving']        = price_format(($subtotal - $row['package_price']));
+                $row['package_price'] = price_format($row['package_price']);
+                
+                $list[] = $row;
+            }   
+        }
+        $this->assign('list',             $list);
+        $this->assign('helps',            get_shop_help());       // 网店帮助
+        $this -> display('template/' . C('WEB_STYLE') . '/ec/package.html');
+    }
+    
+	
+}

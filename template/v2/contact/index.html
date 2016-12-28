@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>flati</title>
+<zhjs/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="">
+<meta name="author" content="">
+
+<link href='http://fonts.useso.com/css?family=Lato:400,700,300' rel='stylesheet' type='text/css'>
+<!--[if IE]>
+	<link href="http://fonts.useso.com/css?family=Lato" rel="stylesheet" type="text/css">
+	<link href="http://fonts.useso.com/css?family=Lato:400" rel="stylesheet" type="text/css">
+	<link href="http://fonts.useso.com/css?family=Lato:700" rel="stylesheet" type="text/css">
+	<link href="http://fonts.useso.com/css?family=Lato:300" rel="stylesheet" type="text/css">
+<![endif]-->
+
+<link href="__TEMPLATE__/common/css/bootstrap.css" rel="stylesheet">
+<link href="__TEMPLATE__/common/css/font-awesome.min.css" rel="stylesheet">
+<link href="__TEMPLATE__/common/css/theme.css" rel="stylesheet">
+<link href="__TEMPLATE__/common/css/zocial.css" rel="stylesheet" type="text/css"/>
+
+<!--[if lt IE 9]>
+<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+</head>
+
+<body>
+<include file='__TEMPLATE__/common/inc/header.lbi'/>
+	<!--page-->
+	<div id="banner">
+	<div class="container intro_wrapper">
+	<div class="inner_content">
+	<h1>联系我们</h1>
+
+	</div>
+		</div>
+			</div>
+
+				<div class="pad10"></div>
+			
+			<div class="container wrapper">
+			<div class="inner_content">
+			<div class="pad10"></div>
+				<div class="row">
+					<div class="span4">
+					<h3>你需要建设，咨询网站相关问题吗? 请发送该邮件给我们或者填写右边表格. 我们会在24小时内回复你.</h3>
+					
+				<h5>
+					<span>地址</span><br>
+					上海市長寧区延安西路1600号禾森商務中心205室<br>
+				</h5>
+				
+				<h5>
+					E: <a href="mailto:#">hong@metaphase.co.jp</a><br>
+					P: 13167001526
+				</h5>
+			</div>
+		
+		<div class="span8 ">
+		<div class="contact_form">  
+		<div id="note" class="text-info"></div>
+		<div id="fields">
+		<form id="ajax-contact-form">
+			<p class="form_info">name <span class="required">*</span></p>
+			<input class="span5" type="text" name="name" value="" required="true" />
+			<p class="form_info">email <span class="required">*</span></p>
+			<input class="span5" type="text" name="email" value=""   required="true" />
+			<p class="form_info">subject</p>
+			<input class="span5" type="text" name="subject" value="" /><br/>
+			<p class="form_info">message</p>
+			<textarea name="message" id="message" class="span8" ></textarea>
+			<div class="clear"></div>
+			
+			<input type="submit" id="subbtn" class="btn  btn-primary btn-form marg-right5" value="submit" />
+			<input type="reset"  class="btn  btn-primary btn-form" value="reset" />
+			<div class="clear pad45 hidden-desktop"></div>
+		</form>
+	</div>
+</div>                   
+	</div>                	
+		</div>
+			</div>
+				</div>
+    <!--//page-->
+
+   <include file='__TEMPLATE__/common/inc/footer.lbi'/>
+
+<script src="__TEMPLATE__/common/js/jquery.js"></script>
+<script src="__TEMPLATE__/common/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+	//<![CDATA[
+		$(document).ready(function(){	
+			$("#ajax-contact-form").submit(function() {
+				var str = $(this).serialize();		
+				$.ajax({
+					type: "POST",
+					url: CONTROL+"&m=contact_process",
+					data: str,
+					success: function(msg) {
+						// Message Sent - Show the 'Thank You' message and hide the form
+						if(msg == 'OK') {
+							result = '<div class="notification_ok">感谢您的咨询，我们会在24小时内联系你!</div>';
+							$("#fields").hide();
+						} else {
+							result = msg;
+						}
+						$('#note').html(result);
+                        $('#subbtn').attr('disabled',"true"); 
+					}
+				});
+				return false;
+			});															
+		});
+	//]]>		
+</script>
+	
+<!--//GOOGLE MAP - ADD YOUR ADDRESS HERE -->
+<script type="text/javascript">
+	//<![CDATA[
+	$(window).load(function() {
+	$('.contact').addClass('active');
+	});
+//]]>
+</script>
+</body>
+</html>

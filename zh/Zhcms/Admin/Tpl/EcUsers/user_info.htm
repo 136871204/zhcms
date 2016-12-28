@@ -1,0 +1,216 @@
+<include file='__PUBLIC__/pageheader.htm'/>
+<script language="JavaScript">
+<!--
+    // 这里把JS用到的所有语言都赋值到这里
+    var process_request = "アクセス処理中...";
+    var todolist_caption = "ノート";
+    var todolist_autosave = "自動保存";
+    var todolist_save = "保存";
+    var todolist_clear = "クリア";
+    var todolist_confirm_save = "変更内容をノートに保存？";
+    var todolist_confirm_clear = "内容をクリアする？";
+    var no_username = "ユーザ名を入力してください。";
+    var invalid_email = "メール入力してない或いはメールが正しくない。";
+    var no_password = "パスワードを入力してください。";
+    var less_password = "パスワード6文字以上してください。";
+    var passwd_balnk = "パスワードにはスペースが入力できません";
+    var no_confirm_password = "確認パスワードを入力してください。";
+    var password_not_same = "二回入力したパスワード不一致です。";
+    var invalid_pay_points = "ポイントが数値ではない。";
+    var invalid_rank_points = "ランクポイントが数値ではない。";
+    var password_len_err = "新パスと確認パス6文字以上してください";
+//-->
+</script>
+<div class="main-div">
+    <form method="post" action="{|U:'index'}" name="theForm" onsubmit="return validate()">
+        <table width="100%" >
+            <tr>
+                <td class="label">会員名称:</td>
+                <td>
+                    <if value="$form_action eq 'update'">
+                        {$user.user_name}<input type="hidden" name="username" value="{$user.user_name}" />
+                    <else/>
+                        <input type="text" name="username" maxlength="60" value="{$user.user_name}" />
+                        <span class="require-field">*</span>
+                    </if>
+                </td>
+            </tr>
+            <if value="$form_action eq 'update'" >
+                <tr>
+                    <td class="label">使える資金:</td>
+                    <td>{$user.formated_user_money} <a href="account_log.php?act=list&user_id={$user.user_id}&account_type=user_money">[ 明細を見る ]</a> </td>
+                </tr>
+                <tr>
+                    <td class="label">凍結資金:</td>
+                    <td>{$user.formated_frozen_money} <a href="account_log.php?act=list&user_id={$user.user_id}&account_type=frozen_money">[ 明細を見る ]</a> </td>
+                </tr>
+                <tr>
+                    <td class="label">
+                        <a href="javascript:showNotice('noticeRankPoints');" title="クリックして、ヒントを見る">
+                            <img src="__PUBLIC__/ec/images/notice.gif" width="16" height="16" border="0" alt="クリックして、ヒントを見る"/>
+                        </a> ランクポイント:
+                    </td>
+                    <td>
+                        {$user.rank_points} 
+                        <a href="account_log.php?act=list&user_id={$user.user_id}&account_type=rank_points">[ 明細を見る ]</a> 
+                        <br />
+                        <span class="notice-span" <if value="$help_open">style="display:block" <else/> style="display:none" </if> id="noticeRankPoints">
+                            ランクポイントは累計するから、システムがこのポイントによって、会員ランクを判定する。
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="label">
+                        <a href="javascript:showNotice('noticePayPoints');" title="クリックして、ヒントを見る">
+                            <img src="__PUBLIC__/ec/images/notice.gif" width="16" height="16" border="0" alt="クリックして、ヒントを見る" />
+                        </a> 消費ポイント:
+                    </td>
+                    <td>
+                        {$user.pay_points} 
+                        <a href="account_log.php?act=list&user_id={$user.user_id}&account_type=pay_points">[ 明細を見る ]</a> <br />
+                        <span class="notice-span" <if value="$help_open">style="display:block" <else/> style="display:none" </if> id="noticePayPoints">
+                            消費ポイントはサイト内の金額、会員が買い物する時、一定の比率のポイントを金額として使える。
+                        </span>
+                    </td>
+                </tr>
+            </if>
+            <tr>
+                <td class="label">メールアドレス:</td>
+                <td><input type="text" name="email" maxlength="60" size="40" value="{$user.email}" /><span class="require-field">*</span></td>
+            </tr>
+            <if value="$form_action eq 'insert'" >
+                <tr>
+                    <td class="label">ログインパスワード:</td>
+                    <td><input type="password" name="password" maxlength="20" size="20" /><span class="require-field">*</span></td>
+                </tr>
+                <tr>
+                    <td class="label">確認パスワード:</td>
+                    <td><input type="password" name="confirm_password" maxlength="20" size="20" /><span class="require-field">*</span></td>
+                </tr>
+            <elseif value="$form_action eq 'update'"/>
+                <tr>
+                    <td class="label">新パスワード:</td>
+                    <td><input type="password" name="password" maxlength="20" size="20" /></td>
+                </tr>
+                <tr>
+                    <td class="label">確認パスワード:</td>
+                    <td><input type="password" name="confirm_password" maxlength="20" size="20" /></td>
+                </tr>
+            </if>
+            <tr>
+                <td class="label">会員ランク:</td>
+                <td>
+                    <select name="user_rank">
+                        <option value="0">特殊ランクではない</option>
+                        <html_options  options="{$special_ranks}" selected="{$user.user_rank}" />
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td class="label">性別:</td>
+                <td>
+                    <html_radios name="sex" options="{$lang.sex}" checked="{$user.sex}" />
+                </td>
+            </tr>
+            <tr>
+                <td class="label">誕生日:</td>
+                <td>
+                    <html_select_date field_order="YMD" prefix="birthday" time="{$user.birthday}" start_year="-60" end_year="+1" display_days="true"  month_format="%m" />
+                </td>
+            </tr>
+            <tr>
+                <td class="label">新規額:</td>
+                <td><input name="credit_line" type="text" id="credit_line" value="{$user.credit_line}" size="10" /></td>
+            </tr>
+            <foreach from="$extend_info_list" value="$field">
+                <tr>
+                    <td class="label">{$field.reg_field_name}:</td>
+                    <td>
+                        <input name="extend_field{$field.id}" type="text" size="40" class="inputBg" value="{$field.content}"/>
+                    </td>
+                </tr>
+            </foreach>
+            <if value="$user.parent_id" >
+                TODO:user_info--3;
+            </if>
+            <if value="$affiliate['on'] eq 1 and $affdb">
+                TODO:user_info--4;
+            </if>
+            <tr>
+                <td colspan="2" align="center">
+                    <input type="submit" value=" 確定 " class="button" />
+                    <input type="reset" value=" リセット " class="button" />
+                    <input type="hidden" name="act" value="{$form_action}" />
+                    <input type="hidden" name="id" value="{$user.user_id}" />    
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+<script type="text/javascript" src="__PUBLIC__/ec/js/utils.js"></script>
+<script type="text/javascript" src="__PUBLIC__/ec/js/validator.js"></script>
+<script>
+    if (document.forms['theForm'].elements['act'].value == "insert")
+    {
+        document.forms['theForm'].elements['username'].focus();
+    }
+    else
+    {
+        document.forms['theForm'].elements['email'].focus();
+    }
+    
+    onload = function()
+    {
+        // 开始检查订单
+        //startCheckOrder();
+    }
+    
+    
+    /**
+     * 检查表单输入的数据
+     */
+    function validate()
+    {
+        validator = new Validator("theForm");
+        validator.isEmail("email", invalid_email, true);
+    
+        if (document.forms['theForm'].elements['act'].value == "insert")
+        {
+            validator.required("username",  no_username);
+            validator.required("password", no_password);
+            validator.required("confirm_password", no_confirm_password);
+            validator.eqaul("password", "confirm_password", password_not_same);
+    
+            var password_value = document.forms['theForm'].elements['password'].value;
+            if (password_value.length < 6)
+            {
+              validator.addErrorMsg(less_password);
+            }
+            if (/ /.test(password_value) == true)
+            {
+              validator.addErrorMsg(passwd_balnk);
+            }
+        }
+        else if (document.forms['theForm'].elements['act'].value == "update")
+        {
+            var newpass = document.forms['theForm'].elements['password'];
+            var confirm_password = document.forms['theForm'].elements['confirm_password'];
+            if(newpass.value.length > 0 || confirm_password.value.length)
+            {
+              if(newpass.value.length >= 6 || confirm_password.value.length >= 6)
+              {
+                validator.eqaul("password", "confirm_password", password_not_same);
+              }
+              else
+              {
+                validator.addErrorMsg(password_len_err);
+              }
+            }
+        }
+    
+        return validator.passed();
+    }
+
+</script>
+<include file='__PUBLIC__/pagefooter.htm'/>
+

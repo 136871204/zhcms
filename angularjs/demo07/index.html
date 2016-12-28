@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<body>
+<header>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+    <script type="text/javascript" src="angular.min.js"></script>
+    <!--<script src="angular-1.3.0.js"></script>-->
+</header>
+<div ng-app="myApp" >
+
+
+    <div ng-controller="firstController">
+        名：<input type="text" ng-model="person.firstName"><br>
+        姓：<input type="text" ng-model="person.lastName"><br>
+        <br>
+        姓名：{{person.firstName+"  "+person.lastName}}
+    </div>
+
+
+
+</div>
+
+<script type="text/javascript" >
+    var app=angular.module("myApp",[]);
+    app.controller('firstController',function($scope,$http){
+        $http.get('data.php?name=123').success(function(data,status,headers,config){
+            console.log(data);
+            console.log(status);
+            console.log(headers);
+            console.log(config);
+        }).error(function(err,status,headers,config){
+
+        });
+
+        var postData={text:'这是post的内容'};
+        var config={params:{id:'5',name:'张三'}};
+        $http.post('data1.php',postData,config).success(function(data){
+            console.log(data);
+        }).error(function(err,status,headers,config){
+
+        });
+
+        myUrl='http://www.phonegap100.com/appapi.php?a=getPortalList&catid=20&page=1&callback=JSON_CALLBACK';
+        $http.jsonp(myUrl).success(function(data){
+            console.log(data);
+        }).error(function () {
+
+        });
+
+        $scope.firstName="John";
+        $scope.lastName="doe";
+
+
+
+
+    });
+
+</script>
+
+</body>
+</html>

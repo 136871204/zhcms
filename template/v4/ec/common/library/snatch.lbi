@@ -1,0 +1,35 @@
+<if value="$myprice['is_end'] eq false">
+    <div class="box">
+        <div class="box_1">
+             <h3><span>我要出价</span></h3>
+             <div class="boxCenterList">
+                <form action="javascript:bid()" method="post" name="formBid" id="formBid">
+                    我的积分：
+                    {$myprice.pay_points}<br />
+                    出价：
+                    <input type="hidden" name="snatch_id" value="{$id}" />
+                    <input name="price" type="text" class="inputBg" />
+                    <input type="submit" name="Submit" class="bnt_blue_1" value="我要出价" style="vertical-align:middle;" />
+                </form>
+             </div>
+        </div>
+    </div>
+    <div class="blank5"></div>
+    <div class="box">
+        <div class="box_1">
+            <h3><span>我的出价</span></h3>
+            <div class="boxCenterList">
+                <foreach from="$myprice.bid_price" value="$item"   >
+                    {$item.price}
+                    <if value="$item.is_only">
+                        (唯一价格)
+                    </if>
+                    <br/>
+                </foreach>
+            </div>
+        </div>
+    </div>
+    <div class="blank5"></div>
+<else/>
+    TODO:snatch.lbi---1;
+</if>

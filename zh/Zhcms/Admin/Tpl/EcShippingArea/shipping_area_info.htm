@@ -1,0 +1,291 @@
+<include file='__PUBLIC__/pageheader.htm'/>
+<script language="JavaScript">
+<!--
+// 这里把JS用到的所有语言都赋值到这里
+var process_request = "正在处理您的请求...";
+var todolist_caption = "记事本";
+var todolist_autosave = "自动保存";
+var todolist_save = "保存";
+var todolist_clear = "清除";
+var todolist_confirm_save = "是否将更改保存到记事本？";
+var todolist_confirm_clear = "是否清空内容？";
+var no_area_name = "配送区域名称不能为空。";
+var del_shipping_area = "请先删除该配送区域，然后重新添加。";
+var invalid_free_mondy = "免费额度不能为空且必须是一个整数。";
+var blank_shipping_area = "配送区域的所辖区域不能为空。";
+var lang_remove = "移除";
+var lang_remove_confirm = "您确定要移除该地区吗？";
+var lang_disabled = "禁用";
+var lang_enabled = "启用";
+var lang_setup = "设置";
+var lang_region = "地区";
+var lang_shipping = "配送方式";
+var region_exists = "选定的地区已经存在。";
+//-->
+</script>
+<script type="text/javascript" src="__PUBLIC__/ec/js/validator.js"></script>
+<script type="text/javascript" src="__PUBLIC__/ec/js/transport.js"></script>
+<script type="text/javascript" src="__PUBLIC__/ec/js/region.js"></script>
+
+<div class="main-div">
+    <form method="post" action="{|U:'index'}" name="theForm" onsubmit="return validate()" style="background:#FFF">
+        <fieldset style="border:1px solid #DDEEF2">
+            <table >
+                <tr>
+                    <td class="label">配送区域名称:</td>
+                    <td>
+                        <input type="text" name="shipping_area_name" maxlength="60" size="30" value="{$shipping_area.shipping_area_name}" />
+                        <span class="require-field">*</span>
+                    </td>
+                </tr>
+                <if value="  $shipping_area['shipping_code'] eq 'ems' or $shipping_area['shipping_code'] eq 'yto' or $shipping_area['shipping_code'] eq 'zto' or $shipping_area['shipping_code'] eq 'sto_express' or $shipping_area['shipping_code'] eq 'post_mail' or $shipping_area['shipping_code'] eq 'sf_express' or $shipping_area['shipping_code'] eq 'post_express' "  >
+                    <tr>
+                        <td class="label">费用计算方式:</td>
+                        <td>
+                            <input type="radio"  <if value="$fee_compute_mode neq 'by_number' ">checked="true"</if> onclick="compute_mode('{$shipping_area.shipping_code}','weight')" name="fee_compute_mode" value="by_weight" />按重量计算
+                            <input type="radio" <if value="$fee_compute_mode eq 'by_number' ">checked="true"</if>  onclick="compute_mode('{$shipping_area.shipping_code}','number')" name="fee_compute_mode" value="by_number" />按商品件数计算
+                        </td>
+                    </tr>
+                </if>
+                <if value="$shipping_area['shipping_code'] neq 'cac'" >
+                    <foreach from="$fields" value="$field">
+                        <if value=" $fee_compute_mode eq 'by_number'" >
+                            <if value="$field.name eq 'item_fee' or $field.name eq 'free_money' or $field.name eq 'pay_fee'" >
+                                <tr id="{$field.name}" >
+                                    <td class="label">{$field.label}</td>
+                                    <td>
+                                        <input type="text" name="{$field.name}"  maxlength="60" size="20" value="{$field.value}" />
+                                        <span class="require-field">*</span>
+                                    </td>
+                                </tr>
+                            <else/>
+                                <tr id="{$field.name}" style="display:none">
+                                    <td class="label">{$field.label}</td>
+                                    <td>
+                                        <input type="text" name="{$field.name}"  maxlength="60" size="20" value="{$field.value}" />
+                                        <span class="require-field">*</span>
+                                    </td>
+                                </tr>
+                            </if>
+                        <else/>
+                            <if value="$field.name neq 'item_fee'" >
+                                <tr id="{$field.name}">
+                                    <td class="label">{$field.label}</td>
+                                    <td>
+                                        <input type="text" name="{$field.name}"  maxlength="60" size="20" value="{$field.value}" />
+                                        <span class="require-field">*</span>
+                                    </td>
+                                </tr>
+                            <else/>
+                                <tr id="{$field.name}" style="display:none">
+                                    <td class="label">{$field.label}</td>
+                                    <td>
+                                        <input type="text" name="{$field.name}"  maxlength="60" size="20" value="{$field.value}" />
+                                        <span class="require-field">*</span>
+                                    </td>
+                                </tr>
+                            </if>
+                        </if>
+                    </foreach>
+                </if>
+            </table>
+        </fieldset>
+        
+        <fieldset style="border:1px solid #DDEEF2">
+            <legend style="background:#FFF">所辖地区:</legend>
+            <table style="width:600px" align="center">
+                <tr>
+                    <td id="regionCell">
+                        <foreach from="$regions" value="$region" key="$id">
+                            <input type="checkbox" name="regions[]" value="{$id}" checked="true" /> {$region}&nbsp;&nbsp;
+                        </foreach>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span  style="vertical-align: top">国家： </span>
+                        <select name="country" id="selCountries" onchange="region.changed(this, 1, 'selProvinces')" size="10" style="width:80px">
+                            <foreach from="$countries" value="$country" >
+                                <option value="{$country.region_id}">{$country.region_name}</option>
+                            </foreach>
+                        </select>
+                        <span  style="vertical-align: top">省份： </span>
+                        <select name="province" id="selProvinces" onchange="region.changed(this, 2, 'selCities')" size="10" style="width:80px">
+                            <option value=''>请选择...</option>
+                        </select>
+                        <span  style="vertical-align: top">城市： </span>
+                        <select name="city" id="selCities" onchange="region.changed(this, 3, 'selDistricts')" size="10" style="width:80px">
+                            <option value=''>请选择...</option>
+                        </select>
+                        <span  style="vertical-align: top">区/县：</span>
+                        <select name="district" id="selDistricts" size="10" style="width:130px">
+                            <option value=''>请选择...</option>
+                        </select>
+                        <span  style="vertical-align: top"><input type="button" value="+" class="button" onclick="addRegion()" /></span>
+                    </td>
+                </tr>
+            </table>
+        </fieldset>
+        
+        <table >
+            <tr>
+                <td colspan="2" align="center">
+                    <input type="submit" value="确定" class="button" />
+                    <input type="reset" value="重置" class="button" />
+                    <input type="hidden" name="act" value="{$form_action}" />
+                    <input type="hidden" name="id" value="{$shipping_area.shipping_area_id}" />
+                    <input type="hidden" name="shipping" value="{$shipping_area.shipping_id}" />
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+
+<script language="JavaScript">
+    region.isAdmin = true; 
+    
+    onload = function()
+    {
+        document.forms['theForm'].elements['shipping_area_name'].focus();
+    
+        var selCountry = document.forms['theForm'].elements['country'];
+        if (selCountry.selectedIndex <= 0)
+        {
+            selCountry.selectedIndex = 0;
+        }
+    
+        region.loadProvinces(selCountry.options[selCountry.selectedIndex].value);
+    
+        // 开始检查订单
+        //startCheckOrder();
+    }
+    
+    /**
+    * 检查表单输入的数据
+    */
+    function validate()
+    {
+        validator = new Validator("theForm");
+        
+        validator.required('shipping_area_name', no_area_name);
+        validator.isInt('free_money', invalid_free_mondy, true);
+        
+        var regions_chk_cnt = 0;
+        for (i=0; i<document.getElementsByName('regions[]').length; i++)
+        {
+            if (document.getElementsByName('regions[]')[i].checked == true)
+            {
+                regions_chk_cnt++;
+            }
+        }
+        
+        if (regions_chk_cnt == 0)
+        {
+            validator.addErrorMsg(blank_shipping_area);
+        }
+        
+        return validator.passed();
+    }
+    
+    /**
+     * 添加一个区域
+     */
+    function addRegion()
+    {
+        var selCountry  = document.forms['theForm'].elements['country'];
+        var selProvince = document.forms['theForm'].elements['province'];
+        var selCity     = document.forms['theForm'].elements['city'];
+        var selDistrict = document.forms['theForm'].elements['district'];
+        var regionCell  = document.getElementById("regionCell");
+        
+        if (selDistrict.selectedIndex > 0)
+        {
+            regionId = selDistrict.options[selDistrict.selectedIndex].value;
+            regionName = selDistrict.options[selDistrict.selectedIndex].text;
+        }
+        else
+        {
+            if (selCity.selectedIndex > 0)
+            {
+                regionId = selCity.options[selCity.selectedIndex].value;
+                regionName = selCity.options[selCity.selectedIndex].text;
+            }
+            else
+            {
+                if (selProvince.selectedIndex > 0)
+                {
+                    regionId = selProvince.options[selProvince.selectedIndex].value;
+                    regionName = selProvince.options[selProvince.selectedIndex].text;
+                }
+                else
+                {
+                    if (selCountry.selectedIndex >= 0)
+                    {
+                        regionId = selCountry.options[selCountry.selectedIndex].value;
+                        regionName = selCountry.options[selCountry.selectedIndex].text;
+                    }
+                    else
+                    {
+                        return;
+                    }
+                }
+            }
+        }
+        // 检查该地区是否已经存在
+        exists = false;
+        for (i = 0; i < document.forms['theForm'].elements.length; i++)
+        {
+            if (document.forms['theForm'].elements[i].type=="checkbox")
+            {
+                if (document.forms['theForm'].elements[i].value == regionId)
+                {   
+                    exists = true;
+                    alert(region_exists);
+                }
+            }
+        }
+        // 创建checkbox
+        if (!exists)
+        {
+            regionCell.innerHTML += "<input type='checkbox' name='regions[]' value='" + regionId + "' checked='true' /> " + regionName + "&nbsp;&nbsp;";
+        }
+    }
+    
+    /**
+     * 配送费用计算方式
+     */
+    function compute_mode(shipping_code,mode)
+    {
+        var base_fee  = document.getElementById("base_fee");
+        var step_fee  = document.getElementById("step_fee");
+        var item_fee  = document.getElementById("item_fee");
+        if(shipping_code == 'post_mail' || shipping_code == 'post_express')
+        {
+            var step_fee1  = document.getElementById("step_fee1");
+        }
+    
+        if(mode == 'number')
+        {
+            item_fee.style.display = '';
+            base_fee.style.display = 'none';
+            step_fee.style.display = 'none';
+            if(shipping_code == 'post_mail' || shipping_code == 'post_express')
+            {
+                step_fee1.style.display = 'none';
+            }
+        }
+        else
+        {
+            item_fee.style.display = 'none';
+            base_fee.style.display = '';
+            step_fee.style.display = '';
+            if(shipping_code == 'post_mail' || shipping_code == 'post_express')
+            {
+                step_fee1.style.display = '';
+            }
+        }
+    }
+</script>
+<include file='__PUBLIC__/pagefooter.htm'/>
+
+

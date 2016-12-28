@@ -1,0 +1,73 @@
+<if value="$full_page">
+    <include file='__PUBLIC__/pageheader.htm'/>
+    <script language="JavaScript">
+    <!--
+    // 这里把JS用到的所有语言都赋值到这里
+    var process_request = "正在处理您的请求...";
+    var todolist_caption = "记事本";
+    var todolist_autosave = "自动保存";
+    var todolist_save = "保存";
+    var todolist_clear = "清除";
+    var todolist_confirm_save = "是否将更改保存到记事本？";
+    var todolist_confirm_clear = "是否清空内容？";
+   
+    
+    //-->
+    </script>
+    <script type="text/javascript" src="__PUBLIC__/ec/js/utils.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/ec/js/listtable.js"></script>
+    
+    <form method="post" action="" name="listForm">
+    <!-- start brand list -->
+        <div class="list-div" id="listDiv">
+</if>
+            <table width="100%" cellpadding="3" cellspacing="1" id="listTable">
+                <tr>
+                    <th>编号</th>
+                    <th>公司名称</th>
+                    <th>公司积分</th>
+                    <th>操作</th>
+                </tr>
+                <if value="!empty($company_list)">
+                    <foreach from="$company_list" value="$company">
+                    <tr>
+                        <td class="first-cell">{$company.company_id}</td>
+                        <td >{$company.company_name}</td>
+                        <td >{$company.company_points}</td>
+                        <td align="center">
+                             <a href="{|U:'Admin/ErpPointsLog/index',array('act'=>'list','company_id'=>$company['company_id'])}" title="消费履历">消费履历</a> |
+                             <a href="{|U:'index',array('act'=>'edit','company_id'=>$company['company_id'])}" title="编辑">编辑</a> |
+                             <a href="javascript:;" onclick="listTable.remove({$company.company_id}, '确定要删除吗？')" title="删除">删除</a>
+                        </td>
+                    </tr>
+                    </foreach>
+                <else/>
+                    <tr><td class="no-records" colspan="10">没有数据</td></tr>
+                </if>
+                <tr>
+                    <td align="right" nowrap="true" colspan="6">
+                        <include file='__PUBLIC__/page.htm'/>
+                    </td>
+                </tr>
+            </table>
+            
+            
+            
+<if value="$full_page">
+        </div>
+    </form>
+<!-- end 添加货品 -->
+
+<script type="text/javascript">
+listTable.recordCount = {$record_count};
+listTable.pageCount = {$page_count};
+
+  
+<foreach from="$filter" value="$item" key="$key">
+listTable.filter.{$key} = '{$item}';
+</foreach>
+
+
+</script>
+<include file='__PUBLIC__/pagefooter.htm'/>
+</if>

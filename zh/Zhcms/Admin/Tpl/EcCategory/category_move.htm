@@ -1,0 +1,63 @@
+<include file='__PUBLIC__/pageheader.htm'/>
+<script language="JavaScript">
+<!--
+
+// 这里把JS用到的所有语言都赋值到这里
+var process_request = "処理中...";
+var todolist_caption = "ノート";
+var todolist_autosave = "自動保存";
+var todolist_save = "保存";
+var todolist_clear = "クリア";
+var todolist_confirm_save = "ノートに最新情報保存するか？";
+var todolist_confirm_clear = "内容をクリアしますか？";
+var catname_empty = "カテゴリ名称は日必須!分类名称不能为空!";
+var unit_empyt = "数簡易は入力してください!";
+var is_leafcat = "選らんだカテゴリは一番下級カテゴリ。\r\n新カテゴリの上階級は一番下級カテゴリになってはできません";
+var not_leafcat = "選らんだカテゴリは一番下級カテゴリではない。\r\n商品のカテゴリ移行は一番下級カテゴリしか使えません。";
+var filter_attr_not_repeated = "属性は重複できません";
+var filter_attr_not_selected = "属性を選択してください";
+
+//-->
+</script>
+<div class="main-div">
+    <form method="post" action="{|U:'index'}" name="theForm" enctype="multipart/form-data">
+        <table width="100%">
+            <tr>
+                <td>
+                    <div style="font-weight:bold">
+                        <img src="__PUBLIC__/ec/images/notice.gif" width="16" height="16" border="0" /> 
+                         商品移行でなんですか?
+                    </div>
+                    <ul>
+                        <li>商品を新規する時或いは商品管理中,この商品のカテゴリを変更する場合,この機能を利用することが出来ます。</li>
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" align="center">
+                    <strong>このカテゴリから</strong>&nbsp;&nbsp;
+                    <select name="cat_id">
+                        <option value="0">選択して...</option>
+                        {$cat_select}
+                    </select>&nbsp;&nbsp;
+                    <strong>このカテゴリ</strong>
+                    <select name="target_cat_id">
+                       <option value="0">選択して...</option>
+                       {$cat_select}
+                    </select>へ&nbsp;&nbsp;&nbsp;&nbsp;
+                    <input type="submit" name="move_cat" value="移行開始" class="button"/>
+                    <input type="reset" value="リセット" class="button" />
+                    <input type="hidden" name="act" value="{$form_act}" />
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+<script type="text/javascript" src="__PUBLIC__/ec/js/utils.js"></script>
+<script type="text/javascript" src="__PUBLIC__/ec/js/validator.js"></script>
+<script language="JavaScript">
+
+</script>
+<include file='__PUBLIC__/pagefooter.htm'/>
+
+

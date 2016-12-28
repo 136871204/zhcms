@@ -1,0 +1,18 @@
+<if value="$pictures" >
+    <div class="picture" id="imglist">
+        <foreach from="$pictures" value="$picture"  name="$picture_no" >
+            <if value="$picture_no lt 1" >
+                <a  href="{$picture.img_url}" rel="zoom1"  rev="{$picture.img_url}" title="{$picture.img_desc">
+                    <img src="<if value="$picture['thumb_url']">{$picture.thumb_url}<else/>{$picture.img_url}</if>" alt="{$goods.goods_name}" class="onbg" />
+                </a>
+            <else/>
+                <a  href="{$picture.img_url}" rel="zoom1" rev="{$picture.img_url}" title="{$picture.img_desc}">
+                    <img src="<if value="$picture['thumb_url']">{$picture.thumb_url}<else/>{$picture.img_url}</if>" alt="{$goods.goods_name}" class="autobg" />
+                </a>
+            </if>
+        </foreach>
+    </div>
+</if>
+<script type="text/javascript">
+	mypicBg();
+</script>

@@ -1,0 +1,317 @@
+<include file='__PUBLIC__/pageheader.htm'/>
+<script language="JavaScript">
+<!--
+    // 这里把JS用到的所有语言都赋值到这里
+    var process_request = "{$zh.language.admin_eccommon_js_process_request}";
+    var todolist_caption = "{$zh.language.admin_eccommon_js_todolist_caption}";
+    var todolist_autosave = "{$zh.language.admin_eccommon_js_todolist_autosave}";
+    var todolist_save = "{$zh.language.admin_eccommon_js_todolist_save}";
+    var todolist_clear = "{$zh.language.admin_eccommon_js_todolist_clear}";
+    var todolist_confirm_save = "{$zh.language.admin_eccommon_js_todolist_confirm_save}";
+    var todolist_confirm_clear = "{$zh.language.admin_eccommon_js_todolist_confirm_clear}";
+    var no_title = "{$zh.language.admin_ecarticle_js_no_title}";
+    var no_cat = "{$zh.language.admin_ecarticle_js_no_cat}";
+    var not_allow_add = "{$zh.language.admin_ecarticle_js_not_allow_add}";
+    var drop_confirm = "{$zh.language.admin_ecarticle_js_drop_confirm}";
+//-->
+</script>
+<script type="text/javascript" src="__PUBLIC__/ec/js/utils.js"></script>
+<script type="text/javascript" src="__PUBLIC__/ec/js/selectzone.js"></script>
+<script type="text/javascript" src="__PUBLIC__/ec/js/validator.js"></script>
+
+
+<div class="tab-div">
+    <div id="tabbar-div">
+        <p>
+            <span class="tab-front" id="general-tab">{$zh.language.admin_ecarticle_info_page_article_info1}</span>
+            <span class="tab-back" id="detail-tab">{$zh.language.admin_ecarticle_info_page_article_info2}</span>
+            <span class="tab-back" id="goods-tab">{$zh.language.admin_ecarticle_info_page_article_info3}</span>
+        </p>
+    </div>
+    <div id="tabbody-div">
+        <form  action="{|U:'index'}" method="post" enctype="multipart/form-data" name="theForm" onsubmit="return validate();">
+            <table width="90%" id="general-table">
+                <tr>
+                    <td class="narrow-label">{$zh.language.admin_ecarticle_control_index_insert3}</td>
+                    <td>
+                        <input type="text" name="title" size ="40" maxlength="60" value="{$article.title}" />
+                        <span class="require-field">*</span>
+                    </td>
+                </tr>   
+                <if value="$article.cat_id egt 0">
+                <tr>
+                    <td class="narrow-label">{$zh.language.admin_ecarticle_info_page_article_list5}  </td>
+                    <td>
+                        <select name="article_cat" onchange="catChanged()">
+                            <option value="0">{$zh.language.admin_ecarticle_info_page_article_list18}</option>
+                            {$cat_select}
+                        </select>
+                        <span class="require-field">*</span>
+                    </td>
+                </tr>
+                <else/>
+                <input type="hidden" name="article_cat" value="-1" />
+                </if>
+                <if value="$article.cat_id egt 0">
+                <tr>
+                    <td class="narrow-label">{$zh.language.admin_ecarticle_info_page_article_list6}</td>
+                    <td>
+                        <input type="radio" name="article_type" value="0" <if value="$article.article_type eq 0">checked</if>>{$zh.language.admin_ecarticle_info_page_article_list11}
+                        <input type="radio" name="article_type" value="1" <if value="$article.article_type eq 1">checked</if>>{$zh.language.admin_ecarticle_info_page_article_list12}
+                        <span class="require-field">*</span>        
+                    </td>
+                </tr>
+                <tr>
+                    <td class="narrow-label">{$zh.language.admin_ecarticle_info_page_article_list7}</td>
+                    <td>
+                        <input type="radio" name="is_open" value="1" <if value="$article.is_open eq 1">checked</if>> {$zh.language.admin_ecarticle_info_page_article_info4}
+                        <input type="radio" name="is_open" value="0" <if value="$article.is_open eq 0">checked</if>> {$zh.language.admin_ecarticle_info_page_article_info5}
+                        <span class="require-field">*</span>      
+                    </td>
+                </tr>
+                <else/>
+                <tr style="display:none">
+                    <td colspan="2">
+                        <input type="hidden" name="article_type" value="0" />
+                        <input type="hidden" name="is_open" value="1" />
+                    </td>
+                </tr>
+                </if>  
+                <tr>
+                    <td class="narrow-label">{$zh.language.admin_ecarticle_info_page_article_info6}</td>
+                    <td><input type="text" name="author" maxlength="60" value="{$article.author}" /></td>
+                </tr>
+                <tr>
+                    <td class="narrow-label">{$zh.language.admin_ecarticle_info_page_article_info7}</td>
+                    <td><input type="text" name="author_email" maxlength="60" value="{$article.author_email}" /></td>
+                </tr>
+                <tr>
+                    <td class="narrow-label">{$zh.language.admin_ecarticle_info_page_article_info8}</td>
+                    <td><input type="text" name="keywords" maxlength="60" value="{$article.keywords}" /></td>
+                </tr>
+                <tr>
+                    <td class="narrow-label">{$zh.language.admin_ecarticle_info_page_article_info9}</td>
+                    <td><textarea name="description" id="description" cols="40" rows="5">{$article.description}</textarea></td>
+                </tr>   
+                <tr>
+                    <td class="narrow-label">{$zh.language.admin_ecarticle_info_page_article_info10}</td>
+                    <td>
+                        <input name="link_url" type="text" id="link_url" value="<if value="$article.link neq ''">{$article.link|htmlspecialchars:@@}<else>http://</if>" maxlength="60" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="narrow-label">{$zh.language.admin_ecarticle_info_page_article_info11}</td>
+                    <td>
+                        <input type="file" name="file"/>
+                        <span class="narrow-label">
+                            {$zh.language.admin_ecarticle_info_page_article_info12}
+                            <input name="file_url" type="text" value="{$article.file_url}" size="30" maxlength="255" />
+                        </span>
+                    </td>
+                </tr>
+            </table>
+            <table width="90%" id="detail-table" style="display:none">
+                <tr>
+                    <td>
+                        <ueditor name="FCKeditor1" content="{$article.content}" />
+                    </td>
+                </tr>
+            </table>
+            <table width="90%" id="goods-table" style="display:none">
+                <!-- 商品搜索 -->
+                <tr>
+                    <td colspan="5">
+                        <img src="__PUBLIC__/ec/images/icon_search.gif" width="26" height="22" border="0" alt="SEARCH" />
+                        <!-- 分类 -->
+                        <select name="cat_id">
+                            <option value="0">{$zh.language.admin_ecarticle_info_page_article_info13}</option>
+                            {$goods_cat_list}
+                        </select>
+                        <!-- 品牌 -->
+                        <select name="brand_id">
+                            <option value="0">{$zh.language.admin_ecarticle_info_page_article_info14}</option>
+                            <html_options  options="{$brand_list}"  >
+                        </select>
+                        <!-- 关键字 -->
+                        <input type="text" name="keyword" size="30" />
+                        <input type="button" value="{$zh.language.admin_ecarticle_info_page_article_info15}" onclick="searchGoods()" class="button" />
+                    </td>
+                </tr>
+                <!-- 商品列表 -->
+                <tr>
+                    <th></th>
+                    <th>{$zh.language.admin_ecarticle_info_page_article_list9}</th>
+                    <th></th>
+                </tr>
+                <tr>
+                    <td width="45%" align="center">
+                        <select name="source_select" size="20" style="width:90%" ondblclick="sz.addItem(false, 'add_link_goods', articleId)" multiple="true">
+                        </select>
+                    </td>
+                    <td align="center">
+                        <p><input type="button" value="&gt;&gt;" onclick="sz.addItem(true, 'add_link_goods', articleId)" class="button" /></p>
+                        <p><input type="button" value="&gt;" onclick="sz.addItem(false, 'add_link_goods', articleId)" class="button" /></p>
+                        <p><input type="button" value="&lt;" onclick="sz.dropItem(false, 'drop_link_goods', articleId)" class="button" /></p>
+                        <p><input type="button" value="&lt;&lt;" onclick="sz.dropItem(true, 'drop_link_goods', articleId)" class="button" /></p>
+                    </td>
+                    <td width="45%" align="center">
+                        <select name="target_select" multiple="true" size="20" style="width:90%" ondblclick="sz.dropItem(false, 'drop_link_goods', articleId)">
+                            <foreach from="$goods_list" value="$goods" >
+                                <option value="{$goods.goods_id}">{$goods.goods_name}</option>
+                            </foreach>
+                        </select>
+                    </td>
+                </tr>
+            </table>
+            <div class="button-div">
+                <input type="hidden" name="act" value="{$form_action}" />
+                <input type="hidden" name="old_title" value="{$article.title}"/>
+                <input type="hidden" name="id" value="{$article.article_id}" />
+                <input type="submit" value="{$zh.language.admin_ecarticle_info_page_article_list23}" class="button"  />
+                <input type="reset" value="{$zh.language.admin_ecarticle_info_page_article_info16}" class="button" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<script language="JavaScript">
+
+var articleId = {$article.article_id|default_value:@@,0};
+var elements  = document.forms['theForm'].elements;
+var sz        = new SelectZone(1, elements['source_select'], elements['target_select'], '');
+
+onload = function()
+{
+    // 开始检查订单
+    //startCheckOrder();
+}
+
+function validate()
+{
+    var validator = new Validator('theForm');
+    validator.required('title', no_title);
+    
+    <if value="$article['cat_id'] egt 0 ">
+    validator.isNullOption('article_cat',no_cat);
+    </if>
+    
+    
+    return validator.passed();
+}
+
+document.getElementById("tabbar-div").onmouseover = function(e)
+{
+    var obj = Utils.srcElement(e);
+
+    if (obj.className == "tab-back")
+    {
+        obj.className = "tab-hover";
+    }
+}
+
+document.getElementById("tabbar-div").onmouseout = function(e)
+{
+    var obj = Utils.srcElement(e);
+
+    if (obj.className == "tab-hover")
+    {
+        obj.className = "tab-back";
+    }
+}
+
+document.getElementById("tabbar-div").onclick = function(e)
+{
+    var obj = Utils.srcElement(e);
+
+    if (obj.className == "tab-front")
+    {
+        return;
+    }
+    else
+    {
+        objTable = obj.id.substring(0, obj.id.lastIndexOf("-")) + "-table";
+
+        var tables = document.getElementsByTagName("table");
+        var spans  = document.getElementsByTagName("span");
+
+        for (i = 0; i < tables.length; i++)
+        {
+            if (tables[i].id == objTable)
+            {
+                tables[i].style.display = (Browser.isIE) ? "block" : "table";
+            }
+            else
+            {
+                tables[i].style.display = "none";
+            }
+        }
+        for (i = 0; spans.length; i++)
+        {
+            if (spans[i].className == "tab-front")
+            {
+                spans[i].className = "tab-back";
+                obj.className = "tab-front";
+                break;
+            }
+        }
+    }
+}
+
+function showNotice(objId)
+{
+    var obj = document.getElementById(objId);
+
+    if (obj)
+    {
+        if (obj.style.display != "block")
+        {
+            obj.style.display = "block";
+        }
+        else
+        {
+            obj.style.display = "none";
+        }
+    }
+}
+
+function searchGoods()
+{
+    var elements  = document.forms['theForm'].elements;
+    var filters   = new Object;
+
+    filters.cat_id = elements['cat_id'].value;
+    filters.brand_id = elements['brand_id'].value;
+    filters.keyword = Utils.trim(elements['keyword'].value);
+
+    sz.loadOptions('get_goods_list', filters);
+}
+
+/**
+ * 选取上级分类时判断选定的分类是不是底层分类
+ */
+function catChanged()
+{
+    var obj = document.forms['theForm'].elements['article_cat'];
+    
+    cat_type = obj.options[obj.selectedIndex].getAttribute('cat_type');
+    if (cat_type == undefined)
+    {
+        cat_type = 1;
+    }
+    
+    if ((obj.selectedIndex > 0) && (cat_type == 2 || cat_type == 4))
+    {
+        alert(not_allow_add);
+        obj.selectedIndex = 0;
+        return false;
+    }
+    
+    return true;
+}
+
+
+
+</script>
+
+<include file='__PUBLIC__/pagefooter.htm'/>
+

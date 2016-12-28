@@ -1,0 +1,98 @@
+<if value="$full_page">
+    <include file='__PUBLIC__/pageheader.htm'/>
+    <script language="JavaScript">
+    <!--
+    // 这里把JS用到的所有语言都赋值到这里
+    var process_request = "正在处理您的请求...";
+    var todolist_caption = "记事本";
+    var todolist_autosave = "自动保存";
+    var todolist_save = "保存";
+    var todolist_clear = "清除";
+    var todolist_confirm_save = "是否将更改保存到记事本？";
+    var todolist_confirm_clear = "是否清空内容？";
+    var type_name_empty = "请输入红包类型名称!";
+    var type_money_empty = "请输入红包类型价格!";
+    var order_money_empty = "请输入订单金额!";
+    var type_money_isnumber = "类型金额必须为数字格式!";
+    var order_money_isnumber = "订单金额必须为数字格式!";
+    var bonus_sn_empty = "请输入红包的序列号!";
+    var bonus_sn_number = "红包的序列号必须是数字!";
+    var bonus_sum_empty = "请输入您要发放的红包数量!";
+    var bonus_sum_number = "红包的发放数量必须是一个整数!";
+    var bonus_type_empty = "请选择红包的类型金额!";
+    var user_rank_empty = "您没有指定会员等级!";
+    var user_name_empty = "您至少需要选择一个会员!";
+    var invalid_min_amount = "请输入订单下限（大于0的数字）";
+    var send_start_lt_end = "红包发放开始日期不能大于结束日期";
+    var use_start_lt_end = "红包使用开始日期不能大于结束日期";
+    //-->
+    </script>
+    <script type="text/javascript" src="__PUBLIC__/ec/js/utils.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/ec/js/listtable.js"></script>
+    
+
+    <!-- start bonus_type list -->
+    <form method="post" action="" name="listForm">
+    <!-- start brand list -->
+        <div class="list-div" id="listDiv">
+</if>
+            <table cellpadding="3" cellspacing="1">
+                <tr>
+                    <th><a href="javascript:listTable.sort('type_name'); ">类型名称</a>{$sort_type_name}</th>
+                    <th><a href="javascript:listTable.sort('send_type'); ">发放类型</a>{$sort_send_type}</th>
+                    <th><a href="javascript:listTable.sort('type_money'); ">红包金额</a>{$sort_type_money}</th>
+                    <th><a href="javascript:listTable.sort('min_amount'); ">订单下限</a>{$sort_min_amount}</th>
+                    <th>发放数量</th>
+                    <th>使用数量</th>
+                    <th>操作</th>
+                </tr>
+                <if value="!empty($type_list)">
+                    <foreach from="$type_list" value="$type">
+                    <tr>
+                        <td class="first-cell"><span onclick="listTable.edit(this, 'edit_type_name', {$type.type_id})">{$type.type_name}</span></td>
+                        <td>{$type.send_by}</td>
+                        <td align="right"><span onclick="listTable.edit(this, 'edit_type_money', {$type.type_id})">{$type.type_money}</span></td>
+                        <td align="right"><span onclick="listTable.edit(this, 'edit_min_amount', {$type.type_id})">{$type.min_amount}</span></td>
+                        <td align="right"><span>{$type.send_count}</span></td>
+                        <td align="right">{$type.use_count}</td>
+                        <td align="right">
+                            <if value='$type.send_type eq 3'>
+                                <a href="{|U:'index'}&act=gen_excel&tid={$type.type_id}">报表</a> |
+                            </if>
+                            <if value='$type.send_type neq 2'>
+                                <a href="{|U:'index'}&act=send&amp;id={$type.type_id}&amp;send_by={$type.send_type}">发放</a> |
+                            </if>
+                            <a href="{|U:'index'}&act=bonus_list&amp;bonus_type={$type.type_id}">查看</a> |
+                            <a href="{|U:'index'}&act=edit&amp;type_id={$type.type_id}">编辑</a> |
+                            <a href="javascript:;" onclick="listTable.remove({$type.type_id}, '您确认要删除这条记录吗?')">移除</a></span>
+                        </td>
+                    </tr>
+                    </foreach>
+                <else/>
+                    <tr><td class="no-records" colspan="10">没有找到任何记录</td></tr>
+                </if>
+                <tr>
+                    <td align="right" nowrap="true" colspan="8"><include file='__PUBLIC__/page.htm'/></td>
+                </tr>
+            </table>
+            
+            
+            
+<if value="$full_page">
+        </div>
+    </form>
+<!-- end 添加货品 -->
+
+<script type="text/javascript">
+listTable.recordCount = {$record_count};
+listTable.pageCount = {$page_count};
+
+  
+<foreach from="$filter" value="$item" key="$key">
+listTable.filter.{$key} = '{$item}';
+</foreach>
+
+
+</script>
+<include file='__PUBLIC__/pagefooter.htm'/>
+</if>

@@ -1,0 +1,39 @@
+<!--翻页 start-->
+<form name="selectPageForm" action="" method="get">
+    <input type="hidden" name="m" value="{$pager.current_meth}"/>
+    <input type="hidden" name="c" value="{$pager.current_control}"/>
+    <input type="hidden" name="a" value="{$pager.current_app}"/>
+    <if value="$pager['styleid'] eq 0" >
+        <div id="pager">
+            总计{$pager.record_count} 个记录，共 {$pager.page_count} 页。 
+            <span> 
+                <a href="{$pager.page_first}">第一页</a> 
+                <a href="{$pager.page_prev}">上一页</a> 
+                <a href="{$pager.page_next}">下一页</a> 
+                <a href="{$pager.page_last}">最末页</a> 
+            </span>
+            
+            <foreach from="$pager.search" value="$item"  key="$key">
+                <if value="$key eq 'keywords'" >
+                    <input type="hidden" name="{$key}" value="{$item|urldecode:@@}" />
+                <else/>
+                    <input type="hidden" name="{$key}" value="{$item}" />
+                </if>
+            </foreach>
+            <select name="page" id="page" onchange="selectPage(this)">
+                <html_options  options="{$pager.array}" selected="$pager['page']"/>
+            </select>
+        </div>
+    <else/>
+        <!--翻页 start-->
+        <div id="pager" class="pagebar">
+            <span class="f_l f6" style="margin-right:10px;">总计<b>{$pager.record_count}</b> 个记录</span>
+        </div>
+    </if>
+</form>
+<script type="Text/Javascript" language="JavaScript">
+function selectPage(sel)
+{
+    sel.form.submit();
+}
+</script>

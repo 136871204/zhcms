@@ -1,0 +1,71 @@
+<if value="$full_page">
+    <include file='__PUBLIC__/pageheader.htm'/>
+    <script language="JavaScript">
+    <!--
+    // 这里把JS用到的所有语言都赋值到这里
+    var process_request = "正在处理您的请求...";
+    var todolist_caption = "记事本";
+    var todolist_autosave = "自动保存";
+    var todolist_save = "保存";
+    var todolist_clear = "清除";
+    var todolist_confirm_save = "是否将更改保存到记事本？";
+    var todolist_confirm_clear = "";
+    var remove_confirm = "選らんだ会員ランクを削除するか？";
+    var rank_name_empty = "会員ランク名を入力してください。";
+    var integral_min_invalid = "ポイント下限を入力してない或いはポイント下限は数値ではない。";
+    var integral_max_invalid = "ポイント上限を入力してない或いはポイント上限は数値ではない。";
+    var discount_invalid = "割引率を入力してない或いは割引率を無効です。";
+    var integral_max_small = "ポイント上限はポイント下限より大きいはず。";
+    var lang_remove = "削除";
+    //-->
+    </script>
+    <script type="text/javascript" src="__PUBLIC__/ec/js/utils.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/ec/js/listtable.js"></script>
+    
+    <form method="post" action="{|U:'index'}" name="listForm">
+        <div class="list-div" id="listDiv">
+</if>
+            <table cellspacing='1' id="list-table">
+                <tr>
+                    <th>会員ランク名称</th>
+                    <th>ポイント下限</th>
+                    <th>ポイント上限</th>
+                    <th>初期割引率(%)</th>
+                    <th>特殊会員グルプ</th>
+                    <th>値段表示</th>
+                    <th>操作</th>
+                </tr>
+                <foreach from="$user_ranks" value="$rank">
+                    <tr>
+                        <td class="first-cell" ><span onclick="listTable.edit(this,'edit_name', {$rank.rank_id})">{$rank.rank_name}</span></td>
+                        <td align="right"><span <if value="$rank['special_rank'] neq 1"> onclick="listTable.edit(this, 'edit_min_points', {$rank.rank_id})" </if> >{$rank.min_points}</span></td>
+                        <td align="right"><span <if value="$rank['special_rank'] neq 1"> onclick="listTable.edit(this, 'edit_max_points', {$rank.rank_id})" </if> >{$rank.max_points}</span></td>
+                        <td align="right"><span onclick="listTable.edit(this, 'edit_discount', {$rank.rank_id})">{$rank.discount}</span></td>
+                        <td align="center"><img src="__PUBLIC__/ec/images/<if value="$rank.special_rank">yes<else/>no</if>.gif" onclick="listTable.toggle(this, 'toggle_special', {$rank.rank_id})" /></td>
+                        <td align="center"><img src="__PUBLIC__/ec/images/<if value="$rank.show_price">yes<else/>no</if>.gif" onclick="listTable.toggle(this, 'toggle_showprice', {$rank.rank_id})" /></td>
+                        <td align="center">
+                            <a href="javascript:;" onclick="listTable.remove({$rank.rank_id}, 'このデータを削除するか?')" title="削除">
+                                <img src="__PUBLIC__/ec/images/icon_drop.gif" border="0" height="16" width="16"/>
+                            </a>
+                        </td>
+                    </tr>
+                </foreach>
+            </table>
+            
+<if value="$full_page">
+        </div>
+    </form>
+
+
+<script type="text/javascript">
+
+    onload = function()
+    {
+        // 开始检查订单
+        //startCheckOrder();
+    }
+    
+
+</script>
+<include file='__PUBLIC__/pagefooter.htm'/>
+</if>

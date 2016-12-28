@@ -1,0 +1,273 @@
+<include file='__PUBLIC__/pageheader.htm'/>
+<script language="JavaScript">
+<!--
+// 这里把JS用到的所有语言都赋值到这里
+var process_request = "処理中...";
+var todolist_caption = "ノート";
+var todolist_autosave = "自動保存";
+var todolist_save = "保存";
+var todolist_clear = "クリア";
+var todolist_confirm_save = "ノートに最新情報保存するか？";
+var todolist_confirm_clear = "内容をクリアしますか？";
+var catname_empty = "カテゴリ名称は日必須!分类名称不能为空!";
+var unit_empyt = "数簡易は入力してください!";
+var is_leafcat = "選らんだカテゴリは一番下級カテゴリ。\r\n新カテゴリの上階級は一番下級カテゴリになってはできません";
+var not_leafcat = "選らんだカテゴリは一番下級カテゴリではない。\r\n商品のカテゴリ移行は一番下級カテゴリしか使えません。";
+var filter_attr_not_repeated = "属性は重複できません";
+var filter_attr_not_selected = "属性を選択してください";
+//-->
+</script>
+<div class="main-div">
+    <form method="post" action="{|U:'index'}" name="theForm" enctype="multipart/form-data" onsubmit="return validate()">
+        <table width="100%" id="general-table">
+            <tr>
+                <td class="label">カテゴリ名称:</td>
+                <td>
+                    <input type='text' name='cat_name' maxlength="20" value='{$cat_info.cat_name}' size='27' /> <font color="red">*</font>
+                </td>
+            </tr>
+            <tr>
+                <td class="label">上級カテゴリ:</td>
+                <td>
+                    <select name="parent_id">
+                        <option value="0">トップカテゴリ</option>
+                        {$cat_select}
+                    </select>
+                </td>
+            </tr>
+            <tr id="measure_unit">
+                <td class="label">数単位:</td>
+                <td>
+                    <input type="text" name='measure_unit' value='{$cat_info.measure_unit}' size="12" />
+                </td>
+            </tr>
+            <tr>
+                <td class="label">ソート:</td>
+                <td>
+                    <input type="text" name='sort_order' <if value="$cat_info.sort_order"> value='{$cat_info.sort_order}' <else> value="50" </if>  size="15" />
+                </td>
+            </tr>
+            <tr>
+                <td class="label">表示:</td>
+                <td>
+                    <input type="radio" name="is_show" value="1" <if value="$cat_info.is_show neq 0"> checked="true" </if>/> YES
+                    <input type="radio" name="is_show" value="0" <if value="$cat_info.is_show eq 0"> checked="true" </if> /> NO
+                </td>
+            </tr>
+            <tr>
+                <td class="label">ナビで表示:</td>
+                <td>
+                    <input type="radio" name="show_in_nav" value="1" <if value="$cat_info.show_in_nav neq 0"> checked="true" </if>/> YES
+                    <input type="radio" name="show_in_nav" value="0" <if value="$cat_info.show_in_nav eq 0"> checked="true" </if> /> NO
+                </td>
+            </tr>
+            <tr>
+                <td class="label">トップ進め設置:</td>
+                <td>
+                    <input type="checkbox" name="cat_recommend[]" value="1" <if value="$cat_recommend[1] eq 1"> checked="true" </if> /> best
+                    <input type="checkbox" name="cat_recommend[]" value="2" <if value="$cat_recommend[2] eq 1"> checked="true" </if>  /> new
+                    <input type="checkbox" name="cat_recommend[]" value="3" <if value="$cat_recommend[3] eq 1"> checked="true" </if>  /> hot
+                </td>
+            </tr>
+            <tr>
+                <td class="label">
+                    <a href="javascript:showNotice('noticeFilterAttr');" title="クリックして、ヒントを見る">
+                        <img src="__PUBLIC__/ec/images/notice.gif" width="16" height="16" border="0" alt=""/>
+                    </a>
+                    属性選択: 
+                </td>
+                <td>
+                <script type="text/javascript">
+                        var arr = new Array();
+                        var sel_filter_attr = "属性選択してください";
+                        <foreach from="$attr_list" value="$val" key="$att_cat_id">
+                            arr[{$att_cat_id}] = new Array();
+                            <foreach from="$val" value="$item" key="$i">
+                                <foreach from="$item" value="$attr_val" key="$attr_id">
+                                    arr[{$att_cat_id}][{$i}] = ["{$attr_val}", {$attr_id}];
+                                </foreach>
+                            </foreach>
+                        </foreach>
+                        
+                        function changeCat(obj)
+                      {
+                        var key = obj.value;
+                        var sel = window.ActiveXObject ? obj.parentNode.childNodes[4] : obj.parentNode.childNodes[5];
+                        sel.length = 0;
+                        sel.options[0] = new Option(sel_filter_attr, 0);
+                        if (arr[key] == undefined)
+                        {
+                          return;
+                        }
+                        for (var i= 0; i < arr[key].length ;i++ )
+                        {
+                          sel.options[i+1] = new Option(arr[key][i][0], arr[key][i][1]);
+                        }
+            
+                      }
+                    </script>
+                    <table width="100%" id="tbody-attr" align="center">
+                        <if value="$attr_cat_id eq 0">
+                        <tr>
+                            <td> 
+                                <a href="javascript:;" onclick="addFilterAttr(this)">[+]</a> 
+                                <select onChange="changeCat(this)">
+                                    <option value="0">商品タイプ選択してください</option>
+                                    {$goods_type_list}
+                                </select>&nbsp;&nbsp;
+                                <select name="filter_attr[]">
+                                    <option value="0">属性選択してください</option>
+                                </select>
+                            </td>
+                        </tr>
+                        </if>
+                        <foreach from="$filter_attr_list" value="$filter_attr" key="$filter_attr_tab_i">
+                        <tr>
+                            <td>
+                                <if value="$filter_attr_tab_i eq 0">
+                                    <a href="javascript:;" onclick="addFilterAttr(this)">[+]</a>
+                                <else/>
+                                    <a href="javascript:;" onclick="removeFilterAttr(this)">[-]&nbsp;</a>
+                                </if>
+                                <select onChange="changeCat(this)">
+                                    <option value="0">商品タイプ選択してください</option>
+                                    {$filter_attr.goods_type_list}
+                                </select>&nbsp;&nbsp;
+                                <select name="filter_attr[]">
+                                    <option value="0">属性選択してください</option>
+                                    <html_options  options="{$filter_attr.option}" selected="{$filter_attr.filter_attr}" >
+                                </select>
+                                <br />
+                            </td>
+                        </tr>
+                        </foreach>
+                    </table>
+                    <span class="notice-span" <if value="$help_open">style="display:block" <else/> style="display:none" </if> id="noticeFilterAttr">
+                        属性設置すると、カテゴリ画面では検索リンクとして表示する
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="label">
+                    <a href="javascript:showNotice('noticeGrade');" title="クリックして、ヒントを見る">
+                        <img src="__PUBLIC__/ec/images/notice.gif" width="16" height="16" border="0" />
+                    </a>価額区間数:  
+                </td>
+                <td>
+                    <input type="text" name="grade" value="{$cat_info.grade|default:0}" size="40" /> <br />
+                    <span class="notice-span" <if value="$help_open">style="display:block" <else/> style="display:none" </if> id="noticeGrade">
+                    回答カテゴリ画面の商品の一番高い～一番低い値段のうちに自動的に値段を分けて、検索条件として表示する，0は表示階級なし，10を超えないこと。      
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="label">
+                    <a href="javascript:showNotice('noticeGoodsSN');" title="クリックして、ヒントを見る">
+                        <img src="__PUBLIC__/ec/images/notice.gif" width="16" height="16" border="0"/>
+                    </a>カテゴリ画面表示cssファイル:  
+                </td>
+                <td>
+                    <input type="text" name="style" value="{$cat_info.style}" size="40" /> <br />
+                    <span class="notice-span" <if value="$help_open">style="display:block" <else/> style="display:none" </if> id="noticeGoodsSN">
+                         商品カテゴリごとに画面表示css違うことが可能。例：フォルダ themes 下なら：themes/style.cssを入力して 
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="label">キーワード:</td>
+                <td>
+                    <input type="text" name="keywords" value='{$cat_info.keywords}' size="50"/>
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="label">カテゴリ紹介:</td>
+                <td>
+                    <textarea name='cat_desc' rows="6" cols="48">{$cat_info.cat_desc}</textarea>
+                </td>
+            </tr>
+        </table>
+        <div class="button-div">
+            <input type="submit" value="確定" />
+            <input type="reset" value="リーセット" />
+        </div>
+        <input type="hidden" name="act" value="{$form_act}" />
+        <input type="hidden" name="old_cat_name" value="{$cat_info.cat_name}" />
+        <input type="hidden" name="cat_id" value="{$cat_info.cat_id}" />
+    </form>
+</div>
+<script type="text/javascript" src="__PUBLIC__/ec/js/utils.js"></script>
+<script type="text/javascript" src="__PUBLIC__/ec/js/validator.js"></script>
+<script language="JavaScript">
+
+document.forms['theForm'].elements['cat_name'].focus();
+/**
+ * 检查表单输入的数据
+ */
+function validate()
+{
+  validator = new Validator("theForm");
+  validator.required("cat_name",      catname_empty);
+  if (
+        parseInt(document.forms['theForm'].elements['grade'].value) >10 || 
+        parseInt(document.forms['theForm'].elements['grade'].value) < 0)
+  {
+    validator.addErrorMsg('カテゴリ価額階層数は0-10ないにしてください');
+  }
+  return validator.passed();
+}
+
+
+/**
+ * 新增一个筛选属性
+ */
+function addFilterAttr(obj)
+{
+  var src = obj.parentNode.parentNode;
+  var tbl = document.getElementById('tbody-attr');
+
+  var validator  = new Validator('theForm');
+  var filterAttr = document.getElementsByName("filter_attr[]");
+
+  if (filterAttr[filterAttr.length-1].selectedIndex == 0)
+  {
+    validator.addErrorMsg(filter_attr_not_selected);
+  }
+  
+  for (i = 0; i < filterAttr.length; i++)
+  {
+    for (j = i + 1; j <filterAttr.length; j++)
+    {
+      if (filterAttr.item(i).value == filterAttr.item(j).value)
+      {
+        validator.addErrorMsg(filter_attr_not_repeated);
+      } 
+    } 
+  }
+
+  if (!validator.passed())
+  {
+    return false;
+  }
+
+  var row  = tbl.insertRow(tbl.rows.length);
+  var cell = row.insertCell(-1);
+  cell.innerHTML = src.cells[0].innerHTML.replace(/(.*)(addFilterAttr)(.*)(\[)(\+)/i, "$1removeFilterAttr$3$4-");
+  filterAttr[filterAttr.length-1].selectedIndex = 0;
+}
+
+/**
+ * 删除一个筛选属性
+ */
+function removeFilterAttr(obj)
+{
+  var row = rowindex(obj.parentNode.parentNode);
+  var tbl = document.getElementById('tbody-attr');
+
+  tbl.deleteRow(row);
+}
+
+</script>
+
+
+

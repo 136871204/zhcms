@@ -1,0 +1,114 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="Keywords" content="{$keywords}" />
+    <meta name="Description" content="{$description}" />
+
+    <title>{$page_title}</title>
+    <link rel="shortcut icon" href="favicon.ico" />
+    <link rel="icon" href="animated_favicon.gif" type="image/gif" />
+    <link href="{$ecs_css_path}" rel="stylesheet" type="text/css" />
+
+    <script type="text/javascript" src="__TEMPLATE__/ec/common/js/common.js"></script>
+    <script type="text/javascript" src="__TEMPLATE__/ec/common/js/shopping_flow.js"></script>
+</head>
+<body>
+
+    <include file='__TEMPLATE__/ec/common/library/page_header.lbi'/>
+    <include file='__TEMPLATE__/ec/common/library/ur_here.lbi'/>
+    
+    <div class="block table">
+        <if value="$step eq 'cart'" >
+            <script type="text/javascript" src="__TEMPLATE__/ec/common/js/showdiv.js"></script>
+            <script type="text/javascript">
+                var user_name_empty = "请输入您的用户名！";
+                var email_address_empty = "请输入您的电子邮件地址！";
+                var email_address_error = "您输入的电子邮件地址格式不正确！";
+                var new_password_empty = "请输入您的新密码！";
+                var confirm_password_empty = "请输入您的确认密码！";
+                var both_password_error = "您两次输入的密码不一致！";
+                var show_div_text = "请点击更新购物车按钮";
+                var show_div_exit = "关闭";
+            </script>
+            <div class="flowBox">
+                <h6><span>商品列表</span></h6>
+                <form id="formCart" name="formCart" method="post" action="flow.php">
+                    <table width="99%" align="center" border="0" cellpadding="5" cellspacing="1" bgcolor="#dddddd">
+                        <tr>
+                            <th bgcolor="#ffffff">商品名称</th>
+                            <!-- 显示商品属性 -->
+                            <if  value="$show_goods_attribute eq 1" >
+                                <th bgcolor="#ffffff">属性</th>
+                            </if>
+                            <!-- 显示市场价 -->
+                            <if  value="$show_marketprice" >
+                                <th bgcolor="#ffffff">市场价</th>
+                            </if>
+                            <th bgcolor="#ffffff">本店价</th>
+                            <th bgcolor="#ffffff">购买数量</th>
+                            <th bgcolor="#ffffff">小计</th>
+                            <th bgcolor="#ffffff">操作</th>
+                        </tr>
+                        <foreach from="$goods_list" value="$goods" >
+                        TODO:这里还没有做
+                        </foreach>
+                    </table>
+                    <table width="99%" align="center" border="0" cellpadding="5" cellspacing="1" bgcolor="#dddddd">
+                        <tr>
+                            <td bgcolor="#ffffff">
+                                <if value="$discount gt 0">
+                                    TODO:1
+                                </if>
+                                {$shopping_money}
+                                <if value="$show_marketprice">
+                                    {$market_price_desc}
+                                </if>
+                            </td>
+                            <td align="right" bgcolor="#ffffff">
+                                <input type="button" value="清空购物车" class="bnt_blue_1" onclick="location.href='flow.php?step=clear'" />
+                                <input name="submit" type="submit" class="bnt_blue_1" value="更新购物车" />
+                            </td>
+                        </tr>
+                    </table>
+                    <input type="hidden" name="step" value="update_cart" />
+                </form>
+                <table width="99%" align="center" border="0" cellpadding="5" cellspacing="0" bgcolor="#dddddd">
+                    <tr>
+                        <td bgcolor="#ffffff">
+                            <a href="./"><img src="__TEMPLATE__/ec/common/images/continue.gif" alt="continue" /></a>
+                        </td>
+                        <td bgcolor="#ffffff" align="right">
+                            <a href="flow.php?step=checkout"><img src="__TEMPLATE__/ec/common/images/checkout.gif" alt="checkout" /></a>
+                        </td>
+                    </tr>
+                </table>
+                <if value="$_SESSION['ec_user_id'] gt 0 " >
+                    TODO:2
+                </if>
+            </div>
+            <div class="blank"></div>
+            <if value="$collection_good" >
+                TODO:3
+            </if>
+            <div class="blank5"></div>
+        </if>
+        <if value="$fittings_list">
+            TODO:4
+        </if>
+        <if value="$favourable_list" >
+            TODO:5
+        </if>
+    </div>
+    
+    
+    <include file='__TEMPLATE__/ec/common/library/page_footer.lbi'/>
+    
+</body>
+<script type="text/javascript">
+//var gmt_end_time = "{$group_buy.gmt_end_date|default:0}";
+
+
+
+</script>
+</html>

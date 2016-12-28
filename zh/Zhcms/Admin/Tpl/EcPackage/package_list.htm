@@ -1,0 +1,102 @@
+<if value="$full_page">
+    <include file='__PUBLIC__/pageheader.htm'/>
+    <script language="JavaScript">
+    <!--
+    // 这里把JS用到的所有语言都赋值到这里
+    var process_request = "正在处理您的请求...";
+    var todolist_caption = "记事本";
+    var todolist_autosave = "自动保存";
+    var todolist_save = "保存";
+    var todolist_clear = "清除";
+    var todolist_confirm_save = "是否将更改保存到记事本？";
+    var todolist_confirm_clear = "是否清空内容？";
+    var no_name = "没有输入活动名";
+    var no_desc = "没有输入活动描述";
+    var no_goods_id = "没有选择商品";
+    var invalid_starttime = "输入的起始时间格式不对，月份，时间应补足两位";
+    var invalid_endtime = "输入的结束时间格式不对，月份，时间应补足两位";
+    var invalid_gt = "输入的结束时间应大于起始日期";
+    var search_is_null = "没有搜索到任何商品，请重新搜索";
+    var invalid_package_price = "礼包价格为空或不是数字";
+    //-->
+    </script>
+    <script type="text/javascript" src="__PUBLIC__/ec/js/utils.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/ec/js/listtable.js"></script>
+    <div class="form-div">
+        <form action="javascript:searchPackage()" name="searchForm">
+            <img src="__PUBLIC__/ec/images/icon_search.gif" width="26" height="22" border="0" alt="SEARCH" />
+            超值礼包名称 <input type="text" name="keyword" /> <input type="submit" value="搜索" class="button" />
+        </form>
+    </div>
+
+    <form method="post" action="" name="listForm">
+        <div class="list-div" id="listDiv">
+</if>
+            <table cellpadding="3" cellspacing="1">
+                <tr>
+                    <th><a href="javascript:listTable.sort('act_id'); ">编号</a>{$sort_act_id}</th>
+                    <th><a href="javascript:listTable.sort('package_name'); ">超值礼包名称</a>{$sort_package_name}</th>
+                    <th><a href="javascript:listTable.sort('start_time'); ">活动开始时间</a>{$sort_start_time}</th>
+                    <th><a href="javascript:listTable.sort('end_time'); ">活动结束时间</a>{$sort_end_time}</th>
+                    <th>操作</th>
+                </tr>
+                <if value="!empty($package_list)">
+                    <foreach from="$package_list" value="$package">
+                    <tr>
+                        <td align="center">{$package.act_id}</td>
+                        <td class="first-cell"><span onclick="listTable.edit(this, 'edit_package_name', {$package.act_id})">{$package.package_name}</span></td>
+                        <td align="center">{$package.start_time}</td>
+                        <td align="center">{$package.end_time}</td>
+                        <td align="center">
+                            <a href="{|U:'index'}&act=edit&amp;id={$package.act_id}" title="编辑">
+                                <img src="__PUBLIC__/ec/images/icon_edit.gif" border="0" height="16" width="16"/>
+                            </a>
+                            <a href="javascript:;" onclick="listTable.remove({$package.act_id},'您确认要删除这条记录吗?')" title="移除">
+                                <img src="__PUBLIC__/ec/images/icon_drop.gif" border="0" height="16" width="16"/>
+                            </a>
+                        </td>
+                    </tr>
+                    </foreach>
+                <else/>
+                    <tr><td class="no-records" colspan="10">没有找到任何记录</td></tr>
+                </if>
+                <tr>
+                    <td align="right" nowrap="true" colspan="10"><include file='__PUBLIC__/page.htm'/></td>
+                </tr>
+            </table>
+                
+            
+<if value="$full_page">
+        </div>
+    </form>
+<!-- end 添加货品 -->
+
+<script type="text/javascript">
+    listTable.recordCount = {$record_count};
+    listTable.pageCount = {$page_count};
+    
+      
+    <foreach from="$filter" value="$item" key="$key">
+    listTable.filter.{$key} = '{$item}';
+    </foreach>
+
+    onload = function()
+    {
+        document.forms['searchForm'].elements['keyword'].focus();
+        // 开始检查订单
+        //startCheckOrder();
+    }
+    
+    /**
+    * 搜索礼包
+    */
+    function searchPackage()
+    {
+        var keyword = Utils.trim(document.forms['searchForm'].elements['keyword'].value);
+        listTable.filter.keywords = keyword;
+        listTable.filter.page = 1;
+        listTable.loadList();
+    }
+</script>
+<include file='__PUBLIC__/pagefooter.htm'/>
+</if>

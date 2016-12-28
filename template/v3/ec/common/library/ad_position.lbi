@@ -1,0 +1,6 @@
+
+<?php
+    $arr=array();
+    insert_ads($arr);
+ ?>
+ <div class="blank"></div>

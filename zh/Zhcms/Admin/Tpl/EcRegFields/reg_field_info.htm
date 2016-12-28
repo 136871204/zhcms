@@ -1,0 +1,80 @@
+<include file='__PUBLIC__/pageheader.htm'/>
+<script language="JavaScript">
+<!--
+// 这里把JS用到的所有语言都赋值到这里
+var process_request = "正在处理您的请求...";
+var todolist_caption = "记事本";
+var todolist_autosave = "自动保存";
+var todolist_save = "保存";
+var todolist_clear = "清除";
+var todolist_confirm_save = "是否将更改保存到记事本？";
+var todolist_confirm_clear = "是否清空内容？";
+var field_name_empty = "会員登録項目名を入力してください。";
+//-->
+</script>
+<div class="main-div">
+    <form action="{|U:'index'}" method="post" name="theForm" onsubmit="return validate()">
+        <table width="100%">
+            <tr >
+                <td class="label">登録項目名: </td>
+                <td>
+                    <input type="text" name="reg_field_name" value="{$reg_field.reg_field_name}" maxlength="20" />
+                    <span class="require-field">*</span>
+                </td>
+            </tr>
+            <tr >
+                <td class="label">ソート: </td>
+                <td><input type="text" name="reg_field_order" value="{$reg_field.reg_field_order}" maxlength="3" size="5"/></td>
+            </tr>
+            <tr >
+                <td class="label">表示: </td>
+                <td>
+                    <input type="radio" name="reg_field_display" value="1" <if value="$reg_field['reg_field_display'] eq 1">checked='checked'</if>/>{$zh.language.admin_ecregfields_page_table_th10}&nbsp;&nbsp;&nbsp;
+                    <input type="radio" name="reg_field_display" value="0" <if value="$reg_field['reg_field_display'] eq 0">checked='checked'</if>/>{$zh.language.admin_ecregfields_page_table_th11}
+                </td>
+            </tr>
+            <tr >
+                <td class="label">必須項目: </td>
+                <td>
+                    <input type="radio" name="reg_field_need" value="1" <if value="$reg_field['reg_field_need'] eq 1">checked='checked'</if>/>{$zh.language.admin_ecregfields_page_table_th10}&nbsp;&nbsp;&nbsp;
+                    <input type="radio" name="reg_field_need" value="0" <if value="$reg_field['reg_field_need'] eq 0">checked='checked'</if>/>{$zh.language.admin_ecregfields_page_table_th11}
+                </td>
+            </tr>
+            <tr>
+                <td></td>    
+                <td align="left">
+                    <input type="hidden" name="act" value="{$form_action}" />
+                    <input type="hidden" name="id" value="{$reg_field.reg_field_id}" />
+                    <input type="hidden" name="old_field_name" value="{$reg_field.reg_field_name}" />
+                    <input type="submit" value="確定" class="button" />
+                    <input type="reset" value="リセット " class="button" />
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+<script type="text/javascript" src="__PUBLIC__/ec/js/utils.js"></script>
+<script type="text/javascript" src="__PUBLIC__/ec/js/validator.js"></script>
+<script language="JavaScript">
+    document.forms['theForm'].elements['reg_field_name'].focus();
+
+    onload = function()
+    {
+        // 开始检查订单
+        //startCheckOrder();
+    }
+
+    /**
+     * 检查表单输入的数据
+     */
+    function validate()
+    {
+        validator = new Validator("theForm");
+        validator.required('reg_field_name', field_name_empty);
+        return validator.passed();
+    }
+
+</script>
+<include file='__PUBLIC__/pagefooter.htm'/>
+
+

@@ -1,0 +1,122 @@
+<if value="$full_page">
+    <include file='__PUBLIC__/pageheader.htm'/>
+    <script language="JavaScript">
+    <!--
+    // 这里把JS用到的所有语言都赋值到这里
+    var process_request = "正在处理您的请求...";
+    var todolist_caption = "记事本";
+    var todolist_autosave = "自动保存";
+    var todolist_save = "保存";
+    var todolist_clear = "清除";
+    var todolist_confirm_save = "是否将更改保存到记事本？";
+    var todolist_confirm_clear = "是否清空内容？";
+    //-->
+    </script>
+    <script type="text/javascript" src="__PUBLIC__/ec/js/utils.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/ec/js/listtable.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/ec/js/calendar.php?lang={$zh.session.language}"></script>
+    <link href="__PUBLIC__/ec/js/calendar/calendar.css" rel="stylesheet" type="text/css" />
+    <script>
+        var thisfile = '{$thisfile}';
+        var deleteck = '确定删除此商品的自动上架下架处理么?此操作不会影响商品本身';
+        var deleteid = '撤销';
+    </script>
+    
+    
+    <div class="form-div">
+        <if value="!$crons_enable" >
+            <ul style="padding:0; margin: 0; list-style-type:none; color: #CC0000;">
+                <li style="border: 1px solid #CC0000; background: #FFFFCC; padding: 10px; margin-bottom: 5px;" >
+                    您需要到系统设置-&gt;计划任务中开启该功能后才能使用。
+                </li>
+            </ul>
+        </if>
+        <form action="{$thisfile}" method="post">
+            商品名称
+            <input type="hidden" name="act" value="list" />
+            <input name="goods_name" type="text" size="25" /> 
+            <input type="submit" value="搜索" class="button" />
+        </form>
+    </div>
+    
+    <form method="post" action="{|U:'index'}" name="listForm">
+        <div class="list-div" id="listDiv">
+</if>
+            <table cellspacing='1' cellpadding='3'>
+                <tr>
+                    <th width="5%"><input onclick='listTable.selectAll(this, "checkboxes")' type="checkbox"/>编号</th>
+                    <th>商品名称</th>
+                    <th width="25%">上架时间</th>
+                    <th width="25%">下架时间</th>
+                    <th width="10%">操作</th>
+                </tr>
+                <if value="!empty($goodsdb)">
+                    <foreach from="$goodsdb" value="$val">
+                    <tr>
+                        <td><input name="checkboxes[]" type="checkbox" value="{$val.goods_id}" />{$val.goods_id}</td>
+                        <td>{$val.goods_name}</td>
+                        <td align="center">
+                            <span onclick="listTable.edit(this, 'edit_starttime', '{$val.goods_id}');showCalendar(this.firstChild, '%Y-%m-%d', false, false, this.firstChild)"><if value="$val.starttime">{$val.starttime}<else/>0000-00-00</if></span>
+                        </td>
+                        <td align="center">
+                            <span onclick="listTable.edit(this, 'edit_endtime', '{$val.goods_id}');showCalendar(this.firstChild, '%Y-%m-%d', false, false, this.firstChild)"><if value="$val.endtime">{$val.endtime}<else/>0000-00-00</if></span>
+                        </td>
+                        <td align="center">
+                            <span id="del{$val.goods_id}">
+                            <if value="$val.endtime or $val.starttime" >
+                                <a href="{$thisfile}&goods_id={$val.goods_id}&act=del" onclick="return confirm('确定删除此商品的自动上架下架处理么?此操作不会影响商品本身');">撤销</a>
+                            <else/>
+                                -
+                            </if>
+                            </span>
+                        </td>
+                    </tr>
+                    </foreach>
+                <else/>
+                    <tr><td class="no-records" colspan="10">没有找到任何记录</td></tr>
+                </if>
+            </table>
+            <table id="page-table" cellspacing="0">
+                <tr>
+                    <td>
+                        <input type="hidden" name="act" value="" />
+                        <input name="date" type="text" id="date" size="10" value='0000-00-00' readonly="readonly" />
+                        <input name="selbtn1" type="button" id="selbtn1" onclick="return showCalendar('date', '%Y-%m-%d', false, false, 'selbtn1');" value="选择" class="button"/>
+                        <input type="button" id="btnSubmit1" value="批量上架" disabled="true" class="button" onClick="return validate('batch_start')" />
+                        <input type="button" id="btnSubmit2" value="批量下架" disabled="true" class="button" onClick="return validate('batch_end')" />
+                    </td>
+                    <td align="right" nowrap="true">
+                        <include file='__PUBLIC__/page.htm'/>
+                    </td>
+                </tr>
+            </table>
+<if value="$full_page">
+        </div>
+    </form>
+<!-- end 添加货品 -->
+
+<script type="Text/Javascript" language="JavaScript">
+listTable.recordCount = {$record_count};
+listTable.pageCount = {$page_count};
+
+  
+<foreach from="$filter" value="$item" key="$key">
+listTable.filter.{$key} = '{$item}';
+</foreach>
+
+function validate(name)
+{
+    if(document.listForm.elements["date"].value == "0000-00-00")
+    {
+        alert('请选定时间');
+        return;	
+    }
+    else
+    {
+        document.listForm.act.value=name;
+        document.listForm.submit();
+    }
+}
+</script>
+<include file='__PUBLIC__/pagefooter.htm'/>
+</if>

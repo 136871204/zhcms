@@ -1,0 +1,50 @@
+<div id="category_tree">
+    <div class="tit">所有商品分类</div>
+    <dl class="clearfix" style=" overflow:hidden;" >
+        <div class="box1 cate" id="cate">
+            <?php $no=0; ?>
+            <foreach from="$categories" value="$cat"    >
+                <h1 onclick="tab({$no})"  <if value="$no eq 0" >style="border-top:none"</if>>
+                    <span class="f_l">
+                        <img src="__TEMPLATE__/ec/common/images/btn_fold.gif" style="padding-top:10px;padding-right:6px;cursor:pointer;"/>
+                    </span>
+                    <a href="{$cat.url}" class="  f_l">{$cat.name}</a>
+                </h1>
+                <ul style="display:none" >
+                    <foreach from="$cat.cat_id" value="$child"  name="$no1" >
+                        <a class="over_2" href="{$child.url}">{$child.name}</a> 
+                        <div class="clearfix">
+                            <foreach from="$child.cat_id" value="$childer"  >
+                                <a class="over_3" href="{$childer.url}">{$childer.name}</a>
+                            </foreach>
+                        </div>
+                    </foreach>
+                </ul>
+                <div style="clear:both"></div>
+                <?php $no++; ?>
+            </foreach>
+        </div>
+        <div style="clear:both"></div>  
+    </dl>
+</div>
+<div class="blank"></div>
+<script type="text/javascript">
+obj_h4 = document.getElementById("cate").getElementsByTagName("h4")
+obj_ul = document.getElementById("cate").getElementsByTagName("ul")
+obj_img = document.getElementById("cate").getElementsByTagName("img")
+function tab(id)
+{ 
+    //alert(id);
+	if(obj_ul.item(id).style.display == "block")
+	{
+		obj_ul.item(id).style.display = "none"
+		obj_img.item(id).src = "__TEMPLATE__/ec/common/images/btn_fold.gif"
+		return false;
+	}
+	else(obj_ul.item(id).style.display == "none")
+	{
+		obj_ul.item(id).style.display = "block"
+		obj_img.item(id).src = "__TEMPLATE__/ec/common/images/btn_unfold.gif"
+	}
+}
+</script>

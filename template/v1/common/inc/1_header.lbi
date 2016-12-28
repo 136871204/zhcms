@@ -1,0 +1,103 @@
+<!-- 头部 -->
+<header id="header">
+	<div class="wrapper fix header_header">
+		<h1><a href="/"><img src="__TEMPLATE__/common/images/logo_01.gif" width="96" height="38" alt=""/></a></h1>
+		<!-- 支店选择 -->
+		<div class="select_shop">
+			<a class="btn_01" href="">中国</a>
+			<i class="arrow"></i>
+			<div class="select_shop_detail">
+				<div class="select_shop_arrow"></div>
+				<ul class="select_shop_list">
+                    <li class="on"><a href="/">中国</a></li>
+                    <li><a href="/shanghai">上海支店</a></li>
+                    <li><a href="/beijing">北京支店</a></li>
+                    <li><a href="/other">其他支店</a></li>
+				</ul>
+				
+			</div>
+		</div>
+		<!-- //支店选择 -->
+		<!-- 搜索 -->
+		<div class="search_area">
+			<form action="">
+				<div class="search_border fix">
+					<input type="text" name="" id=""/>
+					<a class="search_btn" href="javascript:void(0);"></a>
+				</div>
+				<div class="search_spread">
+					<div class="search_histroy">
+						<span class="title">
+							您的搜索历史
+						</span>
+						<div class="search_histroy_content">
+							<ul>
+								<li><a href="">日本</a></li>
+								<li><a href="">秋叶原</a></li>
+							</ul>
+							<a class="clear_recorder" href="#">清除搜索记录</a>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+		<!-- //搜索 -->
+		<div class="header_right">
+			<!-- his微博微信 -->
+			<div class="share_area">
+				<span class="weixin">
+					<a href="javascript:void(0);"></a>
+					<div class="weixin_code">
+						<span class="txt">HIS服务号：HIS旅行</span>
+						<span class="img"><img src="__ROOT__/upload/original/config/2015/09/16/93181442390524.jpg" width="120" height="120" alt=""/></span>
+					</div>
+				</span>
+				<span class="weibo">
+					<a href="http://weibo.com/u/1594449317/home?wvr=5&sudaref=www.baidu.com" target="_blank"></a>
+				</span>
+			</div>
+			<!-- //his微博微信 -->
+			<!-- his电话 -->
+			<div class="his_phone">
+				<div class="his_main_phone fix">
+					<i class="phone_ico"></i>
+					<span>021-6329-7878</span>
+				</div>
+				<div class="his_spread_phone">
+					<div class="select_shop_arrow"></div>
+					<ul class="his_phone_list">
+                        <li>上海：<span>021-6329-7878</span></li>
+                        <li>北京：<span>010-8511-5558</span></li>
+                        <li>苏州：<span>0512-6818-5630</span></li>
+                        <li>成都：<span>028-8620-3718</span></li>
+                        <li>广州：<span>020-2223-0218</span></li>
+                        <li>大连：<span>0411-3980-5766</span></li>
+                        <li>青岛：<span>0532-66777288</span></li>
+					</ul>
+				</div>
+			</div>
+			<!-- //his电话 -->
+		</div>
+	</div>
+	<nav id="nav">
+		<div class="wrapper">
+			<ul class="fix banner">
+                <li><a href="/">首页</a></li>
+                <li><a href="/lines/riben-1-0-0-0-0-0-0-0">日本旅游</a></li>
+                <li><a href="/lines/qitaguoji-2-0-0-0-0-0-0-0">其他国际旅游</a></li>
+                <!--<li><a href="/lines/all-3-0-0-0-0-0-0-156">自由行</a></li>-->
+                <li><a href="/lines/all-4-0-0-0-0-0-0-157">当地游</a></li>
+                <li ><a href="">JR RAIL PASS</a></li>
+                <li class="blank"><a target="_blank" href="http://vacation.his-china.com/cn/Contents/index.aspx?Mode=Hotels&lang=cn">国际酒店</a></li>
+                <li class="blank"><a target="_blank" href="http://vacation.his-china.com/cn/Contents/index.aspx?Mode=JHA&lang=cn&site=cn">国际机票</a></li>
+			</ul>
+            <!--
+			<ul class="fix login_area">
+				<li class="login"><a href="">登录</a></li>
+				<li class="reg"><a href="">注册</a></li>
+			</ul>-->
+		</div>
+	</nav>
+
+</header>
+<!-- //头部 -->

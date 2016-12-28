@@ -1,0 +1,229 @@
+<if value="$full_page">
+    <include file='__PUBLIC__/pageheader.htm'/>
+    <script language="JavaScript">
+    <!--
+    // 这里把JS用到的所有语言都赋值到这里
+    var process_request = "正在处理您的请求...";
+    var todolist_caption = "记事本";
+    var todolist_autosave = "自动保存";
+    var todolist_save = "保存";
+    var todolist_clear = "清除";
+    var todolist_confirm_save = "是否将更改保存到记事本？";
+    var todolist_confirm_clear = "是否清空内容？";
+    var goods_name_not_null = "商品名称を入力してください。";
+    var goods_cat_not_null = "商品カテゴリを選んでください。";
+    var category_cat_not_null = "カテゴリ名を入力してください。";
+    var brand_cat_not_null = "ブランド名を入力してください。";
+    var goods_cat_not_leaf = "選んで商品カテゴリは一番下カテゴリではない，一番下階層のカテゴリ選んでください。";
+    var shop_price_not_null = "店舗価額を入力してください。";
+    var shop_price_not_number = "店舗価額数値ではない。";
+    var select_please = "選択してください...";
+    var button_add = "新規";
+    var button_del = "削除";
+    var spec_value_not_null = "スペックは空にはいけません";
+    var spec_price_not_number = "価額は数値ではない";
+    var market_price_not_number = "市場価額は数値ではない";
+    var goods_number_not_int = "商品在庫は数値ではない";
+    var warn_number_not_int = "在庫広告は数値ではない";
+    var promote_not_lt = "促销開始時間は促销終わる日付より大きくしている";
+    var promote_start_not_null = "促销開始時間は空にはいけません";
+    var promote_end_not_null = "促销終わる時間は空にはいけません";
+    var drop_img_confirm = "この画像を削除するか？";
+    var batch_no_on_sale = "選んだ商品をを非公開するか？";
+    var batch_trash_confirm = "選んだ商品を回収所に置くですか？";
+    var go_category_page = "このページ閉じて，商品カテゴリ遷移してカテゴリ新規するか？";
+    var go_brand_page = "このページ閉じて，商品ブランド遷移しブランド新規するか？";
+    var volume_num_not_null = "優遇数を入力してください";
+    var volume_num_not_number = "優遇数は数ではない";
+    var volume_price_not_null = "優遇価額を入力してください";
+    var volume_price_not_number = "優遇価額は数ではない";
+    var cancel_color = "スタイルなし";
+    //-->
+    </script>
+    <script type="text/javascript" src="__PUBLIC__/ec/js/utils.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/ec/js/listtable.js"></script>
+    
+    <!-- 品牌搜索 -->
+    <include file='__CONTROL_TPL__/goods_search.htm'/>
+    <!-- 商品列表 -->
+    <form method="post" action="{|U:'index'}" name="listForm" onsubmit="return confirmSubmit(this)">
+        <!-- start goods list -->
+        <div class="list-div" id="listDiv">
+</if>
+            <table cellpadding="3" cellspacing="1">
+                <tr>
+                    <th>
+                        <input onclick='listTable.selectAll(this, "checkboxes")' type="checkbox" />
+                        <a href="javascript:listTable.sort('goods_id'); ">ID</a>{$sort_goods_id}
+                    </th>
+                    <th><a href="javascript:listTable.sort('goods_name'); ">商品名称</a>{$sort_goods_name}</th>
+                    <th><a href="javascript:listTable.sort('goods_sn'); ">番号</a>{$sort_goods_sn}</th>
+                    <th><a href="javascript:listTable.sort('shop_price'); ">価額</a>{$sort_shop_price}</th>
+                    <th><a href="javascript:listTable.sort('is_on_sale'); ">公開</a>{$sort_is_on_sale}</th>
+                    <th><a href="javascript:listTable.sort('is_best'); ">ベスト</a>{$sort_is_best}</th>
+                    <th><a href="javascript:listTable.sort('is_new'); ">最新</a>{$sort_is_new}</th>
+                    <th><a href="javascript:listTable.sort('is_hot'); ">よく売れる</a>{$sort_is_hot}</th>
+                    <th><a href="javascript:listTable.sort('sort_order'); ">お勧めソート</a>{$sort_sort_order}</th>
+                    <if value="$use_storage">
+                    <th><a href="javascript:listTable.sort('goods_number'); ">在庫</a>{$sort_goods_number}</th>
+                    </if>
+                    <th>操作</th>
+                </tr>
+                <if value="!empty($goods_list)">
+                    <foreach from="$goods_list" value="$goods">
+                    <tr>
+                        <td><input type="checkbox" name="checkboxes[]" value="{$goods.goods_id}" />{$goods.goods_id}</td>
+                        <td class="first-cell" style="<if value='$goods.is_promote'>color:red;</if>"><span onclick="listTable.edit(this, 'edit_goods_name', {$goods.goods_id})">{$goods.goods_name}</span></td>
+                        <td><span onclick="listTable.edit(this, 'edit_goods_sn', {$goods.goods_id})">{$goods.goods_sn}</span></td>
+                        <td align="right"><span onclick="listTable.edit(this, 'edit_goods_price', {$goods.goods_id})">{$goods.shop_price}</span></td>
+                        <td align="center"><img src="__PUBLIC__/ec/images/<if value='$goods.is_on_sale'>yes<else/>no</if>.gif" onclick="listTable.toggle(this, 'toggle_on_sale', {$goods.goods_id})" /></td>
+                        <td align="center"><img src="__PUBLIC__/ec/images/<if value='$goods.is_best'>yes<else/>no</if>.gif" onclick="listTable.toggle(this, 'toggle_best', {$goods.goods_id})" /></td>
+                        <td align="center"><img src="__PUBLIC__/ec/images/<if value='$goods.is_new'>yes<else/>no</if>.gif" onclick="listTable.toggle(this, 'toggle_new', {$goods.goods_id})" /></td>
+                        <td align="center"><img src="__PUBLIC__/ec/images/<if value='$goods.is_hot'>yes<else/>no</if>.gif" onclick="listTable.toggle(this, 'toggle_hot', {$goods.goods_id})" /></td>
+                        <td align="center"><span onclick="listTable.edit(this, 'edit_sort_order', {$goods.goods_id})">{$goods.sort_order}</span></td>
+                        <if value="$use_storage">
+                        <td align="right"><span onclick="listTable.edit(this, 'edit_goods_number', {$goods.goods_id})">{$goods.goods_number}</span></td>
+                        </if>
+                        <td align="center">
+                            <a href="{|U:'Ec/EcGoods/index'}&id={$goods.goods_id}" target="_blank" title="{$lang.view}"><img src="__PUBLIC__/ec/images/icon_view.gif" width="16" height="16" border="0" /></a>
+                            <a href="{|U:'index'}&act=edit&goods_id={$goods.goods_id}<if value="$code neq 'real_goods'">&extension_code={$code}</if>" title="変更"><img src="__PUBLIC__/ec/images/icon_edit.gif" width="16" height="16" border="0" /></a>
+                            <a href="{|U:'index'}&act=copy&goods_id={$goods.goods_id}<if value="$code neq 'real_goods'">&extension_code={$code}</if>" title="コピー"><img src="__PUBLIC__/ec/images/icon_copy.gif" width="16" height="16" border="0" /></a>
+                            <a href="javascript:;" onclick="listTable.remove({$goods.goods_id}, 'この商品を回収所に置くですか？')" title="回収所"><img src="__PUBLIC__/ec/images/icon_trash.gif" width="16" height="16" border="0" /></a>
+                            <!--<a href="comment_collect.php?act=comment&goods_id={$goods.goods_id}" ><img src="__PUBLIC__/ec/images/comment_icon.png"  border="0"/></a>-->
+                            <if value="$specifications[$goods.goods_type] neq ''">
+                                <a href="{|U:'index'}&act=product_list&goods_id={$goods.goods_id}" title="品物リスト">
+                                    <img src="__PUBLIC__/ec/images/icon_docs.gif" width="16" height="16" border="0" />
+                                </a>
+                            <else/>
+                                <img src="__PUBLIC__/ec/images/empty.gif" width="16" height="16" border="0" />
+                            </if>
+                            <if value="$add_handler">
+                                |
+                                <foreach from="$add_handler" value="$handler">
+                                    <a href="{$handler.url}&goods_id={$goods.goods_id}" title="{$handler.title}">
+                                        <img src="__PUBLIC__/ec/images/{$handler.img}" width="16" height="16" border="0" />
+                                    </a>
+                                </foreach>
+                            </if>
+                        </td>
+                    </tr>
+                    </foreach>
+                <else/>
+                    <tr><td class="no-records" colspan="10">データなし</td></tr>
+                </if>
+            </table>
+            <!-- end goods list -->
+            
+            <!-- 分页 -->
+            <table id="page-table" cellspacing="0">
+              <tr>
+                <td align="right" nowrap="true">
+                <include file='__PUBLIC__/page.htm'/>
+                </td>
+              </tr>
+            </table>
+<if value="$full_page">
+        </div>
+        
+        <div>
+            <input type="hidden" name="act" value="batch" />
+            <select name="type" id="selAction" onchange="changeAction()">
+                <option value="">選択して...</option>
+                <option value="trash">回収所</option>
+                <option value="on_sale">公開</option>
+                <option value="not_on_sale">非公開</option>
+                <option value="best">ベスト</option>
+                <option value="not_best">ベスト取消</option>
+                <option value="new">最新</option>
+                <option value="not_new">最新取消</option>
+                <option value="hot">よく売れる</option>
+                <option value="not_hot">よく売れる取消</option>
+                <option value="move_to">カテゴリに移行</option>
+                <if value="$suppliers_list gt 0">
+                    <option value="suppliers_move_to">サプライヤーに移行</option>
+                </if>
+            </select>
+            <select name="target_cat" style="display:none">
+                <option value="0">選択して...</option>
+                {$cat_list}
+            </select>
+            <if value="$suppliers_list gt 0">
+                <!--二级主菜单：转移供货商-->
+                <select name="suppliers_id" style="display:none">
+                    <option value="-1">選択して...</option>
+                    <option value="0">ウェブ店舗に移行</option>
+                    <foreach from="$suppliers_list" value="$sl">
+                        <option value="{$sl.suppliers_id}">{$sl.suppliers_name}</option>
+                    </foreach>
+                </select>
+            </if>
+            <if value="$code neq 'real_goods'">
+                <input type="hidden" name="extension_code" value="{$code}" />
+            </if>
+            <input type="submit" value="確定" id="btnSubmit" name="btnSubmit" class="button" disabled="true" />
+        </div>
+    </form>
+<!-- end 添加货品 -->
+
+<script type="text/javascript">
+listTable.recordCount = {$record_count};
+listTable.pageCount = {$page_count};
+
+  
+<foreach from="$filter" value="$item" key="$key">
+listTable.filter.{$key} = '{$item}';
+</foreach>
+
+/**
+* @param: bool ext 其他条件：用于转移分类
+*/
+function confirmSubmit(frm, ext)
+{
+  if (frm.elements['type'].value == 'trash')
+  {
+      return confirm(batch_trash_confirm);
+  }
+  else if (frm.elements['type'].value == 'not_on_sale')
+  {
+      return confirm(batch_no_on_sale);
+  }
+  else if (frm.elements['type'].value == 'move_to')
+  {
+      ext = (ext == undefined) ? true : ext;
+      return ext && frm.elements['target_cat'].value != 0;
+  }
+  else if (frm.elements['type'].value == 'suppliers_move_to')
+  {
+      ext = (ext == undefined) ? true : ext;
+      return ext && frm.elements['suppliers_id'].value != 0;
+  }
+  else if (frm.elements['type'].value == '')
+  {
+      return false;
+  }
+  else
+  {
+      return true;
+  }
+}
+
+function changeAction()
+{
+  var frm = document.forms['listForm'];
+
+  // 切换分类列表的显示
+  frm.elements['target_cat'].style.display = frm.elements['type'].value == 'move_to' ? '' : 'none';
+		
+		<if value="$suppliers_list gt 0">
+  frm.elements['suppliers_id'].style.display = frm.elements['type'].value == 'suppliers_move_to' ? '' : 'none';
+		</if>
+
+  if (!document.getElementById('btnSubmit').disabled &&
+      confirmSubmit(frm, false))
+  {
+      frm.submit();
+  }
+}
+</script>
+<include file='__PUBLIC__/pagefooter.htm'/>
+</if>

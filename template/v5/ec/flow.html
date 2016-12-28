@@ -1,0 +1,756 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!--
+TODO:
+1.application/rss+xml 部分的设置之后设置
+ -->
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="Keywords" content="{$keywords}" />
+    <meta name="Description" content="{$description}" />
+    <title>{$page_title}</title>
+    <link rel="shortcut icon" href="favicon.ico" />
+    <link rel="icon" href="animated_favicon.gif" type="image/gif" />
+    <link href="{$ecs_css_path}" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="__TEMPLATE__/ec/common/js/common.js"></script>
+    <script type="text/javascript" src="__TEMPLATE__/ec/common/js/shopping_flow.js"></script>
+</head> 
+<body>
+    <include file='__TEMPLATE__/ec/common/library/page_header.lbi'/>
+    <!--当前位置 start-->
+    <div class="block box">
+        <div id="ur_here">
+            <include file='__TEMPLATE__/ec/common/library/ur_here.lbi'/>
+        </div>
+    </div>
+    <!--当前位置 end-->
+    <div class="blank"></div>
+    <div class="block">
+        <if value="$step eq 'cart'" >
+            <!-- 购物车内容 -->
+            <script type="text/javascript" src="__TEMPLATE__/ec/common/js/showdiv.js"></script>
+            <script type="text/javascript">
+              var user_name_empty = "ユーザ名を入力してください！";
+              var email_address_empty = "メールアドレスを入力してください！";
+              var email_address_error = "メールアドレスが正しくない！";
+              var new_password_empty = "新しいパスワードを入力してください！";
+              var confirm_password_empty = "確認パスワードを入力してください！";
+              var both_password_error = "二つのパスワード入力は不一致！";
+              var show_div_text = "カード更新ボタンをクリックしてください";
+              var show_div_exit = "閉じる";
+            </script>
+            <div class="flowBox">
+                <h6><span>商品リスト</span></h6>
+                <form id="formCart" name="formCart" method="post" action="{|U:'index'}">
+                    <table width="99%" align="center" border="0" cellpadding="5" cellspacing="1" bgcolor="#dddddd">
+                        <tr>
+                            <th bgcolor="#ffffff">商品名</th>
+                            <!-- 显示商品属性 -->
+                            <if  value="$show_goods_attribute eq 1" >
+                                <th bgcolor="#ffffff">属性</th>
+                            </if>
+                            <!-- 显示市场价 -->
+                            <if  value="$show_marketprice" >
+                                <th bgcolor="#ffffff">市場値段</th>
+                            </if>
+                            <th bgcolor="#ffffff">今の値段</th>
+                            <th bgcolor="#ffffff">買う数</th>
+                            <th bgcolor="#ffffff">計算</th>
+                            <th bgcolor="#ffffff">操作</th>
+                        </tr>
+                        <foreach from="$goods_list" value="$goods" >
+                            <tr>
+                                <td bgcolor="#ffffff" align="center">
+                                    <!-- 商品 -->
+                                    <if value="$goods['goods_id'] gt 0 and  $goods['extension_code'] neq 'package_buy' "  >
+                                        <if value="$show_goods_thumb eq 1">
+                                            <a href="{|U:'ec/EcGoods/index'}&id={$goods.goods_id}" target="_blank" class="f6">{$goods.goods_name}</a>
+                                        <elseif value="$show_goods_thumb eq 2"/>
+                                            <a href="{|U:'ec/EcGoods/index'}&id={$goods.goods_id}" target="_blank">
+                                                <img src="{$goods.goods_thumb}" border="0" title="{$goods.goods_name}" />
+                                            </a>
+                                        <else/>
+                                            <a href="{|U:'ec/EcGoods/index'}&id={$goods.goods_id}" target="_blank">
+                                                <img src="{$goods.goods_thumb}" border="0" title="{$goods.goods_name}" />
+                                            </a><br />
+                                            <a href="{|U:'ec/EcGoods/index'}&id={$goods.goods_id}" target="_blank" class="f6">{$goods.goods_name}</a>
+                                        </if>
+                                        <!-- 配件 -->
+                                        <if value="$goods['parent_id'] gt 0">
+                                            <span style="color:#FF0000">（アクセサリ）</span>
+                                        </if>
+                                        <!-- 赠品 -->
+                                        <if value="$goods['is_gift'] gt 0">
+                                            <span style="color:#FF0000">（贈り物）</span>
+                                        </if>
+                                    <elseif value="$goods['goods_id'] gt 0 and $goods['extension_code'] eq 'package_buy' "/>
+                                        <a href="javascript:void(0)" onclick="setSuitShow({$goods.goods_id})" class="f6">
+                                            {$goods.goods_name}<span style="color:#FF0000;">（超值礼包）</span>
+                                        </a>
+                                        <div id="suit_{$goods.goods_id}" style="display:none">
+                                            <foreach from="$goods.package_goods_list" value="$package_goods_list" >
+                                                <a href="{|U:'ec/EcGoods/index'}&id={$package_goods_list.goods_id}" target="_blank" class="f6">{$package_goods_list.goods_name}</a><br />
+                                            </foreach>
+                                        </div>
+                                    <!-- 优惠活动 -->
+                                    <else/>
+                                        {$goods.goods_name}
+                                    </if>
+                                </td>
+                                <!-- 显示商品属性 -->
+                                <if value="$show_goods_attribute eq 1">
+                                    <td bgcolor="#ffffff">{$goods.goods_attr|nl2br}</td>
+                                </if> 
+                                <!-- 显示市场价 -->
+                                <if value="$show_marketprice" >
+                                    <td align="right" bgcolor="#ffffff">{$goods.market_price}</td>
+                                </if> 
+                                <td align="right" bgcolor="#ffffff">{$goods.goods_price}</td>
+                                <td align="right" bgcolor="#ffffff">
+                                    <!--普通商品可修改数量 -->
+                                    <if value="$goods['goods_id'] gt 0 and $goods['is_gift'] eq 0 and $goods['parent_id'] eq 0">
+                                        <input type="text" name="goods_number[{$goods.rec_id}]" id="goods_number_{$goods.rec_id}" value="{$goods.goods_number}" size="4" class="inputBg" style="text-align:center " onkeydown="showdiv(this)"/>
+                                    <else/>
+                                        {$goods.goods_number}
+                                    </if> 
+                                </td>
+                                <td align="right" bgcolor="#ffffff">{$goods.subtotal}</td>
+                                <td align="center" bgcolor="#ffffff">
+                                    <a href="javascript:if (confirm('この商品を削除するか？')) location.href='{|U:'ec/EcFlow/index'}&step=drop_goods&amp;id={$goods.rec_id}'; " class="f6">削除</a>
+                                    <!-- 如果登录了，可以加入收藏 -->
+                                    <if value="{$zh.session.ec_user_id gt 0 and $goods['extension_code'] neq 'package_buy' }" >
+                                        <a href="javascript:if (confirm('収蔵しますか？')) location.href='{|U:'ec/EcFlow/index'}&step=drop_to_collect&amp;id={$goods.rec_id}'; " class="f6">収蔵</a>
+                                    </if>
+                                </td>
+                            </tr>
+                        </foreach>
+                    </table>
+                    <table width="99%" align="center" border="0" cellpadding="5" cellspacing="1" bgcolor="#dddddd">
+                        <tr>
+                            <td bgcolor="#ffffff">
+                                <if value="$discount gt 0">
+                                    {$your_discount}<br />
+                                </if>
+                                {$shopping_money}
+                                <if value="$show_marketprice">
+                                    {$market_price_desc}
+                                </if>
+                            </td>
+                            <td align="right" bgcolor="#ffffff">
+                                <input type="button" value="カードクリア" class="bnt_blue_1" onclick="location.href='{|U:'index'}&step=clear'" />
+                                <input name="submit" type="submit" class="bnt_blue_1" value="カード更新" />
+                            </td>
+                        </tr>
+                    </table>
+                    <input type="hidden" name="step" value="update_cart" />
+                </form>
+                <table width="99%" align="center" border="0" cellpadding="5" cellspacing="0" bgcolor="#dddddd">
+                    <tr>
+                        <td bgcolor="#ffffff">
+                            <a href="{|U:'ec/EcIndex/index'}">買い物続き</a>
+                        </td>
+                        <td bgcolor="#ffffff" align="right">
+                            <a href="{|U:'ec/EcFlow/index'}&step=checkout">決済へ</a>
+                        </td>
+                    </tr>
+                </table>
+                <if value="$_SESSION['ec_user_id'] gt 0 " >
+                    <script type="text/javascript" src="__TEMPLATE__/ec/common/js/transport.js"></script>
+                    <script type="text/javascript" charset="utf-8">
+                        function collect_to_flow(goodsId)
+                        {
+                            var goods        = new Object();
+                            var spec_arr     = new Array();
+                            var fittings_arr = new Array();
+                            var number       = 1;
+                            goods.spec     = spec_arr;
+                            goods.goods_id = goodsId;
+                            goods.number   = number;
+                            goods.parent   = 0;
+                            var ajaxurl=APP+'&c=EcFlow&m=index&step=add_to_cart';
+                            Ajax.call(ajaxurl, 'goods=' + goods.toJSONString(), collect_to_flow_response, 'POST', 'JSON');
+                        }
+                        
+                        function collect_to_flow_response(result)
+                        {
+                            if (result.error > 0)
+                            {
+                                // 如果需要缺货登记，跳转
+                                if (result.error == 2)
+                                {
+                                    if (confirm(result.message))
+                                    {
+                                        location.href = '{|U:"ec/EcUser/index"}&act=add_booking&id=' + result.goods_id;
+                                    }
+                                }
+                                else if (result.error == 6)
+                                {
+                                    openSpeDiv(result.message, result.goods_id);
+                                }
+                                else
+                                {
+                                    alert(result.message);
+                                }
+                            }
+                            else
+                            {
+                                location.href = '{|U:"ec/EcFlow/index"}';
+                            }
+                        }
+                    </script>
+                    <div class="blank"></div>
+                </if>
+                <if value="$collection_good" >
+                    TODO:3
+                </if>
+            </div>
+            <div class="blank5"></div>
+            <if value="$fittings_list">
+                <script type="text/javascript" src="__TEMPLATE__/ec/common/js/transport.js"></script>
+                <script type="text/javascript" charset="utf-8">
+                    function fittings_to_flow(goodsId,parentId)
+                    {
+                        var goods        = new Object();
+                        var spec_arr     = new Array();
+                        var number       = 1;
+                        goods.spec     = spec_arr;
+                        goods.goods_id = goodsId;
+                        goods.number   = number;
+                        goods.parent   = parentId;
+                        var ajaxurl=APP+'&c=EcFlow&m=index&step=add_to_cart';
+                        Ajax.call(ajaxurl, 'goods=' + goods.toJSONString(), fittings_to_flow_response, 'POST', 'JSON');
+                    }
+                    function fittings_to_flow_response(result)
+                    {
+                        if (result.error > 0)
+                        {
+                            // 如果需要缺货登记，跳转
+                            if (result.error == 2)
+                            {
+                                if (confirm(result.message))
+                                {
+                                    location.href = '{|U:"ec/EcUser/index"}&act=add_booking&id=' + result.goods_id;
+                                }
+                            }
+                            else if (result.error == 6)
+                            {
+                                openSpeDiv(result.message, result.goods_id, result.parent);
+                            }
+                            else
+                            {
+                                alert(result.message);
+                            }
+                        }
+                        else
+                        {
+                            location.href = '{|U:"ec/EcFlow/index"}';
+                        }
+                    }
+                </script>
+                <div class="block" >
+                    <div class="flowBox">
+                        <h6><span>相关配件</span></h6>
+                            <form action="flow.php" method="post">
+                                <div class="flowGoodsFittings clearfix">
+                                    <foreach from="$fittings_list" value="$fittings" >
+                                        <ul class="clearfix">
+                                            <li class="goodsimg">
+                                                <a href="{$fittings.url}" target="_blank">
+                                                    <img src="{$fittings.goods_thumb}" alt="{$fittings.name}" class="B_blue" />
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="{$fittings.url}" target="_blank" title="{$fittings.goods_name}" class="f6">{$fittings.short_name}</a><br />
+                                                配件价格：<font class="f1">{$fittings.fittings_price}</font><br />
+                                                相关商品：{$fittings.parent_short_name}<br />
+                                                <a href="javascript:fittings_to_flow({$fittings.goods_id},{$fittings.parent_id})">
+                                                    <img src="__TEMPLATE__/ec/common/style/images/bnt_buy.gif" alt="立即购买" />
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </foreach>
+                                </div>
+                            </form>
+                    </div>
+                </div>
+            </if>
+            <if value="$favourable_list" >
+                TODO:5
+            </if>
+        </if>
+        <if value="$step eq 'consignee'" >
+            <!-- 开始收货人信息填写界面 -->
+            <script type="text/javascript" src="__TEMPLATE__/ec/common/js/region.js"></script>
+            <script type="text/javascript" src="__TEMPLATE__/ec/common/js/utils.js"></script>
+            <script type="text/javascript">
+                region.isAdmin = false;
+                var consignee_not_null = "受け取り人の姓名を入力してください！";
+                var country_not_null = "受け取り人の国を選択してください！";
+                var province_not_null = "受け取り人の省を選択してください！";
+                var city_not_null = "受け取り人の都市を選択してください！";
+                var district_not_null = "受け取り人の区域を選択してください！";
+                var invalid_email = "入力したメールアドレスが正しくない。";
+                var address_not_null = "受け取り人の詳細住所を入力してください！";
+                var tele_not_null = "電話番号を入力してください！";
+                var shipping_not_null = "配送方式を選択してください！";
+                var payment_not_null = "支払い方式を選択してください！";
+                var goodsattr_style = "1";
+                var tele_invaild = "電話番号は有効ではない";
+                var zip_not_num = "郵便番号を数値にしてください";
+                var mobile_invaild = "携帯番号は正しくない";
+                onload = function() {
+                    if (!document.all)
+                    {
+                        document.forms['theForm'].reset();
+                    }
+                }
+            </script>
+            <!-- 如果有收货地址，循环显示用户的收获地址 -->
+            <foreach from="$consignee_list" value="$consignee" key="$sn" >
+                <form action="{|U:'index'}" method="post" name="theForm" id="theForm" onsubmit="return checkConsignee(this)">
+                    <include file='__TEMPLATE__/ec/common/library/consignee.lbi'/>
+                </form>
+            </foreach>
+            
+        </if>
+        <!-- 开始订单确认界面 -->
+        <if value="$step eq 'checkout'" >
+            <form action="{|U:'index'}" method="post" name="theForm" id="theForm" onsubmit="return checkOrderForm(this)">
+                <script type="text/javascript">
+                    var flow_no_payment = "支払い方法選んでください。";
+                    var flow_no_shipping = "配達方法を選らんでください。";
+                </script>
+                <div class="flowBox">
+                    <h6>
+                        <span>商品リスト</span>
+                        <if value="$allow_edit_cart">
+                            <a href="{|U:'index'}" class="f6">変更</a>
+                        </if>
+                    </h6>
+                    <table width="99%" align="center" border="0" cellpadding="5" cellspacing="1" bgcolor="#dddddd">
+                        <tr>
+                            <th bgcolor="#ffffff">商品名称</th>
+                            <th bgcolor="#ffffff">属性</th>
+                            <if value="$show_marketprice">
+                                <th bgcolor="#ffffff">市場値段</th>
+                            </if>
+                            <th bgcolor="#ffffff">
+                                <if value="$gb_deposit">
+                                    保障金
+                                <else/>
+                                    店舗値段
+                                </if>
+                            </th>
+                            <th bgcolor="#ffffff">購入数</th>
+                            <th bgcolor="#ffffff">計算</th>
+                        </tr>
+                        <foreach from="$goods_list" value="$goods" >
+                            <tr>
+                                <td bgcolor="#ffffff">
+                                    <if value="$goods['goods_id'] gt 0 and $goods['extension_code'] eq 'package_buy'">
+                                        TODO:flow.html---checkout--1;
+                                    <else/>
+                                        <a href="{|U:'ec/EcGoods/index'}&id={$goods.goods_id}" target="_blank" class="f6">{$goods.goods_name}</a>
+                                        <if value="$goods['parent_id'] gt 0" > 
+                                            <span style="color:#FF0000">（アクセサリ）</span>
+                                        <else value="$goods.is_gift"/>
+                                            <span style="color:#FF0000">（プレゼント）</span>
+                                        </if>
+                                    </if>
+                                    <if value="$goods.is_shipping" >
+                                        (<span style="color:#FF0000">運賃免状商品</span>)
+                                    </if>
+                                </td>
+                                <td bgcolor="#ffffff">{$goods.goods_attr|nl2br}</td>
+                                <if value="$show_marketprice">
+                                    <td align="right" bgcolor="#ffffff">{$goods.formated_market_price}</td>
+                                </if>
+                                <td bgcolor="#ffffff" align="right">{$goods.formated_goods_price}</td>
+                                <td bgcolor="#ffffff" align="right">{$goods.goods_number}</td>
+                                <td bgcolor="#ffffff" align="right">{$goods.formated_subtotal}</td>
+                            </tr>
+                        </foreach>
+                        <!--  团购且有保证金时不显示 -->
+                        <if value="!$gb_deposit"> 
+                            <tr>
+                                <td bgcolor="#ffffff" colspan="7">
+                                <if value="$discount gt 0">{$your_discount}<br /></if>
+                                {$shopping_money}
+                                <if value="$show_marketprice">，{$market_price_desc}</if>
+                                </td>
+                            </tr>
+                        </if>
+                    </table>
+                </div>
+                <div class="blank"></div>
+                <div class="flowBox">
+                    <h6>
+                        <span>受け取り人情報</span>
+                        <a href="{|U:'index'}&step=consignee" class="f6">変更</a>
+                    </h6>
+                    <table width="99%" align="center" border="0" cellpadding="5" cellspacing="1" bgcolor="#dddddd">
+                        <tr>
+                            <td bgcolor="#ffffff">姓名:</td>
+                            <td bgcolor="#ffffff">{$consignee.consignee}</td>
+                            <td bgcolor="#ffffff">メールアドレス:</td>
+                            <td bgcolor="#ffffff">{$consignee.email}</td>
+                        </tr>
+                        <if value="$total['real_goods_count'] gt 0" >
+                            <tr>
+                                <td bgcolor="#ffffff">詳細アドレス:</td>
+                                <td bgcolor="#ffffff">{$consignee.address} </td>
+                                <td bgcolor="#ffffff">郵便番号:</td>
+                                <td bgcolor="#ffffff">{$consignee.zipcode}</td>
+                            </tr>
+                        </if>
+                        <tr>
+                            <td bgcolor="#ffffff">電話:</td>
+                            <td bgcolor="#ffffff">{$consignee.tel} </td>
+                            <td bgcolor="#ffffff">携帯:</td>
+                            <td bgcolor="#ffffff">{$consignee.mobile}</td>
+                        </tr>
+                        <if value="$total['real_goods_count'] gt 0" >
+                            <tr>
+                                <td bgcolor="#ffffff">マーク建築:</td>
+                                <td bgcolor="#ffffff">{$consignee.sign_building} </td>
+                                <td bgcolor="#ffffff">一番好み配達時間:</td>
+                                <td bgcolor="#ffffff">{$consignee.best_time}</td>
+                            </tr>
+                        </if>
+                    </table>
+                </div>
+                <div class="blank"></div>
+                <if value="$total['real_goods_count'] gt 0" >
+                    <div class="flowBox">
+                        <h6><span>配達方法</span></h6>
+                        <table width="99%" align="center" border="0" cellpadding="5" cellspacing="1" bgcolor="#dddddd" id="shippingTable">
+                            <tr>
+                                <th bgcolor="#ffffff" width="5%">&nbsp;</th>
+                                <th bgcolor="#ffffff" width="25%">名称</th>
+                                <th bgcolor="#ffffff">注文説明</th>
+                                <th bgcolor="#ffffff" width="15%">費用</th>
+                                <th bgcolor="#ffffff" width="15%">運賃免状額</th>
+                                <th bgcolor="#ffffff" width="15%">商品保険費用</th>
+                            </tr>
+                            <!--  循环配送方式 -->
+                            <foreach from="$shipping_list" value="$shipping" >
+                                <tr>
+                                    <td bgcolor="#ffffff" valign="top">
+                                        <input name="shipping" type="radio" value="{$shipping.shipping_id}" <if value="$order['shipping_id'] eq $shipping['shipping_id']">checked="true"</if> supportCod="{$shipping.support_cod}" insure="{$shipping.insure}" onclick="selectShipping(this)" />
+                                    </td>
+                                    <td bgcolor="#ffffff" valign="top"><strong>{$shipping.shipping_name}</strong></td>
+                                    <td bgcolor="#ffffff" valign="top">{$shipping.shipping_desc}</td>
+                                    <td bgcolor="#ffffff" align="right" valign="top">{$shipping.format_shipping_fee}</td>
+                                    <td bgcolor="#ffffff" align="right" valign="top">{$shipping.free_money}</td>
+                                    <td bgcolor="#ffffff" align="right" valign="top">
+                                        <if value="$shipping['insure'] neq 0">
+                                            {$shipping.insure_formated}
+                                        <else/>
+                                            該当配達方法が商品保険使えない,商品保険費用が設置失敗
+                                        </if>
+                                    </td>
+                                </tr>
+                            </foreach>
+                            <tr>
+                                <td colspan="6" bgcolor="#ffffff" align="right">
+                                    <label for="ECS_NEEDINSURE">
+                                        <input name="need_insure" id="ECS_NEEDINSURE" type="checkbox"  onclick="selectInsure(this.checked)" value="1" <if value="$order['need_insure']">checked="true"</if> <if value="$insure_disabled">disabled="true"</if>  />
+                                        商品保険必要
+                                    </label>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="blank"></div>
+                <else/>
+                    <input name = "shipping" type="radio" value = "-1" checked="checked"  style="display:none"/>
+                </if>
+                <if value="$is_exchange_goods neq 1 or $total['real_goods_count'] neq 0">
+                    <div class="flowBox">
+                        <h6><span>支払い方式</span></h6>
+                        <table width="99%" align="center" border="0" cellpadding="5" cellspacing="1" bgcolor="#dddddd" id="paymentTable">
+                            <tr>
+                                <th width="5%" bgcolor="#ffffff">&nbsp;</th>
+                                <th width="20%" bgcolor="#ffffff">名称</th>
+                                <th bgcolor="#ffffff">注文説明</th>
+                                <th bgcolor="#ffffff" width="15%">手続き費用</th>
+                            </tr>
+                            <!-- 循环支付方式 -->
+                            <foreach from="$payment_list" value="$payment" >
+                                <tr>
+                                    <td valign="top" bgcolor="#ffffff">
+                                        <input type="radio" name="payment" value="{$payment.pay_id}" <if value="$order['pay_id'] eq $payment['pay_id']">checked</if> isCod="{$payment.is_cod}" onclick="selectPayment(this)" <if value="$cod_disabled and $payment['is_cod'] eq '1'">disabled="true"</if>/>
+                                    </td>
+                                    <td valign="top" bgcolor="#ffffff"><strong>{$payment.pay_name}</strong></td>
+                                    <td valign="top" bgcolor="#ffffff">{$payment.pay_desc}</td>
+                                    <td align="right" bgcolor="#ffffff" valign="top">{$payment.format_pay_fee}</td>
+                                </tr>
+                            </foreach>
+                        </table>
+                    </div>
+                <else/>
+                    <input name = "payment" type="radio" value = "-1" checked="checked"  style="display:none"/>
+                </if>
+                <div class="blank"></div>
+                <!--是否有包装 -->
+                <if value="$pack_list">
+                    <div class="flowBox">
+                        <h6><span>商品包み</span></h6>
+                        <table width="99%" align="center" border="0" cellpadding="5" cellspacing="1" bgcolor="#dddddd" id="packTable">
+                            <tr>
+                                <th width="5%" scope="col" bgcolor="#ffffff">&nbsp;</th>
+                                <th width="35%" scope="col" bgcolor="#ffffff">名称</th>
+                                <th width="22%" scope="col" bgcolor="#ffffff">値段</th>
+                                <th width="22%" scope="col" bgcolor="#ffffff">費用免状額</th>
+                                <th scope="col" bgcolor="#ffffff">画像</th>
+                            </tr>
+                            <tr>
+                                <td valign="top" bgcolor="#ffffff">
+                                    <input type="radio" name="pack" value="0" <if value="$order['pack_id'] eq 0">checked="true"</if> onclick="selectPack(this)" />
+                                </td>
+                                <td valign="top" bgcolor="#ffffff"><strong>要らない</strong></td>
+                                <td valign="top" bgcolor="#ffffff">&nbsp;</td>
+                                <td valign="top" bgcolor="#ffffff">&nbsp;</td>
+                                <td valign="top" bgcolor="#ffffff">&nbsp;</td>
+                            </tr>
+                            <!--  循环包装 -->
+                            <foreach from="$pack_list" value="$pack" >
+                                <tr>
+                                    <td valign="top" bgcolor="#ffffff">
+                                        <input type="radio" name="pack" value="{$pack.pack_id}" <if value="$order['pack_id'] eq $pack['pack_id']">checked="true"</if> onclick="selectPack(this)" />
+                                    </td>
+                                    <td valign="top" bgcolor="#ffffff"><strong>{$pack.pack_name}</strong></td>
+                                    <td valign="top" bgcolor="#ffffff" align="right">{$pack.format_pack_fee}</td>
+                                    <td valign="top" bgcolor="#ffffff" align="right">{$pack.format_free_money}</td>
+                                    <td valign="top" bgcolor="#ffffff" align="center">
+                                        <!-- 是否有图片 -->
+                                        <if value="$pack['pack_img']"> 
+                                            <a href="upload/ec/data/packimg/{$pack.pack_img}" target="_blank" class="f6">見る</a>
+                                        <else/>
+                                            画像なし
+                                        </if>
+                                    </td>
+                                </tr>
+                            </foreach>
+                        </table>
+                    </div>
+                    <div class="blank"></div>
+                </if> 
+                <!-- 是否有贺卡 -->
+                <if value="$card_list">
+                    <div class="flowBox">
+                        <h6><span>祝いカード</span></h6>
+                        <table width="99%" align="center" border="0" cellpadding="5" cellspacing="1" bgcolor="#dddddd" id="cardTable">
+                            <tr>
+                                <th bgcolor="#ffffff" width="5%" scope="col">&nbsp;</th>
+                                <th bgcolor="#ffffff" width="35%" scope="col">名称</th>
+                                <th bgcolor="#ffffff" width="22%" scope="col">値段</th>
+                                <th bgcolor="#ffffff" width="22%" scope="col">費用免状額</th>
+                                <th bgcolor="#ffffff" scope="col">画像</th>
+                            </tr>
+                            <tr>
+                                <td bgcolor="#ffffff" valign="top">
+                                    <input type="radio" name="card" value="0" <if value="$order['card_id'] eq 0">checked="true"</if> onclick="selectCard(this)" />
+                                </td>
+                                <td bgcolor="#ffffff" valign="top"><strong>要らない</strong></td>
+                                <td bgcolor="#ffffff" valign="top">&nbsp;</td>
+                                <td bgcolor="#ffffff" valign="top">&nbsp;</td>
+                                <td bgcolor="#ffffff" valign="top">&nbsp;</td>
+                            </tr>
+                            <!--  循环贺卡 -->
+                            <foreach from="$card_list" value="$card" >
+                                <tr>
+                                    <td valign="top" bgcolor="#ffffff">
+                                        <input type="radio" name="card" value="{$card.card_id}" <if value="$order['card_id'] eq $card['card_id']">checked="true"</if> onclick="selectCard(this)"  />
+                                    </td>
+                                    <td valign="top" bgcolor="#ffffff"><strong>{$card.card_name}</strong></td>
+                                    <td valign="top" align="right" bgcolor="#ffffff">{$card.format_card_fee}</td>
+                                    <td valign="top" align="right" bgcolor="#ffffff">{$card.format_free_money}</td>
+                                    <td valign="top" align="center" bgcolor="#ffffff">
+                                        <!-- 是否有图片 -->
+                                        <if value="$card['card_img']"> 
+                                            <a href="upload/ec/data/cardimg/{$card.card_img}" target="_blank" class="f6">見る</a>
+                                        <else/>
+                                            画像なし
+                                        </if>
+                                    </td>
+                                </tr>
+                            </foreach>
+                            <tr>
+                                <td bgcolor="#ffffff"></td>
+                                <td bgcolor="#ffffff" valign="top"><strong>祝い言葉:</strong></td>
+                                <td bgcolor="#ffffff" colspan="3"><textarea name="card_message" cols="60" rows="3" style="width:auto; border:1px solid #ccc;">{$order.card_message}</textarea></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="blank"></div>
+                </if>
+                <div class="flowBox">
+                    <h6><span>他の情報</span></h6>
+                    <table width="99%" align="center" border="0" cellpadding="5" cellspacing="1" bgcolor="#dddddd">
+                        <!-- 是否使用余额 -->
+                        <if value="$allow_use_surplus">
+                            TODO:flow.html ---checkout--allow_use_surplus
+                        </if>
+                        <!-- 是否使用积分 -->
+                        <if value="$allow_use_integral">
+                            <tr>
+                                <td bgcolor="#ffffff"><strong>使用积分</strong></td>
+                                <td bgcolor="#ffffff">
+                                    <input name="integral" type="text" class="input" id="ECS_INTEGRAL" onblur="changeIntegral(this.value)" value="{$order.integral|default_value:@@,0}" size="10" />
+                                    您当前的可用积分为:{$your_integral|default_value:@@,0} {$points_name}，本订单最多可以使用{$order_max_integral}  {$points_name}. 
+                                    <span id="ECS_INTEGRAL_NOTICE" class="notice"></span>
+                                </td>
+                            </tr>
+                        </if> 
+                        <!-- 是否使用红包 -->
+                        <if value="$allow_use_bonus">
+                            <tr>
+                                <td bgcolor="#ffffff"><strong>ボーナス使う:</strong></td>
+                                <td bgcolor="#ffffff">
+                                    持つボーナス選択
+                                    <select name="bonus" onchange="changeBonus(this.value)" id="ECS_BONUS" style="border:1px solid #ccc;">
+                                        <option value="0" <if value="$order['bonus_id'] eq 0 ">selected</if>>選んでください</option>
+                                        <foreach from="$bonus_list" value="$bonus" >
+                                            <option value="{$bonus.bonus_id}" <if value="$order['bonus_id'] eq $bonus['bonus_id']">selected</if>>{$bonus.type_name}[{$bonus.bonus_money_formated}]</option>
+                                        </foreach>
+                                    </select>
+                                    或いはボーナスコードを入力
+                                    <input name="bonus_sn" type="text" class="inputBg" size="15" value="{$order.bonus_sn}" />
+                                    <input name="validate_bonus" type="button" class="bnt_blue_1" value="ボーナス検証" onclick="validateBonus(document.forms['theForm'].elements['bonus_sn'].value)" style="vertical-align:middle;" />
+                                </td>
+                            </tr>
+                        </if> 
+                        <!--能否开发票 -->
+                        <if value="$inv_content_list">
+                            <tr>
+                                <td bgcolor="#ffffff">
+                                    <strong>レシート:</strong>
+                                    <input name="need_inv" type="checkbox"  class="input" id="ECS_NEEDINV" onclick="changeNeedInv()" value="1" <if value="$order['need_inv']">checked="true"</if> />
+                                </td>
+                                <td bgcolor="#ffffff">
+                                    <if value="$inv_type_list">
+                                        レシートタイプ
+                                        <select name="inv_type" id="ECS_INVTYPE" <if value="$order['need_inv'] neq 1">disabled="true"</if> onchange="changeNeedInv()" style="border:1px solid #ccc;">
+                                            <html_options  options="{$inv_type_list}" selected="{$order.inv_type}" >
+                                        </select>
+                                    </if>
+                                    レシートタイトル
+                                    <input name="inv_payee" type="text"  class="input" id="ECS_INVPAYEE" size="20" <if value="!$order['need_inv']">disabled="true"</if> value="{$order.inv_payee}" onblur="changeNeedInv()" />
+                                    レシート内容
+                                    <select name="inv_content" id="ECS_INVCONTENT" <if value="$order['need_inv'] neq 1">disabled="true"</if>  onchange="changeNeedInv()" style="border:1px solid #ccc;">
+                                        <html_options  options="{$inv_content_list}" selected="{$order.inv_content}" values="$inv_content_list" >
+                                    </select>
+                                </td>
+                            </tr>
+                        </if>
+                        <tr>
+                            <td valign="top" bgcolor="#ffffff"><strong>注文備考:</strong></td>
+                            <td bgcolor="#ffffff">
+                                <textarea name="postscript" cols="80" rows="3" id="postscript" style="border:1px solid #ccc;">{$order.postscript}</textarea>
+                            </td>
+                        </tr>
+                        <!-- 是否使用缺货处理 -->
+                        <if value="$how_oos_list">
+                            <tr>
+                                <td bgcolor="#ffffff"><strong>売り切れ処理:</strong></td>
+                                <td bgcolor="#ffffff">
+                                    <foreach from="$how_oos_list" value="$how_oos_name" key="$how_oos_id" >
+                                        <label>
+                                            <input name="how_oos" type="radio" value="{$how_oos_id}" <if value="$order['how_oos'] eq $how_oos_id">checked</if> onclick="changeOOS(this)" />
+                                            {$how_oos_name}
+                                        </label>
+                                    </foreach>
+                                </td>
+                            </tr>
+                        </if> 
+                    </table>
+                </div>
+                <div class="blank"></div>
+                <div class="flowBox">
+                    <h6><span>費用総計</span></h6>
+                    <include file='__TEMPLATE__/ec/common/library/order_total.lbi'/>
+                    <div align="center" style="margin:8px auto;">
+                        <input type="image" src="__TEMPLATE__/ec/common/style/images/bnt_subOrder.gif" />
+                        <input type="hidden" name="step" value="done" />
+                    </div>
+                </div>
+                
+            </form>
+        </if>
+        <if value="$step eq 'done'" >
+            <!-- 订单提交成功 -->
+            <div class="flowBox" style="margin:30px auto 70px auto;">
+                <h6 style="text-align:center; height:30px; line-height:30px;">
+                    本店舗を買い物することを感謝します！注文は成功しました，注文番号を覚えてください: <font style="color:red">{$order.order_sn}</font>
+                </h6>
+                <table width="99%" align="center" border="0" cellpadding="15" cellspacing="0" bgcolor="#fff" style="border:1px solid #ddd; margin:20px auto;" >
+                    <tr>
+                        <td align="center" bgcolor="#FFFFFF">
+                            <if value="$order.shipping_name">
+                                選んだ配達方式: 
+                                <strong>{$order.shipping_name}</strong>，
+                            </if>
+                            選んだ支払い方式: <strong>{$order.pay_name}</strong>。
+                            支払う金額: <strong>{$total.amount_formated}</strong>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="center" bgcolor="#FFFFFF">{$order.pay_desc}</td>
+                    </tr>
+                    <if value="$pay_online">
+                        <!-- 如果是线上支付则显示支付按钮 -->
+                        <tr>
+                            <td align="center" bgcolor="#FFFFFF">{$pay_online}</td>
+                        </tr>
+                    </if>
+                </table>
+                <if value="$virtual_card">
+                    <div style="text-align:center;overflow:hidden;border:1px solid #E2C822;background:#FFF9D7;margin:10px;padding:10px 50px 30px;">
+                        TODO:flow.html--done---1;
+                    </div>
+                </if>
+                <p style="text-align:center; margin-bottom:20px;">{$order_submit_back}</p>
+            </div>
+        </if>
+    </div>
+    <div class="blank5"></div>
+    <!--帮助-->
+    <div class="block">
+        <div class="box">
+            <div class="helpTitBg clearfix">
+                <include file='__TEMPLATE__/ec/common/library/help.lbi'/>
+            </div>
+        </div>
+    </div>
+    <div class="blank"></div>
+    <!--帮助-->
+    
+    <!--友情链接 start-->
+    <if value="$img_links  or $txt_links" >
+    <div id="bottomNav" class="box">
+        <div class="box_1">
+            <div class="links clearfix">
+                <!--开始图片类型的友情链接-->
+                <foreach from="$img_links" value="$link"  >
+                <a href="{$link.url}" target="_blank" title="{$link.name}">
+                    <img src="{$link.logo}" alt="{$link.name}" border="0" />
+                </a>
+                </foreach>
+                <!--结束图片类型的友情链接-->
+                <if value="$txt_links" >
+                    <!--开始文字类型的友情链接-->
+                    <foreach from="$txt_links" value="$link"  >
+                        [<a href="{$link.url}" target="_blank" title="{$link.name}">{$link.name}</a>]
+                    </foreach>
+                    <!--结束文字类型的友情链接-->
+                </if>
+            </div>
+        </div>
+    </div>
+    </if>
+    <!--友情链接 end-->
+    <div class="blank"></div>
+    <include file='__TEMPLATE__/ec/common/library/page_footer.lbi'/>
+</body>
+</html>

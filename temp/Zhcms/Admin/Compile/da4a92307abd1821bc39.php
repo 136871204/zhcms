@@ -1,0 +1,224 @@
+<?php if(!defined("ZHPHP_PATH"))exit;C("SHOW_NOTICE",FALSE);?><?php if(!defined("ZHPHP_PATH"))exit;C("SHOW_NOTICE",FALSE);?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title><?php echo C("WEBNAME");?><?php if($ur_here){?> - <?php echo $ur_here;?> <?php }?></title>
+<meta name="robots" content="noindex, nofollow"/>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="http://www.metacms.com/zh/Zhcms/Admin/Tpl/Public/ec/styles/general.css" rel="stylesheet" type="text/css" />
+<link href="http://www.metacms.com/zh/Zhcms/Admin/Tpl/Public/ec/styles/main.css" rel="stylesheet" type="text/css" />
+<script type='text/javascript'>
+HOST = '<?php echo $GLOBALS['user']['HOST'];?>';
+ROOT = '<?php echo $GLOBALS['user']['ROOT'];?>';
+WEB = '<?php echo $GLOBALS['user']['WEB'];?>';
+URL = '<?php echo $GLOBALS['user']['URL'];?>';
+ZHPHP = '<?php echo $GLOBALS['user']['ZHPHP'];?>';
+ZHPHPDATA = '<?php echo $GLOBALS['user']['ZHPHPDATA'];?>';
+ZHPHPTPL = '<?php echo $GLOBALS['user']['ZHPHPTPL'];?>';
+ZHPHPEXTEND = '<?php echo $GLOBALS['user']['ZHPHPEXTEND'];?>';
+APP = '<?php echo $GLOBALS['user']['APP'];?>';
+CONTROL = '<?php echo $GLOBALS['user']['CONTROL'];?>';
+METH = '<?php echo $GLOBALS['user']['METH'];?>';
+GROUP = '<?php echo $GLOBALS['user']['GROUP'];?>';
+TPL = '<?php echo $GLOBALS['user']['TPL'];?>';
+CONTROLTPL = '<?php echo $GLOBALS['user']['CONTROLTPL'];?>';
+STATIC = '<?php echo $GLOBALS['user']['STATIC'];?>';
+PUBLIC = '<?php echo $GLOBALS['user']['PUBLIC'];?>';
+HISTORY = '<?php echo $GLOBALS['user']['HISTORY'];?>';
+TEMPLATE = '<?php echo $GLOBALS['user']['TEMPLATE'];?>';
+ROOTURL = '<?php echo $GLOBALS['user']['ROOTURL'];?>';
+WEBURL = '<?php echo $GLOBALS['user']['WEBURL'];?>';
+CONTROLURL = '<?php echo $GLOBALS['user']['CONTROLURL'];?>';
+PHPSELF = '<?php echo $GLOBALS['user']['PHPSELF'];?>';
+</script>
+<script type="text/javascript" src="http://www.metacms.com/zh/Zhcms/Admin/Tpl/Public/ec/js/transport.js"></script>
+<script type="text/javascript" src="http://www.metacms.com/zh/Zhcms/Admin/Tpl/Public/ec/js/common.js"></script>
+<script src='http://www.metacms.com/zh/Zhcms/Admin/Tpl/Public/ec/js/json2.js'></script>
+<script language="JavaScript">
+
+</script>
+</head>
+<body>
+
+<h1>
+<?php if($action_link){?>
+<span class="action-span"><a href="<?php echo $action_link['href'];?>"><?php echo $action_link['text'];?></a></span>
+<?php }?>
+<?php if($action_link2){?>
+<span class="action-span"><a href="<?php echo $action_link2['href'];?>"><?php echo $action_link2['text'];?></a>&nbsp;&nbsp;</span>
+<?php }?>
+<span class="action-span1">
+    <a href="index.php?act=main"><?php echo C("WEBNAME");?></a> 
+</span>
+<span id="search_id" class="action-span1">
+    <?php if($ur_here){?> - <?php echo $ur_here;?> <?php }?>
+</span>
+<div style="clear:both"></div>
+</h1>
+
+<script language="JavaScript">
+<!--
+    // 这里把JS用到的所有语言都赋值到这里
+    var process_request = "処理中...";
+    var todolist_caption = "ノート";
+    var todolist_autosave = "自動保存";
+    var todolist_save = "保存";
+    var todolist_clear = "クリア";
+    var todolist_confirm_save = "ノートに最新情報保存するか？";
+    var todolist_confirm_clear = "内容をクリアしますか？";
+    
+//-->
+</script>
+<script type="text/javascript" src="http://www.metacms.com/zh/Zhcms/Admin/Tpl/Public/ec/js/validator.js"></script>
+<div class="main-div">
+    <form  action="<?php echo U('index');?>" method="post" name="form" onsubmit="return checkForm();" >
+        <table cellspacing="1" cellpadding="3" width="100%">
+            <tr>
+                <td>システム内容</td> 
+                <td>
+                    <select onchange="add_main(this.value);" name="menulist" id="menulist">
+                        <option value='-'>-</option>
+                        <?php if(is_array($sysmain)):?><?php $index=0; ?><?php  foreach($sysmain as $key=>$val){ ?>
+                            <option value='<?php echo $key;?>'>
+                                <?php if($val[2]){?>
+                                    <?php echo $val[2];?>
+                                <?php  }else{ ?>
+                                    <?php echo $val[0];?>
+                                <?php }?>
+                            </option>
+                        <?php $index++; ?><?php }?><?php endif;?>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>名称</td> 
+                <td>
+                    <input type="text" name="item_name" value="<?php echo $rt['item_name'];?>" id="item_name" size="40" onKeyPress="javascript:key();" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <a href="javascript:showNotice('notice_url');" title="クリックして、ヒントを見る">
+                        <img src="http://www.metacms.com/zh/Zhcms/Admin/Tpl/Public/ec/images/notice.gif" width="16" height="16" border="0" alt="<?php echo $lang['form_notice'];?>"/>    
+                    </a>リンク先  
+                </td> 
+                <td>
+                    <input type="text" name="item_url" value="<?php echo $rt['item_url'];?>" id="item_url" size="40" onKeyPress="javascript:key();" />
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    <span class="notice-span" <?php if($help_open){?>style="display:block" <?php  }else{ ?> style="display:none" <?php }?> id="notice_url">
+                        もしサイト内のリンクなら，簡単で書いてもいい，例：index.php；<br />他の場合フールリンク先を記入してください，例http://www.metaphasedemo.com/   
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td>ソート</td> 
+                <td><input type="text" name="item_vieworder" value="<?php echo $rt['item_vieworder'];?>" size="40" /></td>
+            </tr>
+            <tr>
+                <td>表示するか</td> 
+                <td>
+                    <select name="item_ifshow">
+                        <option value='1' <?php echo $rt['item_ifshow_1'];?>>YES</option>
+                        <option value='0' <?php echo $rt['item_ifshow_0'];?>>NO</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>new open</td> 
+                <td>
+                    <select name="item_opennew">
+                        <option value='0' <?php echo $rt['item_opennew_0'];?>>NO</option>
+                        <option value='1' <?php echo $rt['item_opennew_1'];?>>YES</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>位置</td> 
+                <td>
+                    <select name="item_type">
+                        <option value='top' <?php echo $rt['item_type_top'];?>>top</option>
+                        <option value='middle' <?php echo $rt['item_type_middle'];?>>middle</option>
+                        <option value='bottom' <?php echo $rt['item_type_bottom'];?>>bottom</option>
+                    </select>
+                </td>
+            </tr>
+            <tr align="center">
+                <td colspan="2">
+                <input type="hidden"  name="id"       value="<?php echo $rt['id'];?>" />
+                <input type="hidden"  name="step"       value="2" />
+                <input type="hidden"  name="act"       value="<?php echo $rt['act'];?>" />
+                <input type="submit" class="button" name="Submit"       value="確定" />
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+
+<script language="JavaScript">
+var last;
+
+
+function add_main(key)
+{
+    var sysm = new Object;
+    <?php if(is_array($sysmain)):?><?php $index=0; ?><?php  foreach($sysmain as $key=>$val){ ?>
+        sysm[<?php echo $key;?>] = new Array();
+        sysm[<?php echo $key;?>][0] = '<?php echo $val[0];?>';
+        sysm[<?php echo $key;?>][1] = '<?php echo $val[1];?>';
+    <?php $index++; ?><?php }?><?php endif;?>
+    if (key != '-')
+    {
+        if(sysm[key][0] != '-')
+        {
+            document.getElementById('item_name').value = sysm[key][0];
+            document.getElementById('item_url').value = sysm[key][1];
+            last = document.getElementById('menulist').selectedIndex;
+        }else
+        {
+            if(last < document.getElementById('menulist').selectedIndex)
+            {
+                document.getElementById('menulist').selectedIndex ++;
+            }else
+            {
+                document.getElementById('menulist').selectedIndex --;
+            }
+            last = document.getElementById('menulist').selectedIndex;
+            document.getElementById('item_name').value = sysm[last-1][0];
+            document.getElementById('item_url').value = sysm[last-1][1];
+        }
+    }
+    else
+    {
+        ast = document.getElementById('menulist').selectedIndex = 1;
+        document.getElementById('item_name').value = sysm[last-1][0];
+        document.getElementById('item_url').value = sysm[last-1][1];
+    }
+}
+
+function checkForm()
+{
+    if(document.getElementById('item_name').value == '')
+    {
+        alert('ナビ名称を入力してください！');
+        return false;
+    }
+    if(document.getElementById('item_url').value == '')
+    {
+        alert('リンク先を入力してください！');
+        return false;
+    }
+    return true;
+}
+function key()
+{
+    last = document.getElementById('menulist').selectedIndex = 0;
+}
+
+
+</script>
+
+
+

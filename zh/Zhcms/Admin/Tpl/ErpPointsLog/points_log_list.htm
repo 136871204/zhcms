@@ -1,0 +1,95 @@
+<if value="$full_page">
+    <include file='__PUBLIC__/pageheader.htm'/>
+    <script language="JavaScript">
+    <!--
+    // 这里把JS用到的所有语言都赋值到这里
+    var process_request = "正在处理您的请求...";
+    var todolist_caption = "记事本";
+    var todolist_autosave = "自动保存";
+    var todolist_save = "保存";
+    var todolist_clear = "清除";
+    var todolist_confirm_save = "是否将更改保存到记事本？";
+    var todolist_confirm_clear = "是否清空内容？";
+    //-->
+    </script>
+    <script type="text/javascript" src="__PUBLIC__/ec/js/utils.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/ec/js/listtable.js"></script>
+    
+
+    <form method="post" action="{|U:'index',array('act'=>'batch')}" name="listForm">
+        <div class="list-div" id="listDiv">
+</if>
+            <table cellpadding="3" cellspacing="1">
+                <tr>
+                    <th>
+                        <a href="javascript:listTable.sort('log_id'); ">编号</a>{$sort_log_id}      
+                    </th>
+                    <th><a href="javascript:listTable.sort('log_title'); ">作业标题</a>{$sort_log_title}</th>
+                    <th><a href="javascript:listTable.sort('starttime'); ">作业开始时间</a>{$sort_starttime}</th>
+                    <th>使用积分</th>
+                    <th>操作</th>
+                </tr>
+                <if value="!empty($log_list)">
+                    <foreach from="$log_list" value="$log">
+                    <tr>
+                        <td nowrap="true" valign="top">
+                            <span>{$log.log_id}</span>
+                        </td>
+                        <td >{$log.log_title}</td>
+                        <td ><?php echo date("Y/m/d H:i:s", $log['starttime']);?></td>
+                        <td >{$log.log_points}</td>
+                        <td align="center" nowrap="true" valign="top">
+                            <a href="{|U:'index',array('act'=>'edit','log_id'=>$log['log_id'],'company_id'=>$log['company_id'])}" title="编辑"><img src="__PUBLIC__/ec/images/icon_edit.gif" border="0" height="16" width="16"/></a>
+                            <a href="javascript:;" onclick="removeRow({$log.log_id})" title="移除"><img src="__PUBLIC__/ec/images/icon_drop.gif" border="0" height="16" width="16"/></a>
+                        </td>
+                    </tr>
+                    </foreach>
+                <else/>
+                    <tr><td class="no-records" colspan="10">没有记录</td></tr>
+                </if>
+            </table>
+            <table cellpadding="4" cellspacing="0">
+                <tr>
+                  <td><input type="submit" id="btnSubmit" value="删除" class="button" disabled="true" /></td>
+                  <td align="right"><include file='__PUBLIC__/page.htm'/></td>
+                </tr>
+            </table>
+            
+            
+<if value="$full_page">
+        </div>
+    </form>
+<!-- end 添加货品 -->
+
+<script type="text/javascript">
+listTable.recordCount = {$record_count};
+listTable.pageCount = {$page_count};
+
+  
+<foreach from="$filter" value="$item" key="$key">
+listTable.filter.{$key} = '{$item}';
+</foreach>
+
+function removeRow(log_id)
+{
+    listTable.remove(log_id, '确定要删除吗?');
+    
+}
+
+
+
+/**
+* 查询商品属性
+*/
+/*function searchAttr(goodsType)
+{
+    listTable.filter.goods_type = goodsType;
+    listTable.filter.page = 1;
+    listTable.loadList();
+}
+
+
+*/
+</script>
+<include file='__PUBLIC__/pagefooter.htm'/>
+</if>

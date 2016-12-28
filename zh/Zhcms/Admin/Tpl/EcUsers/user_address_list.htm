@@ -1,0 +1,31 @@
+<include file='__PUBLIC__/pageheader.htm'/>
+<div class="list-div">
+    <table width="100%" cellpadding="3" cellspacing="1">
+        <tr>
+            <th>受け取り人</th>
+            <th>住所</th>
+            <th>連絡方式</th>
+            <th>その他</th>
+        </tr>
+        <if value="!empty($address)">
+            <foreach from="$address" value="$val" >
+                <tr>
+                    <td>{$val.consignee|htmlspecialchars:@@}</td>
+                    <td>
+                        {$val.country_name}&nbsp;&nbsp;{$val.province_name}&nbsp;&nbsp;{$val.city_name}&nbsp;&nbsp;{$val.district_name}<br />
+                        {$val.address|htmlspecialchars:@@}
+                        <if value="$val.zipcode">
+                            [{$val.zipcode|htmlspecialchars:@@}]
+                        </if>
+                    </td>
+                    <td>電話：{$val.tel}<br />携帯：{$val.mobile}<br/>email: {$val.email}</td>
+                    <td>一番好み配達時間:{$val.best_time|htmlspecialchars:@@}<br/>マーク建築:{$val.sign_building|htmlspecialchars:@@}</td>
+                </tr>
+            </foreach>
+        <else/>
+            <tr><td class="no-records" colspan="4">データなし</td></tr>
+        </if>
+        
+    </table>
+</div>
+<include file='__PUBLIC__/pagefooter.htm'/>

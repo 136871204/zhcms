@@ -1,0 +1,161 @@
+.filter_area{border: 1px solid #e8e8e8;}
+.filter_area .one_filter{padding: 10px 0 10px 20px;background: #fff;border-bottom: 1px solid #e8e8e8;overflow: hidden;}
+.filter_area .one_filter .title{float: left;display: block;margin-right: 12px;color: #a1a8b3;}
+.filter_area .one_filter ul{float: left;margin-bottom: -5px;width: 700px;}
+.filter_area .one_filter ul li{float: left;display: inline;margin-right: 6px;margin-bottom: 5px;}
+.filter_area .one_filter ul li a{padding: 0 12px;display: block;height: 20px;line-height: 20px;color: #737880;}
+.filter_area .one_filter ul li.on a{background: #75b347;-webkit-border-radius: 10px;border-radius: 10px;behavior: url(/common/scripts/PIE.htc);color: #fff;}
+.filter_area .one_filter ul li a:hover{color: #75b347;}
+.filter_area .one_filter ul li.on a:hover{color: #fff;}
+.filter_area .final_filter{margin-bottom: 20px;padding: 0 20px;background: #fafafa;border-bottom: 3px solid #e3e6e8;overflow: hidden;}
+.filter_area .final_filter .result{float: left;display: block;margin-right: 30px;line-height: 31px;color: #a1a8b3;}
+.filter_area .final_filter .result strong{color: #75b347;font-size: 14px;}
+.filter_area .final_filter .result_select{float: left;}
+.filter_area .final_filter .result_select span{display: block;float: left;line-height: 31px;color: #737880;}
+.filter_area .final_filter .result_select .result_selected{padding: 6px 0 0 0;float: left;width: 600px;}
+.filter_area .final_filter .result_select .result_selected span{position: relative;margin: 0 5px 5px 0;padding: 0 23px 0 5px;display: block;height: 18px;line-height: 18px;border: 1px solid #75b347;color: #737880;}
+.filter_area .final_filter .result_select .result_selected span a{position: absolute;display: block;right: 0;top: 0;width: 18px;height: 16px;background: url("../images/ico/ico_close_01.png") no-repeat scroll center center;border-left: 1px solid #75b347;}
+.sort_area{margin-bottom: 20px;padding: 12px 14px;background: #fff;border: 1px solid #e8e8e8;border-bottom: 3px solid #e8e8e8;overflow: hidden;}
+.sort_area span{display: block;float: left;margin-right: 30px;color: #737880;font-size: 14px;}
+.sort_area a{display: block;float: left;margin-right: 20px;color: #737880;font-size: 14px;}
+.sort_area a.on{color: #75b347;}
+.travel_list{margin-bottom: 14px;}
+.travel_list .travel_one{position: relative;margin-bottom: 15px;padding: 14px;border: 1px solid #e8e8e8;background: #fff;overflow: hidden;}
+.travel_list .travel_one:hover{border: 1px solid #3580e8;}
+.travel_list .travel_one .img{float: left;margin-right: 10px;font-size: 0;}
+.travel_list .travel_one .content{float: left;}
+.travel_list .travel_one .content .intro{float: left;width: 400px;}
+.travel_list .travel_one .content .intro .main_intro{margin-bottom: 8px;font-size: 14px;}
+.travel_list .travel_one .content .intro .main_intro .holiday{color: #ff5926;}
+.travel_list .travel_one .content .intro .main_intro strong{color: #3580e8;font-weight: normal;}
+.travel_list .travel_one:hover .content .intro .main_intro{color: #FC4169;}
+.travel_list .travel_one:hover .content .intro .main_intro .holiday{color: #FC4169;}
+.travel_list .travel_one:hover .content .intro .main_intro strong{color: #FC4169;}
+.travel_list .travel_one .content .intro .date_intro{margin-bottom: 8px;color: #737880;}
+.travel_list .travel_one .content .intro .sec_intro{margin-bottom: 8px;color: #a1a8b3;}
+.travel_list .travel_one .content .intro .sec_intro strong{color: #737880;font-weight: normal;}
+.travel_list .travel_one .content .price{float: right;margin:0 0 0 80px;}
+.travel_list .travel_one .content .price p{margin-bottom: 20px;font-size: 14px;color: #fc4169;}
+.travel_list .travel_one .content .price p strong{font-size: 28px;}
+.travel_list .travel_one .content .price .btn_01{width: 90px;}
+.travel_list .travel_one .content .price .btn_02{width: 90px;}
+.travel_list .travel_one .travel_tag_01{position: absolute;top: 0;right: 10px;display: block;padding: 0px 2px;height: 32px;line-height: 32px;background: #FC4169 none repeat scroll 0% 0%;font-size: 16px;color: #FFF;font-style: normal;}
+.travel_list .travel_one .travel_tag_02{position: absolute;top: 0;right: 10px;display: block;padding: 0px 2px;height: 32px;line-height: 32px;background: #FF5926 none repeat scroll 0% 0%;font-size: 16px;color: #FFF;font-style: normal;}
+.travel_list_right{background: #fff;border: 1px solid #e8e8e8;}
+.travel_list_right dl{margin-bottom: -1px;padding:0 15px;}
+.travel_list_right dl dt{padding-top: 15px;font-size: 16px;color: #737880;}
+.travel_list_right dl dd{margin-top: 15px;padding:0 0 15px 0;border-bottom: 1px dotted #e7e9ec;}
+.travel_list_right dl dd .img{margin-bottom: 10px;display: block;font-size: 0;}
+.travel_list_right dl dd .intro{margin-bottom: 10px;font-size: 14px;color: #3580e8;}
+.travel_list_right dl dd .price{position: relative;color: #fc4169;font-size: 14px;}
+.travel_list_right dl dd .price strong{margin-right: 8px;font-size: 20px;}
+.travel_list_right dl dd .price del{color: #a1a8b3;}
+.travel_list_right dl dd .price ul.t_tag_list{position: absolute;right: 0;top: 4px;}
+#japan_travel .page{margin: 0 auto;width: 255px;}
+
+
+/* detail */
+.price_txt_01{color: #737880;}
+.price_txt_02{color: #a1a8b3;}
+strong.price_one{color: #fc4169;font-size: 14px;}
+strong.price_one span{font-size: 30px;}
+.price_set_intro{color: #a1a8b3;}
+.travel_detail_sectiion{margin-bottom: 15px;padding: 20px;border: 1px solid #e8e8e8;background: #fff;}
+.travel_detail_sectiion h2.travel_name{margin-bottom: 5px;font-size: 22px;color: #737880;font-weight: normal;}
+.travel_detail_sectiion h2.travel_name .holiday{color: #ff5926;}
+.travel_detail_sectiion .remark{margin-bottom: 10px;color: #a1a8b3;}
+.travel_detail_sectiion .remark .number{color: #3580e8;}
+.travel_detail_sectiion .travel_detail_price{float: right;width: 450px;}
+.travel_detail_sectiion .travel_detail_price .td_price_area{margin-bottom: 10px;height: 80px;background: url("../images/detail/detail_bg_01.gif") repeat scroll center center;overflow: hidden;}
+.travel_detail_sectiion .travel_detail_price .td_price_area .tdp_area_price{margin: 10px 0 5px 0;padding: 0 25px;}
+.travel_detail_sectiion .travel_detail_price .td_price_area .tdp_area_price del{margin-right: 10px;}
+.travel_detail_sectiion .travel_detail_price .td_price_area .tdp_area_price_now{position: relative;padding: 0 25px;}
+.travel_detail_sectiion .travel_detail_price .td_price_area .tdp_area_price_now strong.price_one{margin-right: 16px;}
+.travel_detail_sectiion .travel_detail_price .td_price_detail{margin-bottom: 10px;}
+.travel_detail_sectiion .travel_detail_price .td_price_detail div ul{margin-right: -30px;}
+.travel_detail_sectiion .travel_detail_price .td_price_detail div ul li{float: left;display: inline;margin-right: 30px;}
+.travel_detail_sectiion .travel_detail_price .td_price_spec{margin-bottom: 10px;padding: 10px 0 5px 25px;background: #f2f6ef;}
+.travel_detail_sectiion .travel_detail_price .td_price_spec .manager_rec{display: block;padding: 0 0 0 26px;float: left;background: url("../images/ico/ico_good_01.png") no-repeat scroll left center;color: #75b347;font-weight: bold;}
+.travel_detail_sectiion .travel_detail_price .td_price_spec .t_tag_list li{margin-bottom: 5px!important;}
+.travel_detail_sectiion .travel_detail_price .td_price_tag ul{padding: 0 0 0 10px;}
+.travel_detail_sectiion .travel_detail_price .td_price_tag ul li{position: relative;margin-bottom: 5px;color: #a1a8b3;overflow: hidden;}
+.travel_detail_sectiion .travel_detail_price .td_price_tag ul li span{float: left;margin-right: 2px;}
+.travel_detail_sectiion .travel_detail_price .td_price_tag ul li .more_area{float: left;margin-left: 10px;}
+.travel_detail_sectiion .travel_detail_price .td_price_tag ul li .more_area a{padding: 0 10px 0 0;background: url("../images/ico/ico_arrow_01_01.png") no-repeat scroll right center;color: #75b347;}
+.booking_area{margin-bottom: 15px;padding: 15px 20px;background: #fff;border: 1px solid #e8e8e8;}
+.booking_area .booking_select{float: left;margin-top: 5px;}
+.booking_area span{margin-right: 10px;line-height: 30px;}
+.booking_area .booking_select select{height: 28px;border: 1px solid #e3e3e3;background: #f5f5f5;color: #a1a8b3;}
+.booking_area .booking_select a{color: #a1a8b3;text-decoration: underline!important;}
+.booking_area .booking_select div.bks_one{float: left;margin-right: 25px;}
+.booking_area .booking_select div.bks_one .bks_one_price{width: 340px;}
+.booking_area .booking_select div.intro{float: left;position: relative;}
+.booking_area .booking_select div.intro a{line-height: 30px;}
+.booking_area .booking_price{float: right;overflow: hidden;}
+.booking_area .booking_price .price_one{float: left;}
+.booking_area a.btn_03{float: right;}
+.booking_area .booking_combo_change{float: left;}
+.booking_area .booking_combo_change span{display: block;float: left;}
+.booking_area .booking_combo_change .price_combo{float: left;}
+.booking_area .booking_combo_change .price_combo li{float: left;display: inline;}
+.booking_area .booking_combo_change .price_combo li a{margin-right: 10px;padding: 0 9px;display: block;height: 28px;line-height: 28px;border: 2px solid #e3e3e3;color: #a1a8b3;}
+.booking_area .booking_combo_change .price_combo li:hover a{border: 2px solid #3580e8;}
+.booking_area .booking_combo_change .price_combo li.on a{background: url("../images/ico/ico_do.gif") no-repeat right bottom;border: 2px solid #3580e8;}
+
+.tour_intro{background: #fff;border: 1px solid #e8e8e8;}
+.tour_intro .tour_nav{position: relative;top: 0;width: 998px;background: #fff;border-bottom: 1px solid #e8e8e8;z-index: 1;}
+.tour_intro .tour_nav ul li{float: left;display: inline;border-right: 1px solid #e8e8e8;}
+.tour_intro .tour_nav ul li.on a{line-height: 42px;border-top: 3px solid #3580e8;}
+.tour_intro .tour_nav ul li a{display: block;width: 88px;height: 48px;line-height: 48px;font-size: 14px;color: #737880;text-align: center;}
+.tour_intro .tour_nav ul li.download{border-right: none;}
+.tour_intro .tour_nav ul li.download a{padding-left: 46px;width: auto;background: url("../images/ico/ico_downlaod.png") no-repeat 24px center;color: #75b347;}
+.tour_intro .tour_nav .btn_03{position: absolute;right: 0;top: 7px;right: 19px;display: none;width: 120px;height: 32px;line-height: 32px;}
+.tour_intro .tour_content{padding: 29px 29px 0 29px;}
+.tour_intro .tour_content .tour_detail{margin-bottom: 40px;}
+.tour_intro .tour_content .tour_detail h3.tour_ttl{position: relative;margin-bottom: 20px;padding-bottom: 8px;border-bottom: 2px solid #d7d7d7;font-size: 16px;color: #3580e8;}
+.tour_intro .tour_content .tour_detail h3.tour_ttl .tour_switch{position: absolute;right: 20px;top: 0;display: block;width: 20px;height: 20px;background: url("../images/ico/ico_spread.png") no-repeat scroll 0 bottom;}
+.tour_intro .tour_content .tour_detail h3.tour_ttl .tour_switch.plus{background-position: 0 top;}
+.tour_intro .tour_content .tour_detail .tour_list_show{position: relative;}
+.tour_intro .tour_content .tour_detail .tour_list_show .tour_day_list{position: absolute;top: 0;z-index: 1;}
+.tour_intro .tour_content .tour_detail .tour_list_show .tour_day_list li{margin-bottom: 6px;}
+.tour_intro .tour_content .tour_detail .tour_list_show .tour_day_list li a{display: block;width: 64px;height: 28px;line-height: 28px;background: #ccced0;-webkit-border-radius: 2px;border-radius: 2px;behavior: url(/common/scripts/PIE.htc);color: #fff;text-align: center;font-size: 14px;}
+.tour_intro .tour_content .tour_detail .tour_list_show .tour_day_list li.on a{background: #3580e8;}
+.tour_intro .tour_content .tour_detail .tour_list_show .tour_day_detail{margin-left: 104px;border-left: 2px solid #75afff;}
+.tour_intro .tour_content .tour_detail .tour_list_show .tour_day_detail .tdd_content .td_begin{display: block;position: relative;left: -11px;margin-bottom: 20px;padding: 0 0 0 40px;background: url("../images/ico/ico_pla.png") no-repeat scroll left center;color: #3580e8;font-weight: bold;font-size: 18px;}
+.tdd_content .td_begin img{position: relative;top: 3px;}
+.tdd_content .td_content_detail{margin:0 0 0 20px;padding: 0 0 20px 0;}
+.tdd_content .td_content_detail .td_detail_begin{position: relative;display: block;margin-bottom: 20px;height: 30px;line-height: 30px;color: #737880;font-size: 14px;}
+.tdd_content .td_content_detail .td_detail_begin.eat{left: -27px;padding-left: 36px;background: url("../images/ico/ico_eat.gif") no-repeat scroll left center;}
+.tdd_content .td_content_detail .td_eat_table{margin-bottom: 40px;}
+.tdd_content .td_content_detail .td_eat_table td{padding: 0 10px;font-size: 14px;color: #737880;}
+.tdd_content .td_content_detail .td_detail_begin.hotel{left: -27px;padding-left: 36px;background: url("../images/ico/ico_hotel.gif") no-repeat scroll left center;}
+.tdd_content .td_content_detail .td_detail_begin.vehicle{left: -27px;padding-left: 36px;background: url("../images/ico/ico_clock.gif") no-repeat scroll left center;}
+.tdd_content .td_content_detail .td_travel_detai{margin-left: 10px;}
+.tdd_content .td_content_detail .td_travel_detai dl{font-style: 14px;}
+.tdd_content .td_content_detail .td_travel_detai dl dt{margin-bottom: 10px;color: #3580e8;font-weight: bold;}
+.tdd_content .td_content_detail .td_travel_detai dl dd{color: #a1a8b3;}
+.tdd_content .td_content_detail .td_travel_detai dl dd p{margin-bottom: 10px;}
+.tdd_content .td_content_detail .td_travel_detai dl dd ul{margin-bottom: 10px;margin-right: -20px;}
+.tdd_content .td_content_detail .td_travel_detai dl dd ul li{float: left;display: inline;margin-right: 20px;}
+.tour_intro .tour_content .tour_txt .pay_ttl{margin-bottom: 20px;padding-left: 15px;height: 42px;line-height: 42px;background: #f3f4f3;border-left: 3px solid #7eb4ff;color: #737880;font-size: 14px;}
+.detail_left_content{float: left;width: 1000px;}
+.detail_right_content{right: 0;float: right;width: 190px;}
+
+.hotline_block{margin-bottom: 20px;padding: 0 9px 9px 9px;background: #fff;border: 1px solid #e8e8e8;border-top: 3px solid #75b347;}
+.hotline_block .ttl{margin-bottom: 10px;padding: 9px 0;border-bottom: 1px dashed #dcdcdc;text-align: center;}
+.hotline_block .support{margin-bottom: 10px;text-align: center;}
+.hotline_block .support span{font-size: 14px;color: #a1a8b3;}
+.hotline_block .support strong{margin-bottom: 10px;font-size: 20px;color: #75b347;}
+.hotline_block .hotline_intro{padding: 10px 0;border: 1px solid #e8e8e8;text-align: center;}
+.hotline_block .hotline_intro span{display: block;margin-bottom: 10px;color: #bdc3cb;font-size: 14px;}
+.hotline_block .hotline_intro div{padding-left: 26px;background: url("../images/ico/ico_hotline.png") no-repeat 16px center;color: #75b347;font-size: 16px;}
+.hot_products_rec{padding: 10px 9px 0 9px;background: #fff;border: 1px solid #e8e8e8;}
+.hot_products_rec .ttl{margin-bottom: 10px;font-size: 16px;color: #737880;}
+.hot_products_rec ul li{margin-bottom: 10px;overflow: hidden;}
+.hot_products_rec ul li .img{float: left;margin-right: 6px;}
+.hot_products_rec ul li .txt span{color: #737880;}
+.hot_products_rec ul li a:hover .txt span{color: #3580e8;}
+.hot_products_rec ul li .txt strong.price_one{display: block;}
+.downloadicon{margin-right: -20px;}
+.downloadicon li{float: left;display: inline;margin-right: 20px;text-align: center;}
+.downloadicon li span{display: block;font-size: 14px;color: #737880;}

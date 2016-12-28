@@ -1,0 +1,58 @@
+<include file='__PUBLIC__/pageheader.htm'/>
+<script language="JavaScript">
+<!--
+// 这里把JS用到的所有语言都赋值到这里
+var process_request = "正在处理您的请求...";
+var todolist_caption = "记事本";
+var todolist_autosave = "自动保存";
+var todolist_save = "保存";
+var todolist_clear = "清除";
+var todolist_confirm_save = "是否将更改保存到记事本？";
+var todolist_confirm_clear = "是否清空内容？";
+var batch_drop_confirm = "您确实要删除选中的拍卖活动吗？";
+var start_price_not_number = "起拍价格式不正确（数字）";
+var end_price_not_number = "一口价格式不正确（数字）";
+var end_gt_start = "一口价应该大于起拍价";
+var amplitude_not_number = "加价幅度格式不正确（数字）";
+var deposit_not_number = "保证金格式不正确（数字）";
+var start_lt_end = "拍卖开始时间不能大于结束时间";
+var search_is_null = "没有搜索到任何商品，请重新搜索";
+//-->
+</script>
+<div class="form-div">
+    <strong>拍卖活动名称：</strong>{$auction.act_name} 
+    <strong>拍卖商品名称：</strong>{$auction.goods_name}
+    <a href="{|U:'index'}&act=edit&id={$auction.act_id}"> [ 查看 ] </a>
+</div>
+
+<div class="list-div" id="listDiv">
+    <table cellpadding="3" cellspacing="1">
+        <tr>
+            <th>买家</th>
+            <th>出价</th>
+            <th width="30%">时间</th>
+            <th>状态</th>
+        </tr>
+        <if value="!empty($auction_log)">
+            <foreach from="$auction_log" value="$log" name="$fe_log">
+                <tr>
+                    <td>{$log.user_name}</td>
+                    <td align="right">{$log.formated_bid_price}</td>
+                    <td align="center">{$log.bid_time}</td>
+                    <td align="center">
+                        <if value="$fe_log eq 0" >
+                        OK
+                        <else/>
+                        &nbsp;
+                        </if>
+                    </td>
+                </tr>
+            </foreach>
+        <else/>
+        <tr><td class="no-records" colspan="4">没有找到任何记录</td></tr>
+        </if>
+    </table>
+</div>
+ 
+ 
+<include file='__PUBLIC__/pagefooter.htm'/>

@@ -1,0 +1,12 @@
+<if value="$helps">
+    <foreach from="$helps" value="$help_cat" >
+    <dl>
+        <dt>
+            <a href='{$help_cat.cat_id}' title="{$help_cat.cat_name}">{$help_cat.cat_name}</a>
+        </dt>
+        <foreach from="{$help_cat.article}" value="$item" >
+        <dd><a href="{$item.url}" title="{$item.title|escape:html}">{$item.short_title}</a></dd>
+        </foreach>
+    </dl>
+    </foreach>
+</if>

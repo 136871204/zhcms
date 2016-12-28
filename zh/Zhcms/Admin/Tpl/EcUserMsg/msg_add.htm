@@ -1,0 +1,91 @@
+<include file='__PUBLIC__/pageheader.htm'/>
+<script language="JavaScript">
+<!--
+// 这里把JS用到的所有语言都赋值到这里
+var process_request = "{$zh.language.admin_eccommon_js_process_request}";
+var todolist_caption = "{$zh.language.admin_eccommon_js_todolist_caption}";
+var todolist_autosave = "{$zh.language.admin_eccommon_js_todolist_autosave}";
+var todolist_save = "{$zh.language.admin_eccommon_js_todolist_save}";
+var todolist_clear = "{$zh.language.admin_eccommon_js_todolist_clear}";
+var todolist_confirm_save = "{$zh.language.admin_eccommon_js_todolist_confirm_save}";
+var todolist_confirm_clear = "{$zh.language.admin_eccommon_js_todolist_confirm_clear}";
+var no_content = "{$zh.language.admin_ecusermsg_js_no_content}";
+var no_reply_content = "{$zh.language.admin_ecusermsg_js_no_reply_content}";
+var no_title = "{$zh.language.admin_ecusermsg_js_no_title}"
+//-->
+</script>
+<div class="main-div">
+    <div>
+        <foreach from="$msg_list" value="$msg" >
+            <div style="margin-bottom:10px;border:1px solid #ccc;background:white;">
+                <div style="border-bottom: 1px solid #eee;position:relative;">
+                    <strong>{$msg.msg_title}</strong>
+                    <a href="{|U:'index'}&act=remove_msg&order_id={$order_id}&user_id={$user_id}&msg_id={$msg.msg_id}" style="position:absolute ;right:5px" onclick="if (!confirm('您确定要删除吗？')) return false;">
+                        <img src="__PUBLIC__/ec/images/icon_drop.gif"  border="0" />
+                    </a>
+                </div>
+                <div>{$msg.msg_content|nl2br}</div>
+                <if value="$msg.message_img" >
+                    <div align="right">
+                        <a href="{$msg.message_img}" target="_bank" width="300" height="400">{$zh.language.admin_ecusermsg_page_table_th1}</a>
+                        <a href="user_msg.php?act=drop_file&id={$msg.msg_id}&file={$msg.message_img}">{$zh.language.admin_ecusermsg_page_table_th2}</a>
+                    </div>
+                </if>
+                <div align="right"  nowrap="nowrap"><a href="mailto:{$msg.user_email}">{$msg.user_name}</a> @ {$msg.msg_time}</div>
+            </div>
+        </foreach>
+    </div>
+    <form method="post" action="{|U:'index'}&act=insert" name="theForm"  onsubmit="return validate()">
+        <table border="0" width="100%">
+            <tr>
+                <td>{$zh.language.admin_ecusermsg_page_table_th3}:</td>
+                <td><input name="msg_title" id="msg_title"  type="text" value="{$msg.reply_email}" /></td>
+            </tr>
+            <tr>
+                <td>{$zh.language.admin_ecusermsg_page_table_th4}:</td>
+                <td><textarea name="msg_content" cols="50" rows="4" wrap="VIRTUAL" id="msg_content">{$msg.reply_content}</textarea></td>
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+                <td>
+                    <input type="hidden" name="order_id" value="{$order_id}" />
+                    <input type="hidden" name="user_id" value="{$user_id}" />
+                    <input name="Submit" value="{$zh.language.admin_ecusermsg_page_table_btn1} " type="submit" class="button" />
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+<script type="text/javascript" src="__PUBLIC__/ec/js/utils.js"></script>
+<script type="text/javascript" src="__PUBLIC__/ec/js/validator.js"></script>
+
+<script language="JavaScript">
+    document.forms['theForm'].elements['msg_content'].focus();
+    
+
+    /**
+    * 检查表单输入的数据
+    */
+    function validate()
+    {
+        var validator = new Validator("theForm");
+        validator.required("msg_title",  no_title);
+        validator.required("msg_content",  no_content);
+        return validator.passed();
+    }
+    
+    onload = function()
+    {
+        // 开始检查订单
+        //startCheckOrder();
+    }
+
+</script>
+
+<include file='__PUBLIC__/pagefooter.htm'/>
+
+

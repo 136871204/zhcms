@@ -1,0 +1,94 @@
+<include file='__PUBLIC__/pageheader.htm'/>
+<script language="JavaScript">
+<!--
+// 这里把JS用到的所有语言都赋值到这里
+var process_request = "正在处理您的请求...";
+var todolist_caption = "记事本";
+var todolist_autosave = "自动保存";
+var todolist_save = "保存";
+var todolist_clear = "清除";
+var todolist_confirm_save = "是否将更改保存到记事本？";
+var todolist_confirm_clear = "是否清空内容？";
+var lang_removeconfirm = "您确定要卸载该配送方式吗？";
+var shipping_area = "设置区域";
+var upload_falid = "错误：文件类型不正确。请上传“%s”类型的文件！";
+var upload_del_falid = "错误：删除失败！";
+var upload_del_confirm = "提示：您确认删除打印单图片吗？";
+var no_select_upload = "错误：您还没有选择打印单图片。请使用“浏览...”按钮选择！";
+var no_select_lable = "操作终止！您未选择任何标签。";
+var no_add_repeat_lable = "操作失败！不允许添加重复标签。";
+var no_select_lable_del = "删除失败！您没有选中任何标签。";
+var recovery_default_suer = "您确认恢复默认吗？恢复默认后将显示安装时的内容。";
+//-->
+</script>
+<script type="text/javascript" src="__PUBLIC__/ec/js/utils.js"></script>
+<script type="text/javascript" src="__PUBLIC__/ec/js/listtable.js"></script>
+
+<div class="list-div" id="listDiv">
+    <table cellspacing='1' cellpadding='3'>
+        <tr>
+            <th>配送方式名称</th>
+            <th>配送方式描述</th>
+            <th nowrap="true">保价费用</th>
+            <th nowrap="true">货到付款？</th>
+            <th nowrap="true">插件版本</th>
+            <th>插件作者</th>
+            <th>排序</th>
+            <th>操作</th>
+        </tr>
+        <foreach from="$modules" value="$module">
+            <tr>
+                <td class="first-cell" nowrap="true">
+                  <if value="$module['install'] eq 1">
+                    <span onclick="listTable.edit(this, 'edit_name', '{$module.code}'); return false;">{$module.name}</span>
+                  <else/>
+                    {$module.name}
+                  </if>
+                </td>
+                <td>
+                    <if value="$module['install'] eq 1">
+                        <span onclick="listTable.edit(this, 'edit_desc', '{$module.code}'); return false;">{$module.desc}</span>
+                    <else/>
+                        {$module.desc}
+                    </if>
+                </td>
+                <td align="right">
+                    <if value="$module['install'] eq 1 and $module['is_insure'] neq 0 ">
+                        <span onclick="listTable.edit(this, 'edit_insure', '{$module.code}'); return false;">{$module.insure_fee}</span>
+                    <else/>
+                        {$module.insure_fee}
+                    </if>
+                </td>
+                <td align='center'><if value="$module['cod'] eq 1">是<else/>否</if></td>
+                <td nowrap="true">{$module.version}</td>
+                <td nowrap="true"><a href="{$module.website}" target="_blank">{$module.author}</a></td>
+                <td align="right" valign="top"> 
+                    <if value="$module['install'] eq 1"> 
+                        <span onclick="listTable.edit(this, 'edit_order', '{$module.code}'); return false;">{$module.shipping_order}</span> 
+                    <else/> 
+                        &nbsp; 
+                    </if> 
+                </td>
+                <td align="center" nowrap="true">
+                    <if value="$module['install'] eq 1"> 
+                        <a href="javascript:confirm_redirect(lang_removeconfirm,'{|U:'index'}&act=uninstall&code={$module.code}')">卸载</a>
+                        <a href="{|U:'Admin/EcShippingArea/index'}&act=list&shipping={$module.id}">设置区域</a>
+                        <a href="shipping.php?act=edit_print_template&shipping={$module.id}">编辑打印模板</a>
+                    <else/> 
+                        <a href="{|U:'index'}&act=install&code={$module.code}">安装</a>
+                    </if>
+                </td>
+            </tr>
+        </foreach>
+    </table>
+</div>
+    
+<script type="text/javascript">
+onload = function()
+{
+    // 开始检查订单
+    //startCheckOrder();
+}
+
+</script>
+<include file='__PUBLIC__/pagefooter.htm'/>

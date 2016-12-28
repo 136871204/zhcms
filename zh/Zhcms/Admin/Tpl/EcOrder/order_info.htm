@@ -1,0 +1,487 @@
+<include file='__PUBLIC__/pageheader.htm'/>
+<script language="JavaScript">
+<!--
+// 这里把JS用到的所有语言都赋值到这里
+var process_request = "正在处理您的请求...";
+var todolist_caption = "记事本";
+var todolist_autosave = "自动保存";
+var todolist_save = "保存";
+var todolist_clear = "清除";
+var todolist_confirm_save = "是否将更改保存到记事本？";
+var todolist_confirm_clear = "是否清空内容？";
+var remove_confirm = "删除订单将清除该订单的所有信息。您确定要这么做吗？";
+var confirm_merge = "您确实要合并这两个订单吗？";
+var input_price = "自定义价格";
+var pls_search_user = "请搜索并选择会员";
+var confirm_drop = "确认要删除该商品吗？";
+var invalid_goods_number = "商品数量不正确";
+var pls_search_goods = "请搜索并选择商品";
+var pls_select_area = "请完整选择所在地区";
+var pls_select_shipping = "请选择配送方式";
+var pls_select_payment = "请选择支付方式";
+var pls_select_pack = "请选择包装";
+var pls_select_card = "请选择贺卡";
+var pls_input_note = "请您填写备注！";
+var pls_input_cancel = "请您填写取消原因！";
+var pls_select_refund = "请选择退款方式！";
+var pls_select_agency = "请选择办事处！";
+var pls_select_other_agency = "该订单现在就属于这个办事处，请选择其他办事处！";
+var loading = "加载中...";
+//-->
+</script>
+<script type="text/javascript" src="__PUBLIC__/ec/js/topbar.js"></script>
+<script type="text/javascript" src="__PUBLIC__/ec/js/utils.js"></script>
+<script type="text/javascript" src="__PUBLIC__/ec/js/listtable.js"></script>
+<script type="text/javascript" src="__PUBLIC__/ec/js/selectzone.js"></script>
+<script type="text/javascript" src="__PUBLIC__/ec/js/common.js"></script>
+<if value="$user" >
+    <div id="topbar">
+        <div align="right"><a href="" onclick="closebar(); return false"><img src="__PUBLIC__/ec/images/close.gif" border="0" /></a></div>
+        <table width="100%" border="0">
+            <caption><strong> 购货人信息 </strong></caption>
+            <tr>
+                <td> 电子邮件 </td>
+                <td> <a href="mailto:{$user.email}">{$user.email}</a> </td>
+            </tr>
+            <tr>
+                <td> 账户余额 </td>
+                <td> {$user.formated_user_money} </td>
+            </tr>
+            <tr>
+                <td> 消费积分 </td>
+                <td> {$user.pay_points} </td>
+            </tr>
+            <tr>
+                <td> 等级积分 </td>
+                <td> {$user.rank_points} </td>
+            </tr>
+            <tr>
+                <td> 会员等级 </td>
+                <td> {$user.rank_name} </td>
+            </tr>
+            <tr>
+                <td> 红包数量 </td>
+                <td> {$user.bonus_count} </td>
+            </tr>
+        </table>
+        <foreach from="$address_list" value="$address" >
+            <table width="100%" border="0">
+                <caption><strong> 收货人 : {$address.consignee} </strong></caption>
+                <tr>
+                    <td> 电子邮件 </td>
+                    <td> <a href="mailto:{$address.email}">{$address.email}</a> </td>
+                </tr>
+                <tr>
+                    <td> 地址 </td>
+                    <td> {$address.address} </td>
+                </tr>
+                <tr>
+                    <td> 邮编 </td>
+                    <td> {$address.zipcode} </td>
+                </tr>
+                <tr>
+                    <td> 电话 </td>
+                    <td> {$address.tel} </td>
+                </tr>
+                <tr>
+                    <td> 备用电话 </td>
+                    <td> {$address.mobile} </td>
+                </tr>
+            </table>
+        </foreach>
+    </div>
+</if>
+
+<form action="{|U:'index'}&act=operate" method="post" name="theForm">
+    <div class="list-div" style="margin-bottom: 5px">
+        <table width="100%" cellpadding="3" cellspacing="1">
+            <tr>
+                <td colspan="4">
+                    <div align="center">
+                        <input name="prev" type="button" class="button" onClick="location.href='{|U:'index'}&act=info&order_id={$prev_id}';" value="前一个订单" <if value="!$prev_id">disabled</if> />
+                        <input name="next" type="button" class="button" onClick="location.href='{|U:'index'}&act=info&order_id={$next_id}';" value="后一个订单" <if value="!$next_id">disabled</if> />
+                        <input type="button" onclick="window.open('{|U:'index'}&act=info&order_id={$order.order_id}&print=1')" class="button" value="打印订单" />
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <th colspan="4">基本信息</th>
+            </tr>
+            <tr>
+                <td width="18%"><div align="right"><strong>订单号：</strong></div></td>
+                <td width="34%">
+                    {$order.order_sn}
+                    <if value="$order['extension_code'] eq 'group_buy'">
+                        <a href="group_buy.php?act=edit&id={$order.extension_id}">{$lang.group_buy}</a>
+                    <elseif value="$order['extension_code'] eq 'exchange_goods'">
+                        <a href="exchange_goods.php?act=edit&id={$order.extension_id}">{$lang.exchange_goods}</a>
+                    </if>
+                </td>
+                <td width="15%"><div align="right"><strong>订单状态：</strong></div></td>
+                <td>{$order.status}</td>
+            </tr>
+            <tr>
+                <td><div align="right"><strong>购货人：</strong></div></td>
+                <td>
+                    {$order.user_name|default_value:@@,'匿名用户'} 
+                    <if value="$order['user_id'] gt 0 ">
+                        [ <a href="" onclick="staticbar();return false;">显示购货人信息</a> ] 
+                        [ <a href="{|U:'Admin/EcUserMsg/index'}&act=add&order_id={$order.order_id}&user_id={$order.user_id}">发送/查看留言</a> ]
+                    </if>
+                </td>
+                <td><div align="right"><strong>下单时间：</strong></div></td>
+                <td>{$order.formated_add_time}</td>
+            </tr>
+            <tr>
+                <td><div align="right"><strong>支付方式：</strong></div></td>
+                <td>
+                    <if value="$order['pay_id'] gt 0 ">
+                        {$order.pay_name}
+                    <else/>
+                        <span class="require-field">*</span>
+                    </if>
+                    <a href="{|U:'index'}&act=edit&order_id={$order.order_id}&step=payment&pay_id={$order.pay_id}" class="special">编辑</a>
+                    (备注: <span onclick="listTable.edit(this, 'edit_pay_note', {$order.order_id})"><if value="$order['pay_note']">{$order.pay_note}<else/>N/A</if></span>)</td>
+                <td><div align="right"><strong>付款时间：</strong></div></td>
+                <td>{$order.pay_time}</td>
+            </tr>
+            <tr>
+                <td><div align="right"><strong>配送方式：</strong></div></td>
+                <td>
+                    <if value="$exist_real_goods">
+                        <if value="$order['shipping_id'] gt 0 ">
+                            {$order.shipping_name}
+                        <else/>
+                            <span class="require-field">*</span>
+                        </if>
+                        <a href="order.php?act=edit&order_id={$order.order_id}&step=shipping" class="special">编辑</a>&nbsp;&nbsp;
+                        <input type="button" onclick="window.open('order.php?act=info&order_id={$order.order_id}&shipping_print=1')" class="button" value="打印快递单"/> 
+                        <if value="$order['insure_fee'] gt 0 ">
+                            （保价费用：{$order.formated_insure_fee}）
+                        </if>
+                    </if>
+                </td>
+                <td><div align="right"><strong>发货时间：</strong></div></td>
+                <td>{$order.shipping_time}</td>
+            </tr>
+            <tr>
+                <td><div align="right"><strong>发货单号：</strong></div></td>
+                <td>
+                    <if value="$order['shipping_id'] gt 0 and $order['shipping_status'] gt 0 ">
+                        <span><if value="$order['invoice_no']">{$order.invoice_no}<else/>N/A</if></span>
+                        <a href="order.php?act=edit&order_id={$order.order_id}&step=shipping" class="special">编辑</a>
+                    </if>
+                </td>
+                <td><div align="right"><strong>订单来源：</strong></div></td>
+                <td>{$order.referer}</td>
+            </tr>
+            <tr>
+                <th colspan="4">其他信息<a href="order.php?act=edit&order_id={$order.order_id}&step=other" class="special">编辑</a></th>
+            </tr>
+            <tr>
+                <td><div align="right"><strong>发票类型：</strong></div></td>
+                <td>{$order.inv_type}</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <td><div align="right"><strong>发票抬头：</strong></div></td>
+                <td>{$order.inv_payee}</td>
+                <td><div align="right"><strong>发票内容：</strong></div></td>
+                <td>{$order.inv_content}</td>
+            </tr>
+            <tr>
+                <td><div align="right"><strong>客户给商家的留言：</strong></div></td>
+                <td colspan="3">{$order.postscript}</td>
+            </tr>
+            <tr>
+                <td><div align="right"><strong>缺货处理：</strong></div></td>
+                <td>{$order.how_oos}</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <td><div align="right"><strong>包装：</strong></div></td>
+                <td>{$order.pack_name}</td>
+                <td><div align="right"><strong>贺卡：</strong></div></td>
+                <td>{$order.card_name}</td>
+            </tr>
+            <tr>
+                <td><div align="right"><strong>贺卡祝福语：</strong></div></td>
+                <td colspan="3">{$order.card_message}</td>
+            </tr>
+            <tr>
+                <td><div align="right"><strong>商家给客户的留言：</strong></div></td>
+                <td colspan="3">{$order.to_buyer}</td>
+            </tr>
+            <tr>
+                <th colspan="4">收货人信息<a href="order.php?act=edit&order_id={$order.order_id}&step=consignee" class="special">编辑</a></th>
+            </tr>
+                <tr>
+                <td><div align="right"><strong>收货人：</strong></div></td>
+                <td>{$order.consignee}</td>
+                <td><div align="right"><strong>电子邮件：</strong></div></td>
+                <td>{$order.email}</td>
+            </tr>
+            <tr>
+                <td><div align="right"><strong>地址：</strong></div></td>
+                <td>[{$order.region}] {$order.address}</td>
+                <td><div align="right"><strong>邮编：</strong></div></td>
+                <td>{$order.zipcode}</td>
+            </tr>
+            <tr>
+                <td><div align="right"><strong>电话：</strong></div></td>
+                <td>{$order.tel}</td>
+                <td><div align="right"><strong>手机：</strong></div></td>
+                <td>{$order.mobile}</td>
+            </tr>
+            <tr>
+                <td><div align="right"><strong>标志性建筑：</strong></div></td>
+                <td>{$order.sign_building}</td>
+                <td><div align="right"><strong>最佳送货时间：</strong></div></td>
+                <td>{$order.best_time}</td>
+            </tr>
+        </table>
+    </div>
+    
+    <div class="list-div" style="margin-bottom: 5px">
+        <table width="100%" cellpadding="3" cellspacing="1">
+            <tr>
+                <th colspan="8" scope="col">
+                    商品信息
+                    <a href="order.php?act=edit&order_id={$order.order_id}&step=goods" class="special">编辑</a>
+                </th>
+            </tr>
+            <tr>
+                <td scope="col"><div align="center"><strong>商品名称 [ 品牌 ]</strong></div></td>
+                <td scope="col"><div align="center"><strong>货号</strong></div></td>
+                <td scope="col"><div align="center"><strong>货品号</strong></div></td>
+                <td scope="col"><div align="center"><strong>价格</strong></div></td>
+                <td scope="col"><div align="center"><strong>数量</strong></div></td>
+                <td scope="col"><div align="center"><strong>属性</strong></div></td>
+                <td scope="col"><div align="center"><strong>库存</strong></div></td>
+                <td scope="col"><div align="center"><strong>小计</strong></div></td>
+            </tr>
+            <foreach from="$goods_list" value="$goods" >
+                <tr>
+                    <td>
+                        <if value="$goods['goods_id'] gt 0 and $goods['extension_code'] neq 'package_buy' ">
+                            <a href="../goods.php?id={$goods.goods_id}" target="_blank">{$goods.goods_name} 
+                            <if value="$goods['brand_name']">[ {$goods.brand_name} ]</if>
+                            <if value="$goods['is_gift']">
+                                <if value="$goods['goods_price'] gt 0 ">
+                                    （特惠品）
+                                <else/>
+                                    （赠品）
+                                </if>
+                            </if>
+                            <if value="$goods['parent_id'] gt 0 ">
+                                （配件）
+                            </if>
+                            </a>
+                        <elseif value="$goods['goods_id'] gt 0 and $goods['extension_code'] eq 'package_buy' ">
+                            <a href="javascript:void(0)" onclick="setSuitShow({$goods.goods_id})">
+                                {$goods.goods_name}<span style="color:#FF0000;">（礼包）</span>
+                            </a>
+                            <div id="suit_{$goods.goods_id}" style="display:none">
+                                <foreach from="$goods.package_goods_list" value="$package_goods_list" >
+                                    <a href="../goods.php?id={$package_goods_list.goods_id}" target="_blank">
+                                        {$package_goods_list.goods_name}
+                                    </a><br />
+                                </foreach>
+                            </div>
+                        </if>
+                    </td>
+                    <td>{$goods.goods_sn}</td>
+                    <td>{$goods.product_sn}</td>
+                    <td><div align="right">{$goods.formated_goods_price}</div></td>
+                    <td><div align="right">{$goods.goods_number}</div></td>
+                    <td>{$goods.goods_attr|nl2br}</td>
+                    <td><div align="right">{$goods.storage}</div></td>
+                    <td><div align="right">{$goods.formated_subtotal}</div></td>
+                </tr>
+            </foreach>
+            <tr>
+                <td></td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>
+                    <if value="$order['total_weight']">
+                        <div align="right"><strong>商品总重量：</strong></div>
+                    </if>
+                </td>
+                <td>
+                    <if value="$order['total_weight']">
+                    <div align="right">{$order.total_weight}</div>
+                    </if>
+                </td>
+                <td>&nbsp;</td>
+                <td><div align="right"><strong>合计：</strong></div></td>
+                <td><div align="right">{$order.formated_goods_amount}</div></td>
+            </tr>
+        </table>
+    </div>
+    
+    <div class="list-div" style="margin-bottom: 5px">
+        <table width="100%" cellpadding="3" cellspacing="1">
+            <tr>
+                <th>费用信息<a href="order.php?act=edit&order_id={$order.order_id}&step=money" class="special">编辑</a></th>
+            </tr>
+            <tr>
+                <td>
+                    <div align="right">
+                        商品总金额：<strong>{$order.formated_goods_amount}</strong>
+                        - 折扣：<strong>{$order.formated_discount}</strong>     
+                        + 发票税额：<strong>{$order.formated_tax}</strong>
+                        + 配送费用：<strong>{$order.formated_shipping_fee}</strong>
+                        + 保价费用：<strong>{$order.formated_insure_fee}</strong>
+                        + 支付费用：<strong>{$order.formated_pay_fee}</strong>
+                        + 包装费用：<strong>{$order.formated_pack_fee}</strong>
+                        + 贺卡费用：<strong>{$order.formated_card_fee}</strong>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td><div align="right"> = 订单总金额：<strong>{$order.formated_total_fee}</strong></div></td>
+            </tr>
+            <tr>
+                <td>
+                    <div align="right">
+                    - 已付款金额：<strong>{$order.formated_money_paid}</strong> 
+                    - 使用余额： <strong>{$order.formated_surplus}</strong>
+                    - 使用积分： <strong>{$order.formated_integral_money}</strong>
+                    - 使用红包： <strong>{$order.formated_bonus}</strong>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div align="right"> 
+                        = <if value="$order['order_amount'] egt 0">
+                            应付款金额：<strong>{$order.formated_order_amount}</strong>
+                        <else/>
+                            应退款金额：<strong>{$order.formated_money_refund}</strong>
+                            <if value="$order['user_id'] elt 0" >
+                                <input name="refund" type="button" value="退款" onclick="location.href='order.php?act=process&func=load_refund&anonymous=1&order_id={$order.order_id}&refund_amount={$order.money_refund}'" />
+                            <else/>
+                                <input name="refund" type="button" value="退款" onclick="location.href='order.php?act=process&func=load_refund&anonymous=0&order_id={$order.order_id}&refund_amount={$order.money_refund}'" />
+                            </if>
+                        </if>
+                        <if value="$order['extension_code'] eq 'group_buy' ">
+                            <br />（备注：团购如果有保证金，第一次只需支付保证金和相应的支付费用）
+                        </if>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+    
+    <div class="list-div" style="margin-bottom: 5px">
+        <table cellpadding="3" cellspacing="1">
+            <tr>
+                <th colspan="6">操作信息</th>
+            </tr>
+            <tr>
+                <td><div align="right"><strong>操作备注：</strong></div></td>
+                <td colspan="5"><textarea name="action_note" cols="80" rows="3"></textarea></td>
+            </tr>
+            <tr>
+                <td>
+                    <div align="right"></div>
+                    <div align="right"><strong>当前可执行操作：</strong> </div>
+                </td>
+                <td colspan="5">
+                    <if value="$operable_list.confirm" >
+                        <input name="confirm" type="submit" value="确认" class="button" />
+                    </if>
+                    <if value="$operable_list.pay" >
+                        <input name="pay" type="submit" value="付款" class="button" />
+                    </if> 
+                    <if value="$operable_list.unpay" >
+                        <input name="unpay" type="submit" class="button" value="设为未付款" />
+                    </if>  
+                    <if value="$operable_list.prepare" >
+                    <input name="prepare" type="submit" value="配货" class="button" />
+                    </if> 
+                    <if value="$operable_list.split" >
+                        <input name="ship" type="submit" value="生成发货单" class="button" />
+                    </if> 
+                    <if value="$operable_list.unship" >
+                        <input name="unship" type="submit" value="未发货" class="button" />
+                    </if> 
+                    <if value="$operable_list.receive" >
+                        <input name="receive" type="submit" value="已收货" class="button" />
+                    </if> 
+                    <if value="$operable_list.cancel" >
+                        <input name="cancel" type="submit" value="取消" class="button" />
+                    </if> 
+                    <if value="$operable_list.invalid" >
+                        <input name="invalid" type="submit" value="无效" class="button" />
+                    </if> 
+                    <if value="$operable_list.return" >
+                        <input name="return" type="submit" value="退货" class="button" />
+                    </if> 
+                    <if value="$operable_list.to_delivery" >
+                        <input name="to_delivery" type="submit" value="去发货" class="button"/>
+                        <input name="order_sn" type="hidden" value="{$order.order_sn}" />
+                    </if> 
+                    <input name="after_service" type="submit" value="售后" class="button" />
+                    <if value="$operable_list.remove">
+                        <input name="remove" type="submit" value="移除" class="button" onClick="return window.confirm('{$lang.js_languages.remove_confirm}');" />
+                    </if>
+                    <if value="$order['extension_code'] eq 'group_buy'">
+                        备注：团购活动未处理为成功前，不能发货
+                    </if>
+                    <if value="$agency_list">
+                        <input name="assign" type="submit" value="指派给" class="button" onclick="return assignTo(document.forms['theForm'].elements['agency_id'].value)" />
+                        <select name="agency_id">
+                            <option value="0">请选择...</option>
+                            <foreach from="$agency_list" value="$agency" >
+                                <option value="{$agency.agency_id}" <if value="$agency['agency_id'] eq $order['agency_id'] ">selected</if>>{$agency.agency_name}</option>
+                            </foreach>
+                        </select>
+                    </if>
+                    <input name="order_id" type="hidden" value="{$zh.request.order_id}"/>
+                </td>
+            </tr>
+            <tr>
+                <th>操作者：</th>
+                <th>操作时间</th>
+                <th>订单状态</th>
+                <th>付款状态</th>
+                <th>发货状态</th>
+                <th>备注</th>
+            </tr>
+            <foreach from="$action_list" value="$action" >
+                <tr>
+                    <td><div align="center">{$action.action_user}</div></td>
+                    <td><div align="center">{$action.action_time}</div></td>
+                    <td><div align="center">{$action.order_status}</div></td>
+                    <td><div align="center">{$action.pay_status}</div></td>
+                    <td><div align="center">{$action.shipping_status}</div></td>
+                    <td>{$action.action_note|nl2br}</td>
+                </tr>
+            </foreach>
+        </table>
+    </div>
+</form>
+
+<script language="JavaScript">
+    var oldAgencyId = {$order.agency_id|default_value:@@,0};
+    onload = function()
+    {
+        // 开始检查订单
+        //startCheckOrder();
+    }
+    
+    /**
+   * 把订单指派给某办事处
+   * @param int agencyId
+   */
+   
+   
+</script>
+
+<include file='__PUBLIC__/pagefooter.htm'/>
+
+

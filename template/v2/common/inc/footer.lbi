@@ -1,0 +1,24 @@
+    <!-- footer 2 -->
+	<div id="footer2">
+		<div class="container">
+			<div class="row">
+				<div class="span12">
+				<div class="copyright">
+							FLATI
+							&copy;
+							<script type="text/javascript">
+							//<![CDATA[
+								var d = new Date()
+								document.write(d.getFullYear())
+								//]]>
+								</script>
+							 - All Rights Reserved :
+							More Templates <a target="_blank" href="http://sc.chinaz.com/moban/">&#x7F51;&#x9875;&#x6A21;&#x677F;</a>
+						</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- up to top -->
+				<a href="#"><i class="go-top hidden-phone hidden-tablet fa fa-angle-double-up"></i></a>
+				<!--//end-->

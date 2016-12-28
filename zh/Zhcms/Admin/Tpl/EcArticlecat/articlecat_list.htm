@@ -1,0 +1,144 @@
+<if value="$full_page">
+    <include file='__PUBLIC__/pageheader.htm'/>
+    <script language="JavaScript">
+    <!--
+    // 这里把JS用到的所有语言都赋值到这里
+    var process_request = "{$zh.language.admin_eccommon_js_process_request}";
+    var todolist_caption = "{$zh.language.admin_eccommon_js_todolist_caption}";
+    var todolist_autosave = "{$zh.language.admin_eccommon_js_todolist_autosave}";
+    var todolist_save = "{$zh.language.admin_eccommon_js_todolist_save}";
+    var todolist_clear = "{$zh.language.admin_eccommon_js_todolist_clear}";
+    var todolist_confirm_save = "{$zh.language.admin_eccommon_js_todolist_confirm_save}";
+    var todolist_confirm_clear = "{$zh.language.admin_eccommon_js_todolist_confirm_clear}";
+    var no_catname = "{$zh.language.admin_ecarticlecat_js_no_catname}";
+    var sys_hold = "{$zh.language.admin_ecarticlecat_js_sys_hold}";
+    var remove_confirm = "{$zh.language.admin_ecarticlecat_js_remove_confirm}";
+    //-->
+    </script>
+    <script type="text/javascript" src="__PUBLIC__/ec/js/utils.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/ec/js/listtable.js"></script>
+    
+    <form method="post" action="" name="listForm">
+        <!-- start list -->
+        <div class="list-div" id="listDiv">
+</if>
+            <table width="100%" cellspacing="1" cellpadding="2" id="list-table">
+                <tr>
+                    <th>{$zh.language.admin_ecarticlecat_articlecat_list_page_table_th1}</th>
+                    <th>{$zh.language.admin_ecarticlecat_articlecat_list_page_table_th2}</th>
+                    <th>{$zh.language.admin_ecarticlecat_articlecat_list_page_table_th3}</th>
+                    <th>{$zh.language.admin_ecarticlecat_articlecat_list_page_table_th4}</th>
+                    <th>{$zh.language.admin_ecarticlecat_articlecat_list_page_table_th5}</th>
+                    <th>{$zh.language.admin_ecarticlecat_articlecat_list_page_table_th6}</th>
+                </tr>
+                <if value="!empty($articlecat)">
+                    <foreach from="$articlecat" value="$cat">
+                    <tr align="center" class="{$cat.level}" id="{$cat.level}_{$cat.cat_id}">
+                        <td align="left" class="first-cell nowrap" valign="top" >
+                            <if value="$cat['is_leaf'] neq 1" >
+                                <img src="__PUBLIC__/ec/images/menu_minus.gif" id="icon_{$cat.level}_{$cat.cat_id}" width="9" height="9" border="0" style="margin-left:{$cat.level}em" onclick="rowClicked(this)" />
+                            <else>
+                                <img src="__PUBLIC__/ec/images/menu_arrow.gif" width="9" height="9" border="0" style="margin-left:{$cat.level}em" />
+                            </if>
+                            <span><a href="article.php?act=list&amp;cat_id={$cat.cat_id}">{$cat.cat_name}</a></span>
+                        </td>
+                        <td class="nowrap" valign="top">
+                            {$cat.type_name}
+                        </td>
+                        <td align="left" valign="top">
+                            {$cat.cat_desc}
+                        </td>
+                        <td width="10%" align="right" class="nowrap" valign="top"><span onclick="listTable.edit(this, 'edit_sort_order', {$cat.cat_id})">{$cat.sort_order}</span></td>
+                        <td width="10%" class="nowrap" valign="top"><img src="__PUBLIC__/ec/images/<if value="$cat['show_in_nav'] eq '1'">yes<else/>no</if>.gif" onclick="listTable.toggle(this, 'toggle_show_in_nav', {$cat.cat_id})" /></td>
+                        <td width="24%" align="right" class="nowrap" valign="top">
+                            <a href="{|U:'index'}&act=edit&amp;id={$cat.cat_id}">{$zh.language.admin_ecarticlecat_articlecat_list_page_table_con1}</a>
+                            <if value="{$cat.cat_type} neq 2 and {$cat.cat_type} neq 3 and {$cat.cat_type} neq 4">
+                            |<a href="javascript:;" onclick="listTable.remove({$cat.cat_id}, '{$zh.language.admin_ecarticlecat_articlecat_list_page_table_con2}')" title="{$zh.language.admin_ecarticlecat_articlecat_list_page_table_con3}">{$zh.language.admin_ecarticlecat_articlecat_list_page_table_con3}</a>
+                            </if>
+                        </td>
+                    </tr>
+                    </foreach>
+                <else/>
+                    <tr><td class="no-records" colspan="10">{$zh.language.admin_ecarticlecat_articlecat_list_page_table_con4}</td></tr>
+                </if>
+            </table>
+            
+            
+            
+<if value="$full_page">
+        </div>
+    </form>
+<!-- end 添加货品 -->
+
+<script type="text/javascript">
+onload = function()
+{
+    // 开始检查订单
+    startCheckOrder();
+}
+
+
+var imgPlus = new Image();
+imgPlus.src = "__PUBLIC__/ec/images/menu_plus.gif";
+
+/**
+ * 折叠分类列表
+ */
+function rowClicked(obj)
+{
+    // 当前图像
+    img = obj;
+    // 取得上二级tr>td>img对象
+    obj = obj.parentNode.parentNode;
+    // 整个分类列表表格
+    var tbl = document.getElementById("list-table");
+    // 当前分类级别
+    var lvl = parseInt(obj.className);
+    // 是否找到元素
+    var fnd = false;
+    var sub_display = img.src.indexOf('menu_minus.gif') > 0 ? 'none' : (Browser.isIE) ? 'block' : 'table-row' ;
+    // 遍历所有的分类
+    for (i = 0; i < tbl.rows.length; i++){
+        var row = tbl.rows[i];
+        if (row == obj)
+        {
+            // 找到当前行
+            fnd = true;
+            //document.getElementById('result').innerHTML += 'Find row at ' + i +"<br/>";
+        }
+        else
+        {
+            if (fnd == true)
+            {
+                var cur = parseInt(row.className);
+                var icon = 'icon_' + row.id;
+                if (cur > lvl)
+                {
+                    row.style.display = sub_display;
+                    if (sub_display != 'none')
+                    {
+                        var iconimg = document.getElementById(icon);
+                        iconimg.src = iconimg.src.replace('plus.gif', 'minus.gif');
+                    } 
+                }
+                else
+                {
+                    fnd = false;
+                    break;
+                }
+            }
+        }
+    }
+    for (i = 0; i < obj.cells[0].childNodes.length; i++)
+    {
+        var imgObj = obj.cells[0].childNodes[i];
+        if (imgObj.tagName == "IMG" && imgObj.src != '__PUBLIC__/ec/images/menu_arrow.gif')
+        {
+            imgObj.src = (imgObj.src == imgPlus.src) ? '__PUBLIC__/ec/images/menu_minus.gif' : imgPlus.src;
+        }
+    }
+}
+
+</script>
+<include file='__PUBLIC__/pagefooter.htm'/>
+</if>

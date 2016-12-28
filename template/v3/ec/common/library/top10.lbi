@@ -1,0 +1,24 @@
+<div class="box">
+    <div class="box_2">
+        <div class="top10Tit"></div>
+        <div class="top10List clearfix">
+            <foreach from="$top_goods" value="$goods" key="$key" >
+            <ul class="clearfix">
+           	    <img src="__TEMPLATE__/ec/common/style/images/top_<?php echo $key+1;?>.gif" class="iteration" />
+                <if value="$key lt 3">
+                    <li class="topimg">
+                        <a href="{$goods.url}">
+                            <img src="__ROOT__/upload/ec/{$goods.thumb}" alt="{$goods.name|htmlspecialchars:@@}" class="samllimg" />
+                        </a>
+                    </li>
+                </if>
+                <li <if value="$key lt 3">class="iteration1"</if> >
+                    <a href="{$goods.url}" title="{$goods.name|htmlspecialchars:@@}">{$goods.short_name}</a><br />
+                    本店售价：<font class="f1">{$goods.price}</font><br />
+                </li>
+            </ul>
+            </foreach>
+        </div>
+    </div>
+</div>
+<div class="blank5"></div>

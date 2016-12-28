@@ -1,0 +1,157 @@
+<include file='__PUBLIC__/pageheader.htm'/>
+<script language="JavaScript">
+<!--
+// 这里把JS用到的所有语言都赋值到这里
+var process_request = "{$zh.language.admin_eccommon_js_process_request}";
+var todolist_caption = "{$zh.language.admin_eccommon_js_todolist_caption}";
+var todolist_autosave = "{$zh.language.admin_eccommon_js_todolist_autosave}";
+var todolist_save = "{$zh.language.admin_eccommon_js_todolist_save}";
+var todolist_clear = "{$zh.language.admin_eccommon_js_todolist_clear}";
+var todolist_confirm_save = "{$zh.language.admin_eccommon_js_todolist_confirm_save}";
+var todolist_confirm_clear = "{$zh.language.admin_eccommon_js_todolist_confirm_clear}";
+var please_select_goods = "{$zh.language.admin_ecgoodsbatch_js_please_select_goods}";
+var please_input_sn = "{$zh.language.admin_ecgoodsbatch_js_please_input_sn}";
+var goods_cat_not_leaf = "{$zh.language.admin_ecgoodsbatch_js_goods_cat_not_leaf}";
+var please_select_cat = "{$zh.language.admin_ecgoodsbatch_js_please_select_cat}";
+var please_upload_file = "{$zh.language.admin_ecgoodsbatch_js_please_upload_file}";
+//-->
+</script>
+<ul style="margin: 0pt; padding: 0pt; list-style-type: none; color: rgb(204, 0, 0);">
+    <li style="border: 1px solid rgb(204, 0, 0); padding: 10px; background: rgb(255, 255, 204) none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial; margin-bottom: 5px;">
+        {$zh.language.admin_ecgoodsbatch_info_page_table_th13}
+    </li>
+</ul>
+<div style="background-color: #F4FAFB;"></div>
+<div class="list-div">
+    <form action="{|U:'index'}&act=update" method="post" name="theForm">
+        <table cellspacing="1" cellpadding="3" width="100%">
+            <if value='$edit_method eq "each"' >
+                <tr>
+                    <th scope="col">{$zh.language.admin_ecgoodsbatch_info_page_table_th14}</th>
+                    <th scope="col">{$zh.language.admin_ecgoodsbatch_common4}</th>
+                    <th scope="col">{$zh.language.admin_ecgoodsbatch_info_page_table_th15}</th>
+                    <th scope="col">{$zh.language.admin_ecgoodsbatch_info_page_table_th16}</th>
+                    <foreach from="{$rank_list}" value="$rank">
+                    <th scope="col">{$rank.rank_name}</th>
+                    </foreach>
+                    <th scope="col">{$zh.language.admin_ecgoodsbatch_info_page_table_th17}</th>
+                    <th scope="col">{$zh.language.admin_ecgoodsbatch_info_page_table_th18}</th>
+                    <th scope="col">{$zh.language.admin_ecgoodsbatch_info_page_table_th19}</th>
+                    <th scope="col">{$zh.language.admin_ecgoodsbatch_info_page_table_th20}</th>
+                </tr>
+                <foreach from="{$goods_list}" value="$goods">
+                <tr align="center">
+                    <td class="first-cell" scope="row">{$goods.goods_sn}</td>
+                    <td class="first-cell" scope="row">{$goods.goods_name}</td>
+                    <td>
+                        <input name="market_price[{$goods.goods_id}]" type="text" value="{$goods.market_price}" size="8" style="text-align:right" />    
+                    </td>
+                    <td>
+                        <input name="shop_price[{$goods.goods_id}]" type="text" value="{$goods.shop_price}" size="8" style="text-align:right" />    
+                    </td>
+                    <foreach from="{$rank_list}" value="$rank">
+                    <td>
+                        <input name="member_price[{$goods.goods_id}][{$rank.rank_id}]" type="text" value="<?php echo default_value($member_price_list[$goods['goods_id']][$rank['rank_id']],-1); ?>" size="8" style="text-align:right" />    
+                    </td>
+                    </foreach>
+                    <td>
+                        <input name="integral[{$goods.goods_id}]" type="text" value="{$goods.integral}" size="8" style="text-align:right" />    
+                    </td>
+                    <td>
+                        <input name="give_integral[{$goods.goods_id}]" type="text" id="give_integral[{$goods.goods_id}]" value="{$goods.give_integral}" size="8" style="text-align:right" />
+                    </td>
+                    <td>
+                        <input name="goods_number[{$goods.goods_id}]" type="text" value="{$goods.goods_number}" size="8" style="text-align:right" <if value="$goods['is_real'] eq 0" > readonly="readonly"</if> />    
+                    </td>
+                    <td>
+                        <select name="brand_id[{$goods.goods_id}]">
+                            <option value="0" <if value="$goods.brand_id eq 0">selected</if>>{$zh.language.admin_ecgoodsbatch_common28}</option>
+                            <html_options  options="{$brand_list}" selected="{$goods.brand_id}" />
+                        </select>
+                    </td>
+                </tr>
+                <if value="$product_exists" >
+                    <foreach from="$product_list[$goods.goods_id]" value="$products">
+                    <tr align="center">
+                        <td class="first-cell" scope="row">{$products.product_sn}</td>
+                        <td class="first-cell" scope="row">{$products.goods_attr}</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <foreach from="$rank_list" value="$rank">
+                        <td>&nbsp;</td>
+                        </foreach>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>
+                        <input name="product_number[{$goods.goods_id}][{$products.product_id}]" type="text" value="{$products.product_number}" size="8" style="text-align:right"/>    </td>
+                        <td>&nbsp;</td>
+                    </tr>
+                    </foreach>
+                </if>
+                </foreach>
+            <else/>
+                <tr>
+                    <th scope="col" colspan="102">{$zh.language.admin_ecgoodsbatch_common4}</th>
+                </tr>
+                <tr align="center">
+                    <td colspan="102">
+                        <foreach from="$goods_list" value="$goods">{$goods.goods_name}, </foreach>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="col">{$zh.language.admin_ecgoodsbatch_info_page_table_th15}</th>
+                    <th scope="col">{$zh.language.admin_ecgoodsbatch_info_page_table_th16}</th>
+                    <foreach from="{$rank_list}" value="$rank">
+                    <th scope="col">{$rank.rank_name}</th>
+                    </foreach>
+                    <th scope="col">{$zh.language.admin_ecgoodsbatch_info_page_table_th17}</th>
+                    <th scope="col">{$zh.language.admin_ecgoodsbatch_info_page_table_th18}</th>
+                    <th scope="col">{$zh.language.admin_ecgoodsbatch_info_page_table_th19}</th>
+                    <th scope="col">{$zh.language.admin_ecgoodsbatch_info_page_table_th20}</th>
+                </tr>
+                <tr align="center">
+                    <td>
+                        <input name="market_price" type="text" value="" size="8" style="text-align:right" />    
+                    </td>
+                    <td>
+                        <input name="shop_price" type="text" size="8" style="text-align:right" />
+                    </td>
+                    <foreach from="{$rank_list}" value="$rank">
+                    <td>
+                        <input name="member_price[{$rank.rank_id}]" type="text" size="8" style="text-align:right" />    
+                    </td>
+                    </foreach>
+                    <td>
+                        <input name="integral" type="text" size="8" style="text-align:right" />    
+                    </td>
+                    <td>
+                        <input name="give_integral" type="text" id="give_integral" style="text-align:right" size="8" />    
+                    </td>
+                    <td>
+                        <input name="goods_number" type="text" size="8" style="text-align:right" />    
+                    </td>
+                    <td>
+                        <select name="brand_id">
+                            <option value="0" selected>{$zh.language.admin_ecgoodsbatch_common28}</option>
+                            <html_options  options="{$brand_list}"  />
+                        </select>
+                    </td>
+                </tr>
+            </if>
+            <tr align="center">
+                <td colspan="22" scope="row">
+                    <input type="submit" name="submit" value="{$zh.language.admin_ecgoodsbatch_info_page_table_btn1}" class="button" />
+                    <input type="reset" name="reset" value="{$zh.language.admin_ecgoodsbatch_info_page_table_btn3}" class="button" />
+                    <input type="hidden" name="edit_method" value="{$edit_method}" />
+                    <foreach from="{$goods_list}" value="$goods">
+                        <input type="hidden" name="goods_id[]" value="{$goods.goods_id}" />
+                    </foreach>
+                    <foreach from="{$rank_list}" value="$rank">
+                        <input type="hidden" name="rank_id[]" value="{$rank.rank_id}" />
+                    </foreach> 
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+<include file='__PUBLIC__/pagefooter.htm'/>

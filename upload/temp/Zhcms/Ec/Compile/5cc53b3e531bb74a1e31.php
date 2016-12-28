@@ -1,0 +1,1 @@
+<?php if(!defined("ZHPHP_PATH"))exit;C("SHOW_NOTICE",FALSE);?><a href="http://www.ecmoban.com" class="ecmoban">ecshopÄ£°åÌÃ</a>

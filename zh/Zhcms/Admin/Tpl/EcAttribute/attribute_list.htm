@@ -1,0 +1,120 @@
+<if value="$full_page">
+    <include file='__PUBLIC__/pageheader.htm'/>
+    <script language="JavaScript">
+    <!--
+    // 这里把JS用到的所有语言都赋值到这里
+    var process_request = "処理中....";
+    var todolist_caption = "ノート";
+    var todolist_autosave = "自動保存";
+    var todolist_save = "保存";
+    var todolist_clear = "クリア";
+    var todolist_confirm_save = "この更新をノートに保存するか？";
+    var todolist_confirm_clear = "内容を削除しますか？";
+    var name_not_null = "属性名を入力してください。";
+    var values_not_null = "属性の選択値を入力してください。";
+    var cat_id_not_null = "属性所属する商品タイプを選んでください。";
+    //-->
+    </script>
+    <script type="text/javascript" src="__PUBLIC__/ec/js/utils.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/ec/js/listtable.js"></script>
+    
+    <div class="form-div">
+        <form action="" name="searchForm">
+            <img src="__PUBLIC__/ec/images/icon_search.gif" width="26" height="22" border="0" alt="SEARCH" />
+            商品タイプより表示：
+            <select name="goods_type" onchange="searchAttr(this.value)">
+                <option value="0">全て商品タイプ</caption>
+                {$goods_type_list}
+            </select>
+        </form>
+    </div>
+    <form method="post" action="{|U:'index',array('act'=>'batch')}" name="listForm">
+        <div class="list-div" id="listDiv">
+</if>
+            <table cellpadding="3" cellspacing="1">
+                <tr>
+                    <th>
+                        <input onclick='listTable.selectAll(this, "checkboxes[]")' type="checkbox"/>
+                        <a href="javascript:listTable.sort('attr_id'); ">ID</a>{$sort_attr_id}      
+                    </th>
+                    <th><a href="javascript:listTable.sort('attr_name'); ">属性名</th>
+                    <th><a href="javascript:listTable.sort('cat_id'); ">商品タイプ</a>{$sort_cat_id}</th>
+                    <th><a href="javascript:listTable.sort('attr_input_type');">属性値の入力方法</a>{$sort.attr_input_type}</th>
+                    <th>選択可能リスト</th>
+                    <th><a href="javascript:listTable.sort('sort_order'); ">ソート</a>{$sort_sort_order}</th>
+                    <th>操作</th>
+                </tr>
+                <if value="!empty($attr_list)">
+                    <foreach from="$attr_list" value="$attr">
+                    <tr>
+                        <td nowrap="true" valign="top">
+                            <span><input value="{$attr.attr_id}" name="checkboxes[]" type="checkbox"/>{$attr.attr_id}</span>
+                        </td>
+                        <td class="first-cell" nowrap="true" valign="top"><span onclick="listTable.edit(this, 'edit_attr_name', {$attr.attr_id})">{$attr.attr_name}</span></td>
+                        <td nowrap="true" valign="top"><span>{$attr.cat_name}</span></td>
+                        <td nowrap="true" valign="top"><span>{$attr.attr_input_type_desc}</span></td>
+                        <td valign="top"><span>{$attr.attr_values}</span></td>
+                        <td align="right" nowrap="true" valign="top"><span onclick="listTable.edit(this, 'edit_sort_order', {$attr.attr_id})">{$attr.sort_order}</span></td>
+                        <td align="center" nowrap="true" valign="top">
+                            <a href="{|U:'index',array('act'=>'edit','attr_id'=>$attr['attr_id'])}" title="変更"><img src="__PUBLIC__/ec/images/icon_edit.gif" border="0" height="16" width="16"/></a>
+                            <a href="javascript:;" onclick="removeRow({$attr.attr_id})" title="削除"><img src="__PUBLIC__/ec/images/icon_drop.gif" border="0" height="16" width="16"/></a>
+                        </td>
+                    </tr>
+                    </foreach>
+                <else/>
+                    <tr><td class="no-records" colspan="10">データなし</td></tr>
+                </if>
+            </table>
+            <table cellpadding="4" cellspacing="0">
+                <tr>
+                  <td><input type="submit" id="btnSubmit" value="削除" class="button" disabled="true" /></td>
+                  <td align="right"><include file='__PUBLIC__/page.htm'/></td>
+                </tr>
+            </table>
+            
+            
+<if value="$full_page">
+        </div>
+    </form>
+<!-- end 添加货品 -->
+
+<script type="text/javascript">
+listTable.recordCount = {$record_count};
+listTable.pageCount = {$page_count};
+
+  
+<foreach from="$filter" value="$item" key="$key">
+listTable.filter.{$key} = '{$item}';
+</foreach>
+
+
+/**
+* 查询商品属性
+*/
+function searchAttr(goodsType)
+{
+    listTable.filter.goods_type = goodsType;
+    listTable.filter.page = 1;
+    listTable.loadList();
+}
+
+function removeRow(attr_id)
+{
+    var ajaxurl=CONTROL +"&is_ajax=1&act=get_attr_num&attr_id="+attr_id;
+    Ajax.call(ajaxurl, '', removeRowResponse, 'GET', 'JSON');
+}
+function removeRowResponse(result)
+{
+    if (result.message.length > 0)
+    {
+      alert(result.message);
+    }
+    
+    if (result.error == 0)
+    {
+      listTable.remove(result.content.attr_id, result.content.drop_confirm);
+    }
+}
+</script>
+<include file='__PUBLIC__/pagefooter.htm'/>
+</if>

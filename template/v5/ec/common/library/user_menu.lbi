@@ -1,0 +1,22 @@
+<div class="userMenu">
+    <a href="{|U:'ec/EcUser/index'}" <if value="$action eq 'default'">class="curs"</if>><img src="__TEMPLATE__/ec/common/style/images/u1.gif"/> ホーム</a>
+    <a href="{|U:'ec/EcUser/index'}&act=profile"<if value="$action eq 'profile'">class="curs"</if>><img src="__TEMPLATE__/ec/common/style/images/u2.gif"/> ユーザ情報</a>
+    <a href="{|U:'ec/EcUser/index'}&act=order_list"<if value="$action eq 'order_list' or $action eq 'order_detail'">class="curs"</if>><img src="__TEMPLATE__/ec/common/style/images/u3.gif"/> 注文</a>
+    <a href="{|U:'ec/EcUser/index'}&act=address_list"<if value="$action eq 'address_list'">class="curs"</if>><img src="__TEMPLATE__/ec/common/style/images/u4.gif"/> 荷受住所</a>
+    <a href="{|U:'ec/EcUser/index'}&act=collection_list"<if value="$action eq 'collection_list'">class="curs"</if>><img src="__TEMPLATE__/ec/common/style/images/u5.gif"/> 収蔵</a>
+    <a href="{|U:'ec/EcUser/index'}&act=message_list"<if value="$action eq 'message_list'">class="curs"</if>><img src="__TEMPLATE__/ec/common/style/images/u6.gif"/> メッセージ</a>
+    <a href="{|U:'ec/EcUser/index'}&act=tag_list"<if value="$action eq 'tag_list'">class="curs"</if>><img src="__TEMPLATE__/ec/common/style/images/u7.gif"/> ラベル</a>
+    <a href="{|U:'ec/EcUser/index'}&act=booking_list"<if value="$action eq 'booking_list'">class="curs"</if>><img src="__TEMPLATE__/ec/common/style/images/u8.gif"/> 売り切れ登録</a>
+    <a href="{|U:'ec/EcUser/index'}&act=bonus"<if value="$action eq 'bonus'">class="curs"</if>><img src="__TEMPLATE__/ec/common/style/images/u9.gif"/> ボーナス</a>
+    <if value="$affiliate.on eq 1 ">
+        <a href="user.php?act=affiliate"<if value="$action eq 'affiliate'">class="curs"</if>><img src="__TEMPLATE__/ec/common/style/images/u10.gif"/> お勧め</a>
+    </if>
+    <a href="{|U:'ec/EcUser/index'}&act=comment_list"<if value="$action eq 'comment_list'">class="curs"</if>><img src="__TEMPLATE__/ec/common/style/images/u11.gif"/> コメント</a>
+    <!--<a href="user.php?act=group_buy">{$lang.label_group_buy}</a>-->
+    <a href="{|U:'ec/EcUser/index'}&act=track_packages"<if value="$action eq 'track_packages'">class="curs"</if>><img src="__TEMPLATE__/ec/common/style/images/u12.gif"/> 小包追跡</a>
+    <a href="{|U:'ec/EcUser/index'}&act=account_log"<if value="$action eq 'account_log'">class="curs"</if>><img src="__TEMPLATE__/ec/common/style/images/u13.gif"/> 資金管理</a>
+    <if value="$show_transform_points">
+        <a href="user.php?act=transform_points"<if value="$action eq 'transform_points'">class="curs"</if>><img src="__TEMPLATE__/ec/common/style/images/u14.gif"/> ポイント</a>
+    </if>
+    <a href="{|U:'ec/EcUser/index'}&act=logout" style="background:none; text-align:right; margin-right:10px;">ログアウト</a>
+</div>

@@ -1,0 +1,19 @@
+<if value="$invoice_list" >
+    <style type="text/css">
+    .boxCenterList form{display:inline;}
+    .boxCenterList form a{color:#404040; text-decoration:underline;}
+    </style>
+    <div class="box">
+        <div class="box_1">
+            <h3><span>配送検索</span></h3>
+            <div class="boxCenterList">
+                <foreach from="$invoice_list" value="$invoice"  >
+                    注文番号 {$invoice.order_sn}<br />
+                    配送番号 {$invoice.invoice_no}
+                    <div class="blank"></div>
+                </foreach>
+            </div>
+        </div>
+    </div>
+    <div class="blank5"></div>
+</if>

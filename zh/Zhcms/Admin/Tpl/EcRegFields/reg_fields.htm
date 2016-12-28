@@ -1,0 +1,58 @@
+<if value="$full_page">
+    <include file='__PUBLIC__/pageheader.htm'/>
+    <script language="JavaScript">
+    <!--
+    // 这里把JS用到的所有语言都赋值到这里    
+    var process_request = "正在处理您的请求...";
+    var todolist_caption = "记事本";
+    var todolist_autosave = "自动保存";
+    var todolist_save = "保存";
+    var todolist_clear = "清除";
+    var todolist_confirm_save = "是否将更改保存到记事本？";
+    var todolist_confirm_clear = "是否清空内容？";
+    var field_name_empty = "会員登録項目名を入力してください。";
+    //-->
+    </script>
+    <script type="text/javascript" src="__PUBLIC__/ec/js/utils.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/ec/js/listtable.js"></script>
+    
+    
+    <form method="post" action="" name="listForm">
+        <div class="list-div" id="listDiv">
+</if>
+            <table cellspacing='1' id="list-table">
+                <tr>
+                    <th>会員登録項目名</th>
+                    <th>ソート</th>
+                    <th>表示</th>
+                    <th>必須項目</th>
+                    <th>操作</th>
+                </tr>
+                <foreach from="$reg_fields" value="$field">
+                <tr>
+                    <td class="first-cell" ><span onclick="listTable.edit(this,'edit_name', {$field.id})">{$field.reg_field_name}</span></td>
+                    <td align="center"><span onclick="listTable.edit(this,'edit_order', {$field.id})">{$field.dis_order}</span></td>
+                    <td align="center"><img src="__PUBLIC__/ec/images/<if value="$field['display']">yes<else/>no</if>.gif" onclick="listTable.toggle(this, 'toggle_dis', {$field.id})" /></td>
+                    <td align="center"><img src="__PUBLIC__/ec/images/<if value="$field['is_need']">yes<else/>no</if>.gif" onclick="listTable.toggle(this, 'toggle_need', {$field.id})" /></td>
+                    <td align="right">
+                        <a href="{|U:'index'}&act=edit&id={$field.id}">変更</a>
+                        <if value="$field['type'] eq 0">
+                        | <a href="javascript:;" onclick="listTable.remove({$field.id}, '削除するか?')" title="削除">削除</a>
+                        </if>
+                    </td>
+                </tr>
+                </foreach>
+            </table>
+            
+<if value="$full_page">
+        </div>
+    </form>
+<!-- end 添加货品 -->
+
+<script type="text/javascript">
+
+
+
+</script>
+<include file='__PUBLIC__/pagefooter.htm'/>
+</if>
