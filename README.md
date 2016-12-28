@@ -34,7 +34,7 @@ EC功能前台画面：http://cms.metaphasedemo.com/index.php?a=ec&c=EcIndex&m=i
 
 5.自己开始尝试使用吧
 
-##知错初衷
+##开发初衷
 
 由于自己原来是开发j2ee,.net的码农，突然外派到一家公司里面做php。当时非常不习惯这家公司的框架（啥架构都没有感觉在写流水程序）。
 
